@@ -8,9 +8,14 @@
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-fields">
-            <mat-form-field appearance="outline" class="full-width-field">
+          <mat-form-field appearance="outline" class="full-width-field">
             <mat-label>E-mail</mat-label>
-            <input matInput formControlName="email" type="email" placeholder="seuemail@exemplo.com" />
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              placeholder="seuemail@exemplo.com"
+            />
           </mat-form-field>
           <mat-form-field appearance="outline" class="full-width-field">
             <mat-label>Senha</mat-label>
@@ -22,7 +27,7 @@
           <button
             mat-flat-button
             (click)="onSubmit()"
-            color="secondary"          
+            color="secondary"
             type="submit"
             class="login-button"
           >
@@ -40,5 +45,3 @@
     </div>
   </main>
 </div>
-
-
