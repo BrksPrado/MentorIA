@@ -1,0 +1,47 @@
+<div class="botao-container">
+  <h2>Teste de Botões com Tema Personalizado</h2>
+  <div class="button-group">
+    <button mat-flat-button color="primary" (click)="onClick('Editar')">
+      <mat-icon>edit</mat-icon>
+      Editar
+    </button>
+
+    <button mat-stroked-button color="secondary" (click)="onClick('Excluir')">
+      <mat-icon>delete</mat-icon>
+      Excluir
+    </button>
+
+    <button mat-raised-button color="tertiary" (click)="onClick('Salvar')">
+      <mat-icon>save</mat-icon>
+      Salvar
+    </button>
+
+    <button mat-button (click)="onClick('Cancelar')">
+      Cancelar
+    </button>
+  </div>
+
+  <button
+    mat-raised-button
+    (click)="onClick('cancelar')"
+    color="primary"
+    type="submit"
+    class="login-button"
+  >
+    Entrar
+  </button>
+
+  <p class="info">Clique nos botões para testar a funcionalidade</p>
+</div>
+
+<div class="container">
+  <h2>Botões com Cores da Paleta</h2>
+  <p>Estes botões usam os atributos 'color' do Angular Material, que se conectam com a sua paleta.</p>
+  <button mat-raised-button color="primary">Primário</button>
+  <button mat-raised-button color="secondary">Secundário</button>
+  <button mat-raised-button color="tertiary">Terciário</button>
+
+  <button mat-stroked-button color="primary">Primário</button>
+  <button mat-stroked-button color="secondary">Secundário</button>
+  <button mat-stroked-button color="tertiary">Terciário</button>
+</div>

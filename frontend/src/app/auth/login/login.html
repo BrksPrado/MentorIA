@@ -1,0 +1,43 @@
+<div class="login-page">
+  <main class="main-content">
+    <div class="login-card">
+      <div class="logo-container">
+        <img class="logo" src="assets/img/logo.png" alt="Logo" width="300px" />
+      </div>
+      <h2>Seja bem-vindo!</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="seuemail@exemplo.com" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>Senha</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="Sua senha" />
+        </mat-form-field>
+
+        <div class="actions-container">
+          <button
+            mat-flat-button
+            (click)="onSubmit()"
+            color="secondary"          
+            type="submit"
+            class="login-button"
+          >
+            Entrar
+          </button>
+        </div>
+        <div class="forgot-pass">
+          <a href="#" class="forgot-password-link">Esqueceu a senha?</a>
+        </div>
+      </form>
+
+      <div class="signup-container">
+        <span>Não tem conta? <a routerLink="/auth/cadastrar">Cadastre-se</a></span>
+      </div>
+    </div>
+  </main>
+</div>
+
+
