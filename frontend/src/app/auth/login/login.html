@@ -1,21 +1,22 @@
 <div class="login-page">
   <main class="main-content">
     <div class="login-card">
-      <div class="logo-container">
-        <img class="logo" src="assets/img/logo.png" alt="Logo" width="300px" />
+      <div class="logo-container disable-pointer-events">
+        <img class="logo" src="assets/img/logo.png" alt="Logo" width="220px" />
       </div>
-      <h2>Seja bem-vindo!</h2>
+      <h2 class="disable-pointer-events">bem-vindo de volta!</h2>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <mat-form-field appearance="outline" class="full-width-field">
-          <mat-label>E-mail</mat-label>
-          <input matInput formControlName="email" type="email" placeholder="seuemail@exemplo.com" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width-field">
-          <mat-label>Senha</mat-label>
-          <input matInput formControlName="password" type="password" placeholder="Sua senha" />
-        </mat-form-field>
+        <div class="form-fields">
+            <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="seuemail@exemplo.com" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Senha</mat-label>
+            <input matInput formControlName="password" type="password" placeholder="Sua senha" />
+          </mat-form-field>
+        </div>
 
         <div class="actions-container">
           <button
