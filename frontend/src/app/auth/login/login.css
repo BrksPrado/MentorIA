@@ -10,7 +10,6 @@
 
 USAR '!important' PARA SOBRESCREVER O PADRÃO DO ANGULAR MATERIAL */
 
-
 .login-page {
   display: flex;
   flex-direction: column;
@@ -24,7 +23,12 @@ USAR '!important' PARA SOBRESCREVER O PADRÃO DO ANGULAR MATERIAL */
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  background: linear-gradient(180deg, var(--midnight-green) 0%, var(--celadon) 100%, var(--tea-green) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--midnight-green) 0%,
+    var(--celadon) 100%,
+    var(--tea-green) 100%
+  );
 }
 
 .login-card {

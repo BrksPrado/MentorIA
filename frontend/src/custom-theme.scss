@@ -90,6 +90,10 @@ html {
     typography: Roboto,
     density: 0,
   ));
+
+  .mat-elevation-z4 {
+    @include mat.elevation(4);
+  }
 }
 
 body {

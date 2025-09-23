@@ -24,7 +24,7 @@ USAR '!important' PARA SOBRESCREVER O PADRÃO DO ANGULAR MATERIAL */
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    background: linear-gradient(90deg, var(--tea-green) 0%, var(--midnight-green) 0%, var(--sea-green) 100%);
+    background: linear-gradient(90deg, var(--midnight-green) 0%, var(--celadon) 100%, var(--tea-green) 100%);
     }
   
   
