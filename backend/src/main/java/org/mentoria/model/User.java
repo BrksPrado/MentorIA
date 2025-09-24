@@ -13,8 +13,13 @@ public class User extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
+    @Column(unique = true, nullable = false)
     public String username;
+
+    @Column(unique = true, nullable = false)
     public String email;
 
+    @Column(nullable = false) 
+    public String password;
 
 }
