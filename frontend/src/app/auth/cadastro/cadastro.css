@@ -1,12 +1,12 @@
-/* :host {
-  --midnight-green: #114b5f;
-  --sea-green: #1a936f;
-  --celadon: #88d498;
-  --tea-green: #c6dabf;
-  --parchment: #f3e9d2;
-  --white: #ffffff;
-  --light-text: #f0f0f0;
-} 
+/*   :host {
+    --midnight-green: #114b5f;
+    --sea-green: #4ed2ce;
+    --celadon: #4facaf;
+    --tea-green: #cadae4;
+    --parchment: #f3e9d2;
+    --white: #ffffff;
+    --light-text: #f0f0f0;
+  }
 
 USAR '!important' PARA SOBRESCREVER O PADRÃO DO ANGULAR MATERIAL */
 
@@ -40,10 +40,18 @@ USAR '!important' PARA SOBRESCREVER O PADRÃO DO ANGULAR MATERIAL */
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    background: linear-gradient(90deg, var(--midnight-green) 0%, var(--celadon) 100%, var(--tea-green) 100%);
-    }
-  
-  
+    background: linear-gradient(145deg,
+    var(--midnight-green) ,
+    var(--celadon) 100%,
+    var(--sea-green));
+  background-size: 300% 100%;
+  animation: fade-bg 8s ease-in-out infinite alternate;
+}
+
+@keyframes fade-bg {
+  0% { background-position-x: 0%; }
+  100% { background-position-x: 100%; }
+}
   .login-card {
     background-color: var(--parchment);
     padding: 2rem 2rem;

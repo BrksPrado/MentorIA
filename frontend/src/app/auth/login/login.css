@@ -1,4 +1,12 @@
-
+/*   :host {
+    --midnight-green: #114b5f;
+    --sea-green: #4ed2ce;
+    --celadon: #4facaf;
+    --tea-green: #cadae4;
+    --parchment: #f3e9d2;
+    --white: #ffffff;
+    --light-text: #f0f0f0;
+  } */
 :host ::ng-deep .mat-mdc-form-field {
   --mdc-outlined-text-field-container-height: 40px !important;
 }
@@ -29,12 +37,17 @@
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  background: linear-gradient(
-    190deg,
-    var(--midnight-green) 30%,
-    var(--celadon) 100%,
-    var(--tea-green) 100%
-  );
+  background: linear-gradient(145deg,
+  var(--celadon),
+  var(--midnight-green) 100%,
+  var(--sea-green));
+  background-size: 300% 100%;
+  animation: fade-bg 8s ease-in-out infinite alternate;
+}
+
+@keyframes fade-bg {
+  0% { background-position-x: 0%; }
+  100% { background-position-x: 100%; }
 }
 
 .login-card {
