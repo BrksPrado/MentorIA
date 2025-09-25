@@ -59,14 +59,12 @@
   max-width: 350px;
   text-align: center;
 }
-
 .logo-container {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-
 }
 .logo-image {
   max-width: 220px;
@@ -112,7 +110,17 @@
   padding: 1.25rem 0;
   font-size: 1rem;
   line-height: 1;
-  border-radius: 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--midnight-green), var(--light-dark));
+  color: var(--midnight-green);
+  box-shadow: 
+    0 2px 8px rgb(33, 72, 71);
+  transition: 0.3s ease;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, var(--celadon), var(--light-dark));
+  transform: translateY(-2px);
 }
 
 .forgot-password-link {

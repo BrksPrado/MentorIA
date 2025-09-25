@@ -19,7 +19,7 @@ public class User extends PanacheEntityBase {
     @Column(unique = true, nullable = false)
     public String email;
 
-    @Column(nullable = false) 
+    @Column(nullable = false)
     public String password;
 
 }
