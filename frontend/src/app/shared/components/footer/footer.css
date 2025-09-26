@@ -1,0 +1,21 @@
+
+.page-footer {
+    background-color: var(--midnight-green);
+    color: var(--light-text);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .page-footer a {
+    color: var(--light-text);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  
+  .page-footer a:hover {
+    text-decoration: underline;
+  }
+  

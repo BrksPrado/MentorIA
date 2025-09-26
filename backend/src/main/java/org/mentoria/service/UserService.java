@@ -1,0 +1,51 @@
+package org.mentoria.service;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.mentoria.domain.User;
+import org.mentoria.repository.UserRepository;
+
+import java.util.UUID;
+
+@ApplicationScoped
+public class UserService {
+
+    @Inject
+    UserRepository userRepository;
+
+    public User findByUserId(UUID userId) {
+        return userRepository.findByUserId(userId);
+    }
+
+    @Transactional
+    public User createUser(User user) {
+        userRepository.findByEmail(user.email)
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("Email ja cadastrado");
+                });
+        userRepository.findByUsername(user.username)
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("Username ja cadastrado");
+                });
+
+        userRepository.persist(user);
+        return user;
+    }
+
+    @Transactional
+    public User updateUser(UUID userId, User user) {
+        User findedUser = findByUserId(userId);
+
+        findedUser.username = user.username;
+        findedUser.email = user.email;
+
+        userRepository.persist(findedUser);
+        return findedUser;
+    }
+
+    @Transactional
+    public void deleteUser(UUID userId) {
+        userRepository.delete(findByUserId(userId));
+    }
+}

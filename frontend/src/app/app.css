@@ -1,0 +1,20 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+  }
+
+  :host {
+    --light-dark: #1a374d;
+    --midnight-green: #114b5f;
+    --celadon: #4facaf;
+    --sea-green: #4ed2ce;
+    --tea-green: #cadae4;
+    --parchment: #f3e9d2;
+    --white: #ffffff;
+    --light-text: #f0f0f0;
+  }
