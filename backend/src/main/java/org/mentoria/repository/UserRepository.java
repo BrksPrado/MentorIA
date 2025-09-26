@@ -20,6 +20,7 @@ public class UserRepository implements PanacheRepository<User> {
         return find("email", email).firstResultOptional();
     }
 
+
     public Optional<User> findByUsername(String username) {
         return find("username", username).firstResultOptional();
     }
