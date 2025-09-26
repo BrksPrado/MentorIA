@@ -1,4 +1,4 @@
-package org.mentoria.model;
+package org.mentoria.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;

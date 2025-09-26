@@ -46,7 +46,7 @@ USAR '!important' PARA SOBRESCREVER O PADRÃO DO ANGULAR MATERIAL */
   var(--midnight-green)
   );
   background-size: 300% 100%;
-  animation: fade-bg 1s ease-in-out infinite alternate;
+  animation: fade-bg 5s ease-in-out infinite alternate;
 }
 
 @keyframes fade-bg {
