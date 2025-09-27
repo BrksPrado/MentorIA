@@ -1,4 +1,12 @@
 package org.mentoria.dto;
 
-public record AuthResponseDTO(String token) {
-}
+import java.util.UUID;
+
+public record AuthResponseDTO(
+        UUID userId,
+        String username,
+        String email,
+        String token,
+        String tokenType,
+        Long expiresIn
+) {}
