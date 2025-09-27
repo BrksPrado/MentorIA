@@ -34,7 +34,6 @@ public class UserService {
                 });
 
         User user = new User();
-        user.id = UUID.randomUUID();
         user.email = registerDTO.email();
         user.username = registerDTO.username();
         user.password = registerDTO.password();
