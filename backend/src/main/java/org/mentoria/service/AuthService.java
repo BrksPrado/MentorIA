@@ -26,6 +26,7 @@ public class AuthService {
                 "Bearer",
                 3600L
         );
+
     }
 
     public AuthResponseDTO login(LoginRequestDTO loginDTO) {
