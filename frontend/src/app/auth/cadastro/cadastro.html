@@ -6,7 +6,7 @@
       </div>
       <h2 class="disable-pointer-events">Seja bem-vindo!</h2>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="login-form">
 
         <div class="form-fields">
           <mat-form-field appearance="outline" class="full-width-field">
@@ -14,8 +14,8 @@
             <input matInput formControlName="email" type="email" placeholder="seuemail@exemplo.com" />
           </mat-form-field>
           <mat-form-field appearance="outline" class="full-width-field">
-            <mat-label>Username*</mat-label>
-            <input matInput formControlName="username" type="username" placeholder="Seu username" />
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" type="text" placeholder="Seu username" />
           </mat-form-field>
           <mat-form-field appearance="outline" class="full-width-field">
               <mat-label>Senha</mat-label>

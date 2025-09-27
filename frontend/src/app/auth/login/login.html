@@ -9,10 +9,10 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-fields">
           <mat-form-field appearance="outline" class="full-width-field">
-            <mat-label>E-mail</mat-label>
+            <mat-label>Usuario/E-mail</mat-label>
             <input
               matInput
-              formControlName="email"
+              formControlName="identifier"
               type="email"
               placeholder="seuemail@exemplo.com"
             />

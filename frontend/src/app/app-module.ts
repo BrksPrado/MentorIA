@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from './shared/shared-module';
+import {provideHttpClient} from '@angular/common/http';
+
 
 
 @NgModule({
@@ -16,9 +18,10 @@ import { SharedModule } from './shared/shared-module';
     AppRoutingModule,
     SharedModule
   ],
-  
+
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient()
   ],
   bootstrap: [App]
 })
