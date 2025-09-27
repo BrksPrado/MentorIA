@@ -1,5 +1,6 @@
 package org.mentoria.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.mentoria.domain.User;
 import org.mentoria.dto.AuthResponseDTO;
@@ -7,9 +8,8 @@ import org.mentoria.dto.LoginRequestDTO;
 import org.mentoria.dto.RegisterRequestDTO;
 import org.mentoria.repository.UserRepository;
 
+@ApplicationScoped
 public class AuthService {
-    @Inject
-    public UserRepository userRepository;
 
     @Inject
     UserService userService;
