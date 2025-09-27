@@ -6,7 +6,7 @@
       </div>
       <h2 class="disable-pointer-events">Seja bem-vindo!</h2>
 
-      <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="login-form">
+      <form [formGroup]="cadastroForm"  class="login-form">
 
         <div class="form-fields">
           <mat-form-field appearance="outline" class="full-width-field">
@@ -28,7 +28,6 @@
             mat-flat-button
             (click)="onSubmit()"
             color="secondary"
-            type="submit"
             class="siginup-button">
             Cadastrar-se
           </button>

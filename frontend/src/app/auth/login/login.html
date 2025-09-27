@@ -6,7 +6,7 @@
       </div>
       <h2 class="disable-pointer-events">Bem-vindo de volta!</h2>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <form [formGroup]="loginForm" class="login-form">
         <div class="form-fields">
           <mat-form-field appearance="outline" class="full-width-field">
             <mat-label>Usuario/E-mail</mat-label>
@@ -28,7 +28,6 @@
             mat-flat-button
             (click)="onSubmit()"
             color="secondary"
-            type="submit"
             class="login-button"
           >
             Entrar

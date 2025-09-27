@@ -24,10 +24,10 @@ export class Cadastro implements OnInit {
     this.cadastroForm = this.fb.group({
       username: ['', Validators.required],
 
-      email: ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email]],
 
 
-      password: ['', Validators.required, Validators.minLength(6)]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
