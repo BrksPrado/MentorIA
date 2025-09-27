@@ -53,7 +53,7 @@ public class AuthService {
 
     private String generateToken(User user) {
         return "token_" + user.id.toString().replace("-", "");
-        
+
     }
 
 }
