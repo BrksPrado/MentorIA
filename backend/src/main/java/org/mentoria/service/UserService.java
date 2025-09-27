@@ -8,6 +8,7 @@ import org.mentoria.dto.AuthResponseDTO;
 import org.mentoria.dto.RegisterRequestDTO;
 import org.mentoria.repository.UserRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -43,24 +44,27 @@ public class UserService {
     }
 
 
-    /*@Transactional
-    public User createUser(User user) {
-        userRepository.findByEmail(user.email)
-                .ifPresent(u -> {
-                    throw new IllegalArgumentException("Email ja cadastrado");
-                });
-        userRepository.findByUsername(user.username)
-                .ifPresent(u -> {
-                    throw new IllegalArgumentException("Username ja cadastrado");
-                });
-
-        userRepository.persist(user);
-        return user;
-    }*/
-
     @Transactional
     public User updateUser(UUID userId, User user) {
         User findedUser = findByUserId(userId);
+
+        if (!findedUser.email.equals(user.email)) {
+            userRepository.findByEmail(user.email)
+                    .ifPresent(u -> {
+                        if (!u.id.equals(userId)) {
+                            throw new IllegalArgumentException("Email ja esta em uso");
+                        }
+                    });
+        }
+
+        if (!findedUser.username.equals(user.username)) {
+            userRepository.findByUsername(user.username)
+                    .ifPresent(u -> {
+                        if (!u.id.equals(userId)) {
+                            throw new IllegalArgumentException("Username ja esta em uso");
+                        }
+                    });
+        }
 
         findedUser.username = user.username;
         findedUser.email = user.email;
