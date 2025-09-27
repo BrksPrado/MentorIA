@@ -1,0 +1,108 @@
+<div class="homepage-root">
+	<aside class="sidebar">
+			<div class="sidebar-top">
+				<div class="brand">
+					<div class="brand-icon"></div>
+					<div class="brand-text">
+						<h1>MentorIA</h1>
+						<small>Seu estudo com IA</small>
+					</div>
+				</div>
+			</div>
+
+		<nav class="menu">
+			<ul>
+				<li (click)="toggleSubmenu('mod1')" class="menu-item" [class.submenu-open]="isSubmenuOpen('mod1')">
+					<span class="material-icons menu-icon">dashboard</span>
+					<span class="menu-label">Simulados</span>
+					<span class="chev material-icons">expand_more</span>
+					<ul class="submenu" [class.open]="isSubmenuOpen('mod1')">
+						<li class="submenu-item"><span class="material-icons md-18">play_circle</span> Iniciar simulado</li>
+						<li class="submenu-item"><span class="material-icons md-18">timeline</span> Histórico</li>
+						<li class="submenu-item"><span class="material-icons md-18">leaderboard</span> Ranking</li>
+					</ul>
+				</li>
+
+				<li (click)="toggleSubmenu('mod2')" class="menu-item" [class.submenu-open]="isSubmenuOpen('mod2')">
+					<span class="material-icons menu-icon">school</span>
+					<span class="menu-label">Aulas</span>
+					<span class="chev material-icons">expand_more</span>
+					<ul class="submenu" [class.open]="isSubmenuOpen('mod2')">
+                        <li class="submenu-item"><span class="material-icons md-18">video_library</span> Vídeos</li>
+                        <li class="submenu-item"><span class="material-icons md-18">article</span> Artigos</li>
+                        <li class="submenu-item"><span class="material-icons md-18">lightbulb</span> Dicas de estudo</li>
+					</ul>
+				</li>
+
+				<li (click)="toggleSubmenu('mod3')" class="menu-item" [class.submenu-open]="isSubmenuOpen('mod3')">
+					<span class="material-icons menu-icon">event</span>
+					<span class="menu-label">Eventos</span>
+					<span class="chev material-icons">expand_more</span>
+					<ul class="submenu" [class.open]="isSubmenuOpen('mod3')">
+                        <li class="submenu-item"><span class="material-icons md-18">calendar_today</span> Data de Vestibulares</li>
+                        <li class="submenu-item"><span class="material-icons md-18">camera</span> Lives</li>
+                        <li class="submenu-item"><span class="material-icons md-18">forum</span> Fórum</li>
+					</ul>
+				</li>
+
+				<li (click)="toggleSubmenu('mod4')" class="menu-item" [class.submenu-open]="isSubmenuOpen('mod4')">
+					<span class="material-icons menu-icon">settings</span>
+					<span class="menu-label">Configurações</span>
+					<span class="chev material-icons">expand_more</span>
+					<ul class="submenu" [class.open]="isSubmenuOpen('mod4')">
+                        <li class="submenu-item"><span class="material-icons md-18">repeat</span> XPTO</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</aside>
+
+	<main class="main">
+			<header class="topbar header-beauty">
+				<div class="top-left">
+					<h2 class="app-title">MentorIA</h2>
+					<p class="app-sub">Preparação com IA para vestibulares</p>
+				</div>
+
+				<div class="top-actions">
+					<div class="search">
+						<span class="material-icons">search</span>
+						<input placeholder="Pesquisar conteúdo, módulos..." />
+					</div>
+					<button class="notif-btn" title="Notificações">
+						<span class="material-icons">notifications</span>
+					</button>
+					<div class="profile">
+						<span class="material-icons profile-icon">account_circle</span>
+					</div>
+				</div>
+			</header>
+
+		<section class="content">
+			<div class="card hero">
+				<div class="hero-content">
+					<h2>Bem-vindo ao MentorIA</h2>
+					<p>Aprenda, pratique e se prepare com suporte de IA — experimente os módulos à esquerda.</p>
+					<div class="hero-actions">
+						<button class="primary">Comece a Estudar Agora Mesmo</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="grid">
+				<div class="card small pulse">
+					<h3>Progresso</h3>
+					<p>Seu progresso recente</p>
+				</div>
+				<div class="card small slide-up">
+					<h3>Recomendações</h3>
+					<p>Planos personalizados de estudo</p>
+				</div>
+				<div class="card small slide-up delay">
+					<h3>Atividades</h3>
+					<p>Exercícios e simulados</p>
+				</div>
+			</div>
+		</section>
+	</main>
+</div>
