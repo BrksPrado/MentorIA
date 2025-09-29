@@ -6,8 +6,7 @@ import org.mentoria.domain.User;
 import org.mentoria.dto.AuthResponseDTO;
 import org.mentoria.dto.LoginRequestDTO;
 import org.mentoria.dto.RegisterRequestDTO;
-
-import java.util.Optional;
+import org.mentoria.repository.UserRepository;
 
 @ApplicationScoped
 public class AuthService {
@@ -54,8 +53,12 @@ public class AuthService {
     }
 
     private String generateToken(User user) {
-        return "token_" + user.id.toString().replace("-", "");
-
+        return Jwt.issuer("mentoria")
+                .upn(user.email)
+                .groups(Set.of("user")) // ou "admin"
+                .expiresIn(Duration.ofHours(2))
+                .sign();
     }
+
 
 }
