@@ -19,6 +19,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; color: #072
     user-select: none !important; 
   }
 
+
   /* Fundo branco global — a homepage controla blocos (cards) em azul */
   html, body, app-root, .app-container, .main-content {
     background: #ffffff;

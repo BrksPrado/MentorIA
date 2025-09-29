@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,9 @@ export class Login implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    public router: Router
+    public router: Router,
+
+    private snackBar: MatSnackBar
   ) {}
 
   loginForm!: FormGroup;
@@ -31,20 +34,40 @@ export class Login implements OnInit {
     if (this.loginForm.valid) {
       console.log('Formulário enviado!', this.loginForm.value);
 
-      // 3. Chame o método login do serviço
+    
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login bem-sucedido!', response);
           // Opcional: Salvar o token (ex: no localStorage) e redirecionar
-          this.router.navigate(['/']); // Redireciona para a homepage
+    
+          this.snackBar.open('Login bem-sucedido!', 'X',
+            {
+              duration: 2000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
+          this.router.navigate(['/home']); // Redireciona para a homepage
         },
         error: (err) => {
           console.error('Erro no login', err);
-          alert(`Erro: ${err.error}`);
+          
+          this.snackBar.open('Erro no login. Verifique suas credenciais.', 'X',
+            {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
         }
       });
     } else {
       console.log('Formulário inválido');
+
+      this.snackBar.open('Erro no login. Verifique suas credenciais.', 'X',
+        {
+          duration: 10000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
     }
   }
 

@@ -15,17 +15,28 @@
           </mat-form-field>
           <mat-form-field appearance="outline" class="full-width-field">
             <mat-label>Username</mat-label>
-            <input matInput formControlName="username" type="text" placeholder="Seu username" />
+            <input matInput formControlName="username" placeholder="Seu username" />
+            <mat-error *ngIf="cadastroForm.get('username')?.hasError('minlength')">
+              Username deve ter pelo menos 3 caracteres
+            </mat-error>
+            <mat-error *ngIf="cadastroForm.get('username')?.hasError('pattern')">
+              Apenas letras, números e underscore
+            </mat-error>
           </mat-form-field>
+          
           <mat-form-field appearance="outline" class="full-width-field">
-              <mat-label>Senha</mat-label>
-              <input matInput formControlName="password" type="password" placeholder="Sua senha" />
-            </mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input matInput formControlName="password" type="password" placeholder="Sua senha" />
+            <mat-error *ngIf="cadastroForm.get('password')?.hasError('minlength')">
+              Senha deve ter pelo menos 6 caracteres
+            </mat-error>
+          </mat-form-field>
         </div>
 
         <div class="actions-container">
           <button
             mat-flat-button
+            [disabled]="!cadastroForm.valid"
             (click)="onSubmit()"
             color="secondary"
             class="siginup-button">

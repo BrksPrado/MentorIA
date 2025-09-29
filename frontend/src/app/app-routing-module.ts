@@ -11,11 +11,15 @@ const routes: Routes = [
      loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) 
   }
   ,
-  // Rota padrão: carrega o módulo da homepage
   {
     path: '',
+    loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) 
+  },
+  {
+    path: 'home',
     loadChildren: () => import('./homepage-module/homepage-module-module').then(m => m.HomepageModuleModule)
   }
+
 ];
 
 @NgModule({

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -17,40 +18,70 @@ export class Cadastro implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.cadastroForm = this.fb.group({
-      username: ['', Validators.required],
-
-      email: ['', [Validators.required, Validators.email]],
-
-
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      username: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30),
+        Validators.pattern(/^[a-zA-Z0-9_]+$/)
+      ]],
+      email: ['', [
+        Validators.required, 
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6)
+      
+      ]]
     });
   }
-
+  
   onSubmit(): void {
     if (this.cadastroForm.valid) {
       console.log('Formulário enviado!', this.cadastroForm.value);
 
-      // 4. Chame o método register do serviço
       this.authService.register(this.cadastroForm.value).subscribe({
         next: (response) => {
           console.log('Registro bem-sucedido!', response);
-          // Opcional: Redirecionar para a página de login após o sucesso
+    
           this.router.navigate(['/auth/login']);
+
+          this.snackBar.open('Cadastro bem-sucedido!', 'X',
+            {
+              duration: 2000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
         },
         error: (err) => {
           console.error('Erro no registro', err);
-          // Opcional: Mostrar uma mensagem de erro para o usuário
-          alert(`Erro: ${err.error}`);
+
+    
+          this.snackBar.open('Erro no registro', 'Desculpa',
+            {
+              duration: 2000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
         }
       });
 
     } else {
       console.log('Formulário inválido');
+
+      this.snackBar.open('Requisitos não atendidos: verifique se sua senha possui 6 dígitos', 'Desculpa',
+        {
+          duration: 2000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
     }
   }
 }
