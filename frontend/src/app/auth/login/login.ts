@@ -38,7 +38,9 @@ export class Login implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login bem-sucedido!', response);
-          // Opcional: Salvar o token (ex: no localStorage) e redirecionar
+
+          localStorage.setItem('token', response.token);
+
     
           this.snackBar.open('Login bem-sucedido!', 'X',
             {
