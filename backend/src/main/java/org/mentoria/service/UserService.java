@@ -78,11 +78,7 @@ public class UserService {
     }
 
 
-    public User findByUsernameOrEmail(String identifier) {
-        return userRepository.findByEmail(identifier)
-                .orElseGet(() ->
-                        userRepository.findByUsername(identifier)
-                                .orElse(null)
-                );
+    public Optional<User> findByUsernameOrEmail(String identifier) {
+        return userRepository.findByUsernameOrEmail(identifier);
     }
 }

@@ -1,2 +1,2 @@
 insert into tb_user (id, username, email, password)
-values (1, 'admin', 'admin@email.com', 'admin7');
+values (UUID(), 'admin', 'admin@email.com', 'admin7');

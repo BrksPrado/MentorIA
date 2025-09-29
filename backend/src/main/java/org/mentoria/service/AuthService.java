@@ -6,7 +6,8 @@ import org.mentoria.domain.User;
 import org.mentoria.dto.AuthResponseDTO;
 import org.mentoria.dto.LoginRequestDTO;
 import org.mentoria.dto.RegisterRequestDTO;
-import org.mentoria.repository.UserRepository;
+
+import java.util.Optional;
 
 @ApplicationScoped
 public class AuthService {
@@ -30,22 +31,22 @@ public class AuthService {
     }
 
     public AuthResponseDTO login(LoginRequestDTO loginDTO) {
-        User user = userService.findByUsernameOrEmail(loginDTO.identifier());
+        Optional<User> user = userService.findByUsernameOrEmail(loginDTO.identifier());
 
-        if (user == null) {
+        if (user.isEmpty()) {
             throw new IllegalArgumentException("Usuario nao encontrado");
         }
 
-        if(!user.password.equals(loginDTO.password())) {
+        if(!user.get().password.equals(loginDTO.password())) {
             throw new IllegalArgumentException("Senha incorreta");
         }
 
-        String token = generateToken(user);
+        String token = generateToken(user.orElse(null));
 
         return new AuthResponseDTO(
-                user.id,
-                user.username,
-                user.email,
+                user.get().id,
+                user.get().username,
+                user.get().email,
                 token,
                 "Bearer",
                 3600L
