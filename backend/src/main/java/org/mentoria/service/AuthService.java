@@ -6,14 +6,17 @@ import org.mentoria.domain.User;
 import org.mentoria.dto.AuthResponseDTO;
 import org.mentoria.dto.LoginRequestDTO;
 import org.mentoria.dto.RegisterRequestDTO;
-import org.mentoria.repository.UserRepository;
+import io.smallrye.jwt.build.Jwt;
+
+import java.time.Duration;
+import java.util.Optional;
+import java.util.Set;
 
 @ApplicationScoped
 public class AuthService {
 
     @Inject
     UserService userService;
-
 
     public AuthResponseDTO register(RegisterRequestDTO registerRequestDTO) {
         User user = userService.createUser(registerRequestDTO);
@@ -24,8 +27,7 @@ public class AuthService {
                 user.email,
                 token,
                 "Bearer",
-                3600L
-        );
+                3600L);
 
     }
 
@@ -36,7 +38,7 @@ public class AuthService {
             throw new IllegalArgumentException("Usuario nao encontrado");
         }
 
-        if(!user.get().password.equals(loginDTO.password())) {
+        if (!user.get().password.equals(loginDTO.password())) {
             throw new IllegalArgumentException("Senha incorreta");
         }
 
@@ -48,8 +50,7 @@ public class AuthService {
                 user.get().email,
                 token,
                 "Bearer",
-                3600L
-        );
+                3600L);
     }
 
     private String generateToken(User user) {
@@ -59,6 +60,5 @@ public class AuthService {
                 .expiresIn(Duration.ofHours(2))
                 .sign();
     }
-
 
 }
