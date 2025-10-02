@@ -57,19 +57,24 @@ export class Cadastro implements OnInit {
             {
               duration: 2000,
               horizontalPosition: 'right',
-              verticalPosition: 'top'
+              verticalPosition: 'bottom'
             });
         },
         error: (err) => {
           console.error('Erro no registro', err);
 
-    
-          this.snackBar.open('Erro no registro', 'Desculpa',
-            {
-              duration: 2000,
-              horizontalPosition: 'right',
-              verticalPosition: 'top'
-            });
+
+          let errorMessage = 'Ocorreu um erro no registro.';
+          if (err.status === 400 && err.error) {
+           
+            errorMessage = err.error;
+          }
+
+          this.snackBar.open(errorMessage, 'Fechar', {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom'
+          });
         }
       });
 
@@ -80,7 +85,7 @@ export class Cadastro implements OnInit {
         {
           duration: 2000,
           horizontalPosition: 'right',
-          verticalPosition: 'top'
+          verticalPosition: 'bottom'
         });
     }
   }

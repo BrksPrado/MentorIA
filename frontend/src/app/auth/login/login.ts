@@ -47,7 +47,7 @@ export class Login implements OnInit {
           this.snackBar.open('Login bem-sucedido!', 'X', {
             duration: 2000,
             horizontalPosition: 'right',
-            verticalPosition: 'top'
+            verticalPosition: 'bottom'
           });
 
           this.router.navigate([this.returnUrl]);
@@ -55,10 +55,10 @@ export class Login implements OnInit {
         error: (err) => {
           console.error('Erro no login', err);
           
-          let errorMessage = 'Erro no login. Verifique suas credenciais.';
+          let errorMessage = 'Ocorreu um erro. Tente novamente mais tarde.';
           
-          if (err.status === 400) {
-            errorMessage = 'Usuário ou senha incorretos.';
+          if (err.status === 400 && err.error) {
+            errorMessage = err.error;
           } else if (err.status === 0) {
             errorMessage = 'Erro de conexão com o servidor.';
           }
@@ -66,7 +66,7 @@ export class Login implements OnInit {
           this.snackBar.open(errorMessage, 'X', {
             duration: 5000,
             horizontalPosition: 'right',
-            verticalPosition: 'top'
+            verticalPosition: 'bottom'
           });
         }
       });
@@ -74,7 +74,7 @@ export class Login implements OnInit {
       this.snackBar.open('Por favor, preencha todos os campos corretamente.', 'X', {
         duration: 3000,
         horizontalPosition: 'right',
-        verticalPosition: 'top'
+        verticalPosition: 'bottom'
       });
     }
   }

@@ -1,6 +1,11 @@
-:root {
+/* :root{
+  --bg: #0f1724;
   --primary: #163a7a;
-}
+  --primary-2: #0c4c9a;
+  --muted: #a6b3d9;
+  --card: #132433;
+  --accent: #2ea6ff;
+} */
 
 * {
   box-sizing: border-box;
@@ -313,6 +318,7 @@ html, body {
   margin-top: 14px;
 }
 
+
 .primary {
   background: #ff9800;
   border: 0;
@@ -324,7 +330,9 @@ html, body {
 }
 
 .primary:hover {
-  background: #ff8c00;
+  background: linear-gradient(135deg, #ff9800 0%,#ed5903 100%);
+  transition: all 0.5s ease ;
+  transform: translateY(-1px);
 }
 
 .grid {
@@ -333,12 +341,22 @@ html, body {
   gap: 16px;
 }
 
+.grid {
+   animation: pulse 2.6s ease-in-out infinite;
+}
+
 .small {
   min-height: 110px;
 }
 
-.pulse {
+.pulse:hover {
   animation: pulse 2.6s ease-in-out infinite;
+  background-color: var(--primary-2) !important;
+  color: #ffffff;
+  transition: all 0.5s ease;
+  box-shadow: 0 4px 12px rgba(22, 58, 122, 0.2);
+  border: 1px solid rgba(22, 58, 122, 0.1);
+  cursor: pointer;
 }
 
 @keyframes pulse {
