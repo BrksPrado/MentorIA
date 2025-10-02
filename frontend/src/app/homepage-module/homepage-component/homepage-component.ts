@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-homepage-component',
@@ -7,8 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./homepage-component.css']
 })
 export class HomepageComponent {
-
   activeSubmenu: string | null = null;
+
+  constructor(private authService: AuthService) {}
 
   toggleSubmenu(key: string) {
     this.activeSubmenu = this.activeSubmenu === key ? null : key;
@@ -16,5 +18,9 @@ export class HomepageComponent {
 
   isSubmenuOpen(key: string) {
     return this.activeSubmenu === key;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @Path("/users")
 @ApplicationScoped
+// @RolesAllowed("user")
 public class UserController {
 
     @Inject

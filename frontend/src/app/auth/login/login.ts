@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -11,19 +11,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './login.css'
 })
 export class Login implements OnInit {
+  loginForm!: FormGroup;
+  returnUrl: string = '/home';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    public router: Router,
-
+    private router: Router,
+    private route: ActivatedRoute,
     private snackBar: MatSnackBar
   ) {}
 
-  loginForm!: FormGroup;
-
-
   ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/home']);
+      return;
+    }
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+
     this.loginForm = this.fb.group({
       identifier: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -34,43 +40,42 @@ export class Login implements OnInit {
     if (this.loginForm.valid) {
       console.log('Formulário enviado!', this.loginForm.value);
 
-    
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login bem-sucedido!', response);
 
-          localStorage.setItem('token', response.token);
+          this.snackBar.open('Login bem-sucedido!', 'X', {
+            duration: 2000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
 
-    
-          this.snackBar.open('Login bem-sucedido!', 'X',
-            {
-              duration: 2000,
-              horizontalPosition: 'right',
-              verticalPosition: 'top'
-            });
-          this.router.navigate(['/home']); // Redireciona para a homepage
+          this.router.navigate([this.returnUrl]);
         },
         error: (err) => {
           console.error('Erro no login', err);
           
-          this.snackBar.open('Erro no login. Verifique suas credenciais.', 'X',
-            {
-              duration: 3000,
-              horizontalPosition: 'right',
-              verticalPosition: 'top'
-            });
+          let errorMessage = 'Erro no login. Verifique suas credenciais.';
+          
+          if (err.status === 400) {
+            errorMessage = 'Usuário ou senha incorretos.';
+          } else if (err.status === 0) {
+            errorMessage = 'Erro de conexão com o servidor.';
+          }
+
+          this.snackBar.open(errorMessage, 'X', {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
         }
       });
     } else {
-      console.log('Formulário inválido');
-
-      this.snackBar.open('Erro no login. Verifique suas credenciais.', 'X',
-        {
-          duration: 10000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        });
+      this.snackBar.open('Por favor, preencha todos os campos corretamente.', 'X', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
     }
   }
-
 }

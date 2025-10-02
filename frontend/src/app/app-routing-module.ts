@@ -4,10 +4,6 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'botao',
-    loadChildren: () => import('./botao-teste/botao-teste-module').then(m => m.BotaoTesteModule)
-  },
-  {
      path: 'auth', 
      loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) 
   }
