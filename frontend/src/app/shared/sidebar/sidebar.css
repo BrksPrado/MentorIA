@@ -1,0 +1,239 @@
+/* :root{
+  --bg: #0f1724;
+  --primary: #163a7a;
+  --primary-2: #0c4c9a;
+  --muted: #a6b3d9;
+  --card: #132433;
+  --accent: #2ea6ff;
+} */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.sidebar-container {
+  width: 350px;  
+  height: 100vh;
+}
+
+.sidenav-content {
+  height: 100vh;
+  overflow: auto;
+}
+
+.sidebar {
+    width: 100%;
+    height: 100%; /* Alterado de 100vh para 100% */
+    background: linear-gradient(180deg, #163a7a 0%, #11407a 100%);
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border-right: 4px solid rgba(100, 100, 100, 0.5);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.brand:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.brand-icon {
+  width: 58px;
+  height: 48px;
+  border-radius: 12px;
+  background: #ffffff url('/assets/img/icone.png') center center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+.brand-text h1 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.brand-text small {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+}
+
+.brand-text {
+  flex: 1;
+  text-align: center;
+}
+
+.menu {
+  flex: 1;
+  overflow: auto;
+  padding-right: 8px;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 28px;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  color: #eaf4ff;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease,
+    margin-bottom 0.5s ease;
+  font-size: 20px;
+  font-weight: 500;
+  min-height: 60px;
+  margin-bottom: 5px;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(1px);
+}
+
+.menu-item.submenu-open {
+  margin-bottom: 130px;
+}
+.menu-item.mod1.submenu-open {
+  margin-bottom: 140px;
+}
+.menu-item.mod2.submenu-open {
+  margin-bottom: 140px;
+}
+.menu-item.mod3.submenu-open {
+  margin-bottom: 140px;
+}
+.menu-item.mod4.submenu-open {
+  margin-bottom: 72px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  color: #ffffff;
+  min-width: 32px;
+}
+
+.menu-label {
+  flex: 1;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+.chev {
+  opacity: 0.9;
+  transition: transform 0.5s ease;
+}
+
+.submenu {
+  list-style: none;
+  padding: 12px;
+  margin: 20px 0 0 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.submenu.open {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #a6b3d9;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.submenu-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+@media (max-width: 880px) {
+  .sidebar {
+    position: fixed;
+    z-index: 30;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+}
+
+.menu-item .chev {
+  transition: transform 0.22s ease;
+}
+
+.submenu.open ~ .chev {
+  transform: rotate(180deg);
+}
+
+.menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}

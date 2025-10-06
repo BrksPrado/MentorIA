@@ -4,8 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.mentoria.domain.User;
 import org.mentoria.dto.AuthResponseDTO;
-import org.mentoria.dto.LoginRequestDTO;
-import org.mentoria.dto.RegisterRequestDTO;
+import org.mentoria.dto.request.LoginRequestDTO;
+import org.mentoria.dto.request.RegisterRequestDTO;
 import io.smallrye.jwt.build.Jwt;
 
 import java.time.Duration;

@@ -4,8 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.mentoria.domain.User;
-import org.mentoria.dto.AuthResponseDTO;
-import org.mentoria.dto.RegisterRequestDTO;
+import org.mentoria.dto.request.RegisterRequestDTO;
 import org.mentoria.repository.UserRepository;
 
 import java.util.Optional;

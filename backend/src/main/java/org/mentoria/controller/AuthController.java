@@ -10,8 +10,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.mentoria.dto.AuthResponseDTO;
-import org.mentoria.dto.LoginRequestDTO;
-import org.mentoria.dto.RegisterRequestDTO;
+import org.mentoria.dto.request.LoginRequestDTO;
+import org.mentoria.dto.request.RegisterRequestDTO;
 import org.mentoria.service.AuthService;
 
 @Path("/auth")

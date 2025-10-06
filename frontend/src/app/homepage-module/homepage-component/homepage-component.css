@@ -23,7 +23,7 @@ html, body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
-.sidebar {
+/* .sidebar {
   width: 350px;
   background: linear-gradient(180deg, #163a7a 0%, #11407a 100%);
   padding: 20px 16px;
@@ -182,7 +182,7 @@ html, body {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
   transform: translateX(2px);
-}
+} */
 
 .main {
   flex: 1;

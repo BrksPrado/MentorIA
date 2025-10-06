@@ -1,4 +1,11 @@
 <div class="login-page">
+  <app-loading
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Entrando na plataforma"
+    size="large">
+  </app-loading>
+
   <main class="main-content">
     <div class="login-card">
       <div class="logo-container disable-pointer-events">
@@ -15,11 +22,18 @@
               formControlName="identifier"
               type="email"
               placeholder="seuemail@exemplo.com"
+              [disabled]="isLoading"
             />
           </mat-form-field>
           <mat-form-field appearance="outline" class="full-width-field">
             <mat-label>Senha</mat-label>
-            <input matInput formControlName="password" type="password" placeholder="Sua senha" />
+            <input
+              matInput
+              formControlName="password"
+              type="password"
+              placeholder="Sua senha"
+              [disabled]="isLoading"
+            />
           </mat-form-field>
         </div>
 
@@ -29,8 +43,9 @@
             (click)="onSubmit()"
             color="secondary"
             class="login-button"
+            [disabled]="isLoading"
           >
-            Entrar
+            {{ isLoading ? 'Entrando...' : 'Entrar' }}
           </button>
         </div>
         <div class="forgot-pass">

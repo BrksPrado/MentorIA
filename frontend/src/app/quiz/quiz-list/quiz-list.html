@@ -1,0 +1,25 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+  <div class="container">
+    <app-loading *ngIf="isLoading" [overlay]="true" message="Carregando simulados" size="large">
+    </app-loading>
+
+    <div *ngIf="!isLoading">
+      <div class="header">
+        <h1>Simulados ENEM</h1>
+        <p>Selecione um ano para começar a sua prova.</p>
+      </div>
+
+      <div class="quiz-list">
+        <p *ngIf="exams.length === 0">Nenhum simulado encontrado.</p>
+
+        <div class="quiz-card"><h2>Em breve...</h2></div>
+
+        <div *ngFor="let exam of exams" class="quiz-card" (click)="startQuiz(exam.year)">
+          <h2>{{ exam.title }}</h2>
+          <p>Clique para iniciar</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

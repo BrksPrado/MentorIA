@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class Login implements OnInit {
   loginForm!: FormGroup;
   returnUrl: string = '/home';
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,8 @@ export class Login implements OnInit {
     if (this.loginForm.valid) {
       console.log('Formulário enviado!', this.loginForm.value);
 
+      this.isLoading = true;
+
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login bem-sucedido!', response);
@@ -50,13 +53,17 @@ export class Login implements OnInit {
             verticalPosition: 'bottom'
           });
 
-          this.router.navigate([this.returnUrl]);
+          setTimeout(() => {
+            this.isLoading = false;
+            this.router.navigate([this.returnUrl]);
+          }, 500);
         },
         error: (err) => {
+          this.isLoading = false;
           console.error('Erro no login', err);
-          
+
           let errorMessage = 'Ocorreu um erro. Tente novamente mais tarde.';
-          
+
           if (err.status === 400 && err.error) {
             errorMessage = err.error;
           } else if (err.status === 0) {

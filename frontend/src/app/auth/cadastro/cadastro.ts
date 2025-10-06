@@ -14,12 +14,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class Cadastro implements OnInit {
 
   cadastroForm!: FormGroup;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-
     private snackBar: MatSnackBar
   ) {}
 
@@ -32,26 +32,26 @@ export class Cadastro implements OnInit {
         Validators.pattern(/^[a-zA-Z0-9_]+$/)
       ]],
       email: ['', [
-        Validators.required, 
+        Validators.required,
         Validators.email
       ]],
       password: ['', [
         Validators.required,
         Validators.minLength(6)
-      
+
       ]]
     });
   }
-  
+
   onSubmit(): void {
     if (this.cadastroForm.valid) {
       console.log('Formulário enviado!', this.cadastroForm.value);
 
+      this.isLoading = true;
+
       this.authService.register(this.cadastroForm.value).subscribe({
         next: (response) => {
           console.log('Registro bem-sucedido!', response);
-    
-          this.router.navigate(['/auth/login']);
 
           this.snackBar.open('Cadastro bem-sucedido!', 'X',
             {
@@ -59,14 +59,18 @@ export class Cadastro implements OnInit {
               horizontalPosition: 'right',
               verticalPosition: 'bottom'
             });
+
+          setTimeout(() => {
+            this.isLoading = false;
+            this.router.navigate(['/auth/login']);
+          }, 500);
         },
         error: (err) => {
+          this.isLoading = false;
           console.error('Erro no registro', err);
-
 
           let errorMessage = 'Ocorreu um erro no registro.';
           if (err.status === 400 && err.error) {
-           
             errorMessage = err.error;
           }
 

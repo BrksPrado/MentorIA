@@ -1,4 +1,9 @@
 package org.mentoria.dto.request;
 
-public record DisciplineDTO() {
-}
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record DisciplineDTO(
+        String label,
+        String value
+) {}
