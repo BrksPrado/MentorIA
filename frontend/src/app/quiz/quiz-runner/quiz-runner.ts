@@ -120,7 +120,7 @@ export class QuizRunner implements OnInit {
 
   // Retorna ao início
   goBackToList(): void {
-    this.router.navigate(['/quiz']);
+    this.router.navigate(['/enem']);
   }
 
   // Calcula quantas questões foram respondidas
