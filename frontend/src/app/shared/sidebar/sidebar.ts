@@ -12,7 +12,7 @@ export class Sidebar {
   activeSubmenu: string | null = null;
 
   constructor(private authService: AuthService,
-    private router: Router  
+    private router: Router
   ) {}
 
   toggleSubmenu(key: string) {
@@ -29,5 +29,9 @@ export class Sidebar {
 
   navigateToHome() {
     this.router.navigate(['/home']);
+  }
+
+  navigateToSimulado() {
+    this.router.navigate(['/enem']);
   }
 }

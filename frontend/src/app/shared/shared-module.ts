@@ -6,11 +6,13 @@ import {Loading} from './loading/loading';
 import { Sidebar } from './sidebar/sidebar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { Header } from './header/header';
 
 @NgModule({
   declarations: [
     Loading,
-    Sidebar
+    Sidebar,
+    Header
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { MatListModule } from '@angular/material/list';
   exports: [
     Loading,
     Sidebar,
-    MatSidenavModule
+    MatSidenavModule,
+    Header
   ]
 })
 export class SharedModule { }

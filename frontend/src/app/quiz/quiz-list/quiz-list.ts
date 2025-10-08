@@ -37,6 +37,6 @@ export class QuizList implements OnInit {
   }
 
   startQuiz(year: number): void {
-    this.router.navigate(['/quiz', year]);
+    this.router.navigate(['/enem', year]);
   }
 }

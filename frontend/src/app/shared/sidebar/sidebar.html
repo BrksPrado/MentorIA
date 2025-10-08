@@ -21,7 +21,7 @@
           <span class="menu-label">Simulados</span>
           <span class="chev material-icons">expand_more</span>
           <ul class="submenu" [class.open]="isSubmenuOpen('mod1')">
-            <li class="submenu-item">
+            <li class="submenu-item" (click)="navigateToSimulado()">
               <span class="material-icons md-18">play_circle</span> Iniciar simulado
             </li>
             <li class="submenu-item">
