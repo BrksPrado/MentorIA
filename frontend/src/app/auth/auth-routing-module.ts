@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Cadastro } from './cadastro/cadastro';
+import { Redefinir } from './forgot-password/redefinir';
 
 const routes: Routes = [
   {
@@ -12,6 +13,9 @@ const routes: Routes = [
   },
   {
     path: 'cadastrar', component: Cadastro
+  },
+  {
+    path: 'redefinir', component: Redefinir
   }
   ];
 

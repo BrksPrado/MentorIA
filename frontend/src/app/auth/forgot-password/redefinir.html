@@ -1,0 +1,51 @@
+<div class="redefinir-page">
+  <app-loading
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Enviando email de redefinição"
+    size="large">
+  </app-loading>
+
+  <main class="main-content">
+    <div class="redefinir-card">
+      <div class="logo-container disable-pointer-events">
+        <img class="logo" src="assets/img/logo.png" alt="Logo" width="220px" />
+      </div>
+      <h2 class="disable-pointer-events">Redefinir Senha</h2>
+      <p class="description disable-pointer-events">
+        Digite seu email e enviaremos um link para redefinir sua senha.
+      </p>
+
+      <form [formGroup]="redefinirForm" class="redefinir-form">
+        <div class="form-fields">
+          <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              placeholder="seuemail@exemplo.com"
+              [disabled]="isLoading"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="actions-container">
+          <button
+            mat-flat-button
+            (click)="onSubmit()"
+            color="secondary"
+            class="redefinir-button"
+            [disabled]="isLoading"
+          >
+            {{ isLoading ? 'Enviando...' : 'Enviar Email' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="back-container">
+        <span>Lembrou da senha? <a (click)="voltarParaLogin()" class="back-link">Voltar ao login</a></span>
+      </div>
+    </div>
+  </main>
+</div>

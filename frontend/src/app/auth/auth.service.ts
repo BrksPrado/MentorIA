@@ -51,6 +51,10 @@ export class AuthService {
     );
   }
 
+  forgotPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, data);
+  }
+
   private setToken(token: string, expiresIn: number): void {
     
     localStorage.setItem(this.tokenKey, token);
