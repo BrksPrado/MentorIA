@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.mentoria.dto.QuestionResponse;
 import org.mentoria.service.QuizService;
 
 @Path("/quizzes")
@@ -40,9 +41,14 @@ public class QuizController {
             @QueryParam("area") String area) {
 
         if (year == 0 || area == null || area.isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Os parâmetros 'year' e 'area' são obrigatórios.").build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Os parâmetros 'year' e 'area' são obrigatórios.")
+                    .build();
         }
+
         var questions = quizService.getQuizByArea(year, area);
-        return Response.ok(questions).build();
+
+        var response = new QuestionResponse(questions);
+        return Response.ok(response).build();
     }
 }

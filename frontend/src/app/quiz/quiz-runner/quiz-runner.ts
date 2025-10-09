@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Question } from '../models/quiz.models';
+import {Question, QuestionResponse} from '../models/quiz.models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuizService } from '../services/quiz.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ export class QuizRunner implements OnInit {
   quizQuestions: Question[] = [];
   currentQuestionIndex: number = 0;
   year: number = 0;
+  area: string | null = null;
   isLoading: boolean = true;
   errorMessage: string | null = null;
 
@@ -34,23 +35,46 @@ export class QuizRunner implements OnInit {
 
   ngOnInit(): void {
     const yearParam = this.route.snapshot.paramMap.get('year');
+    const areaParam = this.route.snapshot.paramMap.get('area');
+
     if (yearParam) {
       this.year = +yearParam;
 
-      this.quizService.getFullExamPage(this.year, 50, 1).subscribe({
-        next: (response: Question[]) => {
-          console.log('SUCESSO: Resposta recebida no componente!', response);
-          if (response && Array.isArray(response)) {
-            this.quizQuestions = response;
+      // Se tem área, busca apenas dessa área
+      if (areaParam) {
+        this.area = areaParam;
+
+        this.quizService.getQuestionsByArea(this.year, this.area).subscribe({
+          next: (response: QuestionResponse) => {
+            console.log('SUCESSO: Questões por área!', response);
+            if (response && response.questions && Array.isArray(response.questions)) {
+              this.quizQuestions = response.questions;
+            }
+            this.isLoading = false;
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error('ERRO: Falha ao buscar questões por área!', err);
+            this.errorMessage = `Erro ${err.status}: Não foi possível carregar as questões.`;
+            this.isLoading = false;
           }
-          this.isLoading = false;
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('ERRO: Falha ao buscar o simulado!', err);
-          this.errorMessage = `Erro ${err.status}: Não foi possível carregar o simulado.`;
-          this.isLoading = false;
-        }
-      });
+        });
+      } else {
+        // Se não tem área, busca prova completa
+        this.quizService.getFullExam(this.year).subscribe({
+          next: (response: Question[]) => {
+            console.log('SUCESSO: Prova completa!', response);
+            if (response && Array.isArray(response)) {
+              this.quizQuestions = response;
+            }
+            this.isLoading = false;
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error('ERRO: Falha ao buscar o simulado!', err);
+            this.errorMessage = `Erro ${err.status}: Não foi possível carregar o simulado.`;
+            this.isLoading = false;
+          }
+        });
+      }
     }
   }
 

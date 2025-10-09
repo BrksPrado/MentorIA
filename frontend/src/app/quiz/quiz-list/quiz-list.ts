@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Exam } from '../models/quiz.models';
 import { Router } from '@angular/router';
 import { QuizService } from '../services/quiz.service';
+import {SelectedYearService} from '../services/selectedYear.service';
 
 @Component({
   selector: 'app-quiz-list',
@@ -13,9 +14,12 @@ export class QuizList implements OnInit {
 
   exams: Exam[] = [];
   isLoading: boolean = true;
+  selectedYear: number | null = null;
+  selectedArea: string | null = null;
 
   constructor(
     private quizService: QuizService,
+    private selectYearService: SelectedYearService,
     private router: Router
   ) { }
 
@@ -36,7 +40,30 @@ export class QuizList implements OnInit {
     });
   }
 
-  startQuiz(year: number): void {
-    this.router.navigate(['/enem', year]);
+  selectYear(year: number): void {
+    this.selectedYear = year;
+  }
+
+  selectArea(area: string): void {
+    this.selectedArea = area;
+  }
+
+  startFullQuiz(): void {
+    if (this.selectedYear) {
+      this.selectYearService.setYear(this.selectedYear);
+      this.router.navigate(['/enem', this.selectedYear]);
+    } else {
+      // Implementar um alerta aqui
+    }
+  }
+
+  startAreaQuiz(area: string): void {
+    if (this.selectedYear) {
+      this.selectYearService.setYear(this.selectedYear);
+      this.selectYearService.setArea(area);
+      this.router.navigate(['/enem', this.selectedYear, area]);
+    } else {
+      // Implementar um alerta aqui
+    }
   }
 }

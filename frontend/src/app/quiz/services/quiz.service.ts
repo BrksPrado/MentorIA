@@ -16,22 +16,17 @@ export class QuizService {
     return this.http.get<Exam[]>(`${this.apiUrl}/exams`);
   }
 
-  // Atualizado para retornar Question[] diretamente
-  getFullExamPage(year: number, limit: number, offset: number): Observable<Question[]> {
-    const params = new HttpParams()
-      .set('year', year.toString())
-      .set('limit', limit.toString())
-      .set('offset', offset.toString());
-
+  // Busca prova completa de um ano
+  getFullExam(year: number): Observable<Question[]> {
+    const params = new HttpParams().set('year', year.toString());
     return this.http.get<Question[]>(`${this.apiUrl}/full-exam-by-year`, { params });
   }
 
-  getQuestionsByAreaPage(year: number, area: string, limit: number, page: number): Observable<QuestionResponse> {
+  // Busca questões filtradas por área
+  getQuestionsByArea(year: number, area: string): Observable<QuestionResponse> {
     const params = new HttpParams()
       .set('year', year.toString())
-      .set('area', area)
-      .set('limit', limit.toString())
-      .set('page', page.toString());
+      .set('area', area);
 
     return this.http.get<QuestionResponse>(`${this.apiUrl}/questions-by-area`, { params });
   }

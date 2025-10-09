@@ -54,6 +54,10 @@ html, body {
   color: #333;
 }
 
+.selected-year-section {
+  display: flex;
+}
+
 
 .error-message {
   color: red;

@@ -9,6 +9,10 @@ const routes: Routes = [
     component: QuizList
   },
   {
+    path: ':year/:area',
+    component: QuizRunner
+  },
+  {
     path: ':year',
     component: QuizRunner
   }

@@ -37,7 +37,7 @@
   border: 2px solid #e0e0e0;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Banner de feedback */
@@ -69,14 +69,13 @@
   color: #333;
 }
 
-
 .question-context img {
   max-width: 100%;
   height: auto;
   display: block;
   margin: 1.5rem auto;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border: 1px solid #ddd;
 }
 
@@ -85,6 +84,36 @@
   margin-bottom: 1.5rem;
   color: #333;
   font-size: 1.05rem;
+}
+
+.alternative-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem 0;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.alternative:hover .alternative-image {
+  border-color: #999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.alternative.selected .alternative-image {
+  border-color: #2196f3;
+}
+
+.alternative.correct .alternative-image {
+  border-color: #28a745;
+  border-width: 3px;
+}
+
+.alternative.incorrect .alternative-image {
+  border-color: #dc3545;
+  border-width: 3px;
 }
 
 .alternatives-list {
@@ -120,14 +149,14 @@
   cursor: not-allowed;
 }
 
-.alternative input[type="radio"] {
+.alternative input[type='radio'] {
   margin-top: 0.3rem;
   cursor: pointer;
   width: 18px;
   height: 18px;
 }
 
-.alternative.disabled input[type="radio"] {
+.alternative.disabled input[type='radio'] {
   cursor: not-allowed;
 }
 
@@ -136,12 +165,18 @@
   flex: 1;
   line-height: 1.6;
   font-size: 1rem;
+
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alternative label strong {
+  margin-right: 0.5rem;
 }
 
 .alternative.disabled label {
   cursor: not-allowed;
 }
-
 
 .alternative.correct {
   background-color: #d4edda;
@@ -184,7 +219,7 @@
   font-size: 1rem;
   font-weight: 600;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary {
@@ -193,11 +228,10 @@
   flex: 1;
 }
 
-
 .btn-primary:hover:not(:disabled) {
   background-color: #1976d2;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
@@ -209,7 +243,7 @@
 .btn-secondary:hover:not(:disabled) {
   background-color: #616161;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-home {
@@ -221,7 +255,7 @@
 .btn-home:hover {
   background-color: #f57c00;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .quiz-navigation button:disabled {
@@ -231,7 +265,6 @@
   transform: none;
 }
 
-
 .final-summary {
   margin-top: 3rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -239,7 +272,7 @@
   border-radius: 16px;
   padding: 2.5rem;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   animation: slideIn 0.5s ease-out;
 }
 

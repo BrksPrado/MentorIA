@@ -6,5 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record EnemAlternativeDTO(
         String letter,
         String text,
+        String file,
         boolean isCorrect
 ) {}

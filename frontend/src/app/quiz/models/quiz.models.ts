@@ -2,6 +2,7 @@
 export interface Alternative {
   letter: string;
   text: string;
+  file?: string;
   isCorrect: boolean;
 }
 

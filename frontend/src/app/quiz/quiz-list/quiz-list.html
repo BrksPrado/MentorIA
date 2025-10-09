@@ -14,13 +14,42 @@
       <div class="quiz-list">
         <p *ngIf="exams.length === 0">Nenhum simulado encontrado.</p>
 
+
+        <div *ngIf="selectedYear !== null" class="selected-year-section">
+          <h2>Simulados disponíveis para o ano {{selectedYear}}</h2>
+          <div class="quiz-card" (click)="startFullQuiz()">
+            <p>Enem {{selectedYear}}</p>
+            <button>Iniciar Simulado</button>
+          </div>
+          <div class="quiz-card" (click)="startAreaQuiz('linguagens')">
+            <p>Enem {{selectedYear}} - Linguagens</p>
+            <button>Iniciar Simulado</button>
+          </div>
+          <div class="quiz-card" (click)="startAreaQuiz('matematica')">
+            <p>Enem {{selectedYear}} - Matemática</p>
+            <button>Iniciar Simulado</button>
+          </div>
+          <div class="quiz-card" (click)="startAreaQuiz('ciencias-natureza')">
+            <p>Enem {{selectedYear}} - Ciências da Natureza</p>
+            <button>Iniciar Simulado</button>
+          </div>
+          <div class="quiz-card" (click)="startAreaQuiz('ciencias-humanas')">
+            <p>Enem {{selectedYear}} - Ciências Humanas</p>
+            <button>Iniciar Simulado</button>
+          </div>
+        </div>
+
         <div class="quiz-card"><h2>Em breve...</h2></div>
 
-        <div *ngFor="let exam of exams" class="quiz-card" (click)="startQuiz(exam.year)">
+        <div *ngFor="let exam of exams" class="quiz-card" (click)="selectYear(exam.year)">
           <h2>{{ exam.title }}</h2>
-          <p>Clique para iniciar</p>
+          <p>Clique para escolher o conteúdo</p>
         </div>
+
       </div>
+
+
+
     </div>
   </div>
 </div>

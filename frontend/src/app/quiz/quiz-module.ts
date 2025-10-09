@@ -10,12 +10,12 @@ import {SharedModule} from '../shared/shared-module';
 @NgModule({
   declarations: [
     QuizList,
-    QuizRunner
+    QuizRunner,
   ],
   imports: [
     CommonModule,
     QuizRoutingModule,
-    
+
     SharedModule
   ]
 })
