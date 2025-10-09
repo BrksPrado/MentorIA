@@ -12,11 +12,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; color: #072
   --muted: #a6b3d9;
   --card: #132433;
   --accent: #2ea6ff;
+  --negative: #ff4d4d;
 }
 
 .disable-pointer-events {
     pointer-events: none !important;
-    user-select: none !important; 
+    user-select: none !important;
   }
 
 

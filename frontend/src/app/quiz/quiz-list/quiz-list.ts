@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Exam } from '../models/quiz.models';
 import { Router } from '@angular/router';
 import { QuizService } from '../services/quiz.service';
-import {SelectedYearService} from '../services/selectedYear.service';
+import { SelectedYearService } from '../services/selectedYear.service';
 
 @Component({
   selector: 'app-quiz-list',
@@ -24,10 +24,8 @@ export class QuizList implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Inicia o loading como true
     this.isLoading = true;
 
-    // Subscribe ao Observable para controlar o loading
     this.quizService.getAvailableExams().subscribe({
       next: (exams) => {
         this.exams = exams;
@@ -42,6 +40,18 @@ export class QuizList implements OnInit {
 
   selectYear(year: number): void {
     this.selectedYear = year;
+    // Scroll suave para o carrossel
+    setTimeout(() => {
+      const carouselSection = document.querySelector('.carousel-section');
+      if (carouselSection) {
+        carouselSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
+  clearSelection(): void {
+    this.selectedYear = null;
+    this.selectedArea = null;
   }
 
   selectArea(area: string): void {
@@ -52,8 +62,6 @@ export class QuizList implements OnInit {
     if (this.selectedYear) {
       this.selectYearService.setYear(this.selectedYear);
       this.router.navigate(['/enem', this.selectedYear]);
-    } else {
-      // Implementar um alerta aqui
     }
   }
 
@@ -62,8 +70,6 @@ export class QuizList implements OnInit {
       this.selectYearService.setYear(this.selectedYear);
       this.selectYearService.setArea(area);
       this.router.navigate(['/enem', this.selectedYear, area]);
-    } else {
-      // Implementar um alerta aqui
     }
   }
 }

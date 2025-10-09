@@ -29,6 +29,7 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2cc 100%);
 }
 
 .content {

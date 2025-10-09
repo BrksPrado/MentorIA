@@ -17,9 +17,11 @@ body {
 }
 
 .sidebar-container {
-  width: 350px;  
+  width: 350px;
   height: 100vh;
 }
+
+
 
 .sidenav-content {
   height: 100vh;
