@@ -1,9 +1,14 @@
-<mat-sidenav-container class="sidebar-container">
+<mat-sidenav-container class="sidebar-container" [class.collapsed]="isCollapsed">
   <mat-sidenav class="sidebar" mode="side" opened>
+    <!-- Toggle Button -->
+    <button class="toggle-btn" (click)="toggleSidebar()" title="Expandir/Recolher">
+      <span class="material-icons">{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</span>
+    </button>
+
     <div class="sidebar-top" (click)="navigateToHome()">
       <div class="brand">
         <div class="brand-icon"></div>
-        <div class="brand-text">
+        <div class="brand-text" *ngIf="!isCollapsed">
           <h1>MentorIA</h1>
           <small>Seu estudo com IA</small>
         </div>
@@ -13,13 +18,15 @@
     <mat-nav-list class="menu">
       <ul>
         <li
-          (click)="toggleSubmenu('mod1')"
-          class="menu-item mod1"
+          class="menu-item-wrapper mod1"
           [class.submenu-open]="isSubmenuOpen('mod1')"
+          data-tooltip="Simulados"
         >
-          <span class="material-icons menu-icon">dashboard</span>
-          <span class="menu-label">Simulados</span>
-          <span class="chev material-icons">expand_more</span>
+          <div class="menu-item" (click)="toggleSubmenu('mod1')">
+            <span class="material-icons menu-icon">dashboard</span>
+            <span class="menu-label" *ngIf="!isCollapsed">Simulados</span>
+            <span class="chev material-icons" *ngIf="!isCollapsed">expand_more</span>
+          </div>
           <ul class="submenu" [class.open]="isSubmenuOpen('mod1')">
             <li class="submenu-item" (click)="navigateToSimulado()">
               <span class="material-icons md-18">play_circle</span> Iniciar simulado
@@ -34,13 +41,15 @@
         </li>
 
         <li
-          (click)="toggleSubmenu('mod2')"
-          class="menu-item mod2"
+          class="menu-item-wrapper mod2"
           [class.submenu-open]="isSubmenuOpen('mod2')"
+          data-tooltip="Aulas"
         >
-          <span class="material-icons menu-icon">school</span>
-          <span class="menu-label">Aulas</span>
-          <span class="chev material-icons">expand_more</span>
+          <div class="menu-item" (click)="toggleSubmenu('mod2')">
+            <span class="material-icons menu-icon">school</span>
+            <span class="menu-label" *ngIf="!isCollapsed">Aulas</span>
+            <span class="chev material-icons" *ngIf="!isCollapsed">expand_more</span>
+          </div>
           <ul class="submenu" [class.open]="isSubmenuOpen('mod2')">
             <li class="submenu-item">
               <span class="material-icons md-18">video_library</span> Vídeos
@@ -53,13 +62,15 @@
         </li>
 
         <li
-          (click)="toggleSubmenu('mod3')"
-          class="menu-item mod3"
+          class="menu-item-wrapper mod3"
           [class.submenu-open]="isSubmenuOpen('mod3')"
+          data-tooltip="Eventos"
         >
-          <span class="material-icons menu-icon">event</span>
-          <span class="menu-label">Eventos</span>
-          <span class="chev material-icons">expand_more</span>
+          <div class="menu-item" (click)="toggleSubmenu('mod3')">
+            <span class="material-icons menu-icon">event</span>
+            <span class="menu-label" *ngIf="!isCollapsed">Eventos</span>
+            <span class="chev material-icons" *ngIf="!isCollapsed">expand_more</span>
+          </div>
           <ul class="submenu" [class.open]="isSubmenuOpen('mod3')">
             <li class="submenu-item">
               <span class="material-icons md-18">calendar_today</span> Data de Vestibulares
@@ -70,20 +81,25 @@
         </li>
 
         <li
-          (click)="toggleSubmenu('mod4')"
-          class="menu-item mod4"
+          class="menu-item-wrapper mod4"
           [class.submenu-open]="isSubmenuOpen('mod4')"
+          data-tooltip="Configurações"
         >
-          <span class="material-icons menu-icon">settings</span>
-          <span class="menu-label">Configurações</span>
-          <span class="chev material-icons">expand_more</span>
+          <div class="menu-item" (click)="toggleSubmenu('mod4')">
+            <span class="material-icons menu-icon">settings</span>
+            <span class="menu-label" *ngIf="!isCollapsed">Configurações</span>
+            <span class="chev material-icons" *ngIf="!isCollapsed">expand_more</span>
+          </div>
           <ul class="submenu" [class.open]="isSubmenuOpen('mod4')">
             <li class="submenu-item"><span class="material-icons md-18">repeat</span> XPTO</li>
           </ul>
         </li>
-        <li (click)="logout()" class="menu-item logout-item">
-          <span class="material-icons menu-icon">logout</span>
-          <span class="menu-label">Sair</span>
+
+        <li class="menu-item-wrapper logout-item" data-tooltip="Sair">
+          <div class="menu-item" (click)="logout()">
+            <span class="material-icons menu-icon">logout</span>
+            <span class="menu-label" *ngIf="!isCollapsed">Sair</span>
+          </div>
         </li>
       </ul>
     </mat-nav-list>
