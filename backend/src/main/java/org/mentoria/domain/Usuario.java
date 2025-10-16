@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_user")
-public class User extends PanacheEntityBase {
+@Table(name = "tb_usuario")
+public class Usuario extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

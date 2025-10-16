@@ -3,7 +3,7 @@ package org.mentoria.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.mentoria.domain.User;
+import org.mentoria.domain.Usuario;
 import org.mentoria.dto.request.RegisterRequestDTO;
 import org.mentoria.repository.UserRepository;
 
@@ -16,13 +16,13 @@ public class UserService {
     @Inject
     UserRepository userRepository;
 
-    public User findByUserId(UUID userId) {
+    public Usuario findByUserId(UUID userId) {
         return userRepository.findByUserId(userId);
     }
 
 
     @Transactional
-    public User createUser(RegisterRequestDTO registerDTO) {
+    public Usuario createUser(RegisterRequestDTO registerDTO) {
         userRepository.findByEmail(registerDTO.email())
                 .ifPresent(u -> {
                     throw new IllegalArgumentException("Email ja cadastrado");
@@ -32,22 +32,22 @@ public class UserService {
                     throw new IllegalArgumentException("Username ja cadastrado");
                 });
 
-        User user = new User();
-        user.email = registerDTO.email();
-        user.username = registerDTO.username();
-        user.password = registerDTO.password();
+        Usuario usuario = new Usuario();
+        usuario.email = registerDTO.email();
+        usuario.username = registerDTO.username();
+        usuario.password = registerDTO.password();
 
-        userRepository.persist(user);
-        return user;
+        userRepository.persist(usuario);
+        return usuario;
     }
 
 
     @Transactional
-    public User updateUser(UUID userId, User user) {
-        User findedUser = findByUserId(userId);
+    public Usuario updateUser(UUID userId, Usuario usuario) {
+        Usuario findedUsuario = findByUserId(userId);
 
-        if (!findedUser.email.equals(user.email)) {
-            userRepository.findByEmail(user.email)
+        if (!findedUsuario.email.equals(usuario.email)) {
+            userRepository.findByEmail(usuario.email)
                     .ifPresent(u -> {
                         if (!u.id.equals(userId)) {
                             throw new IllegalArgumentException("Email ja esta em uso");
@@ -55,8 +55,8 @@ public class UserService {
                     });
         }
 
-        if (!findedUser.username.equals(user.username)) {
-            userRepository.findByUsername(user.username)
+        if (!findedUsuario.username.equals(usuario.username)) {
+            userRepository.findByUsername(usuario.username)
                     .ifPresent(u -> {
                         if (!u.id.equals(userId)) {
                             throw new IllegalArgumentException("Username ja esta em uso");
@@ -64,11 +64,11 @@ public class UserService {
                     });
         }
 
-        findedUser.username = user.username;
-        findedUser.email = user.email;
+        findedUsuario.username = usuario.username;
+        findedUsuario.email = usuario.email;
 
-        userRepository.persist(findedUser);
-        return findedUser;
+        userRepository.persist(findedUsuario);
+        return findedUsuario;
     }
 
     @Transactional
@@ -77,7 +77,7 @@ public class UserService {
     }
 
 
-    public Optional<User> findByUsernameOrEmail(String identifier) {
+    public Optional<Usuario> findByUsernameOrEmail(String identifier) {
         return userRepository.findByUsernameOrEmail(identifier);
     }
 }

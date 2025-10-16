@@ -2,7 +2,7 @@ package org.mentoria.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.mentoria.domain.User;
+import org.mentoria.domain.Usuario;
 import org.mentoria.dto.AuthResponseDTO;
 import org.mentoria.dto.request.LoginRequestDTO;
 import org.mentoria.dto.request.RegisterRequestDTO;
@@ -19,12 +19,12 @@ public class AuthService {
     UserService userService;
 
     public AuthResponseDTO register(RegisterRequestDTO registerRequestDTO) {
-        User user = userService.createUser(registerRequestDTO);
-        String token = generateToken(user);
+        Usuario usuario = userService.createUser(registerRequestDTO);
+        String token = generateToken(usuario);
         return new AuthResponseDTO(
-                user.id,
-                user.username,
-                user.email,
+                usuario.id,
+                usuario.username,
+                usuario.email,
                 token,
                 "Bearer",
                 3600L);
@@ -32,7 +32,7 @@ public class AuthService {
     }
 
     public AuthResponseDTO login(LoginRequestDTO loginDTO) {
-        Optional<User> user = userService.findByUsernameOrEmail(loginDTO.identifier());
+        Optional<Usuario> user = userService.findByUsernameOrEmail(loginDTO.identifier());
 
         if (user.isEmpty()) {
             throw new IllegalArgumentException("Usuario nao encontrado");
@@ -53,10 +53,10 @@ public class AuthService {
                 3600L);
     }
 
-    private String generateToken(User user) {
+    private String generateToken(Usuario usuario) {
         return Jwt.issuer("mentoria")
-                .upn(user.email)
-                .groups(Set.of("user")) // ou "admin"
+                .upn(usuario.email)
+                .groups(Set.of("usuario")) // ou "admin"
                 .expiresIn(Duration.ofHours(2))
                 .sign();
     }

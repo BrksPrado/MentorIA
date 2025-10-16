@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-.sidebar-container.collapsed {
+.sidebar-container.collapsed{
   width: 80px;
 }
 
@@ -47,6 +47,7 @@ body {
   position: relative;
   transition: all 0.3s ease;
   overflow: hidden;
+  border-radius: 0px;
 }
 
 .toggle-btn {

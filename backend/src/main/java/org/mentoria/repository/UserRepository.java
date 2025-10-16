@@ -2,30 +2,30 @@ package org.mentoria.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.mentoria.domain.Usuario;
 import org.mentoria.exceptions.UserNotFoundException;
-import org.mentoria.domain.User;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepository<User> {
+public class UserRepository implements PanacheRepository<Usuario> {
 
-    public User findByUserId(UUID userId) {
-        return (User) User.findByIdOptional(userId)
+    public Usuario findByUserId(UUID userId) {
+        return (Usuario) Usuario.findByIdOptional(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public Optional<User> findByEmail(String email) {
+    public Optional<Usuario> findByEmail(String email) {
         return find("email", email).firstResultOptional();
     }
 
 
-    public Optional<User> findByUsername(String username) {
+    public Optional<Usuario> findByUsername(String username) {
         return find("username", username).firstResultOptional();
     }
 
-    public Optional<User> findByUsernameOrEmail(String identifier) {
+    public Optional<Usuario> findByUsernameOrEmail(String identifier) {
         return find("username = ?1 OR email = ?1", identifier).firstResultOptional();
     }
 }

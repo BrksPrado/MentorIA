@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.mentoria.domain.User;
+import org.mentoria.domain.Usuario;
 import org.mentoria.service.UserService;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class UserController {
     @GET
     @Path("/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("userId") UUID userId) {
+    public Usuario getUser(@PathParam("userId") UUID userId) {
         return userService.findByUserId(userId);
     }
 
@@ -29,8 +29,8 @@ public class UserController {
     @Path("/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public User updateUser(@PathParam("userId") UUID userId, User user) {
-        return userService.updateUser(userId, user);
+    public Usuario updateUser(@PathParam("userId") UUID userId, Usuario usuario) {
+        return userService.updateUser(userId, usuario);
     }
 
     @DELETE
