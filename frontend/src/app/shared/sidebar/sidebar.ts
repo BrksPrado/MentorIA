@@ -10,28 +10,48 @@ import { Router } from '@angular/router';
 })
 export class Sidebar {
   activeSubmenu: string | null = null;
+  isCollapsed: boolean = false;
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    // Carrega o estado salvo do localStorage
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    if (savedState !== null) {
+      this.isCollapsed = savedState === 'true';
+    }
+  }
 
-  toggleSubmenu(key: string) {
+  toggleSidebar(): void {
+    this.isCollapsed = !this.isCollapsed;
+
+    // Salva o estado no localStorage
+    localStorage.setItem('sidebarCollapsed', this.isCollapsed.toString());
+
+    // Fecha todos os submenus ao recolher
+    if (this.isCollapsed) {
+      this.activeSubmenu = null;
+    }
+  }
+
+  toggleSubmenu(key: string): void {
     this.activeSubmenu = this.activeSubmenu === key ? null : key;
   }
 
-  isSubmenuOpen(key: string) {
+  isSubmenuOpen(key: string): boolean {
     return this.activeSubmenu === key;
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 
-  navigateToHome() {
+  navigateToHome(): void {
     this.router.navigate(['/home']);
   }
 
-  navigateToSimulado() {
+  navigateToSimulado(): void {
     this.router.navigate(['/enem']);
   }
 }
