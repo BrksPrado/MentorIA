@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Cadastro } from './cadastro/cadastro';
-import { Redefinir } from './forgot-password/redefinir';
+import { Redefinir } from './redefinir/redefinir';
 
 const routes: Routes = [
   {
