@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_prova")
 public class Prova extends PanacheEntityBase {
 
     @Id
@@ -23,3 +25,4 @@ public class Prova extends PanacheEntityBase {
 
 
 }
+
