@@ -12,7 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Cadastro } from './cadastro/cadastro';
 import { Redefinir } from './redefinir/redefinir';
-import { ForgotPassword } from './redefinir/forgot-password';
 import {SharedModule} from '../shared/shared-module';
 
 
@@ -21,8 +20,7 @@ import {SharedModule} from '../shared/shared-module';
     Auth,
     Login,
     Cadastro,
-    Redefinir,
-    ForgotPassword
+    Redefinir
   ],
   imports: [
     CommonModule,
