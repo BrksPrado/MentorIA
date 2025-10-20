@@ -33,14 +33,16 @@ public class MateriaService {
     public Materia createMateria(MateriaDTO materiaDTO) {
         materiaRepository.findByNome(materiaDTO.nome())
                 .ifPresent(m -> {
-                    throw new IllegalArgumentException("Matéria já cadastrada");
+                    throw new IllegalArgumentException("Matéria com este nome já existe");
                 });
+
         Materia materia = new Materia();
         materia.nome = materiaDTO.nome();
+        materia.identificador = materiaDTO.identificador();
         materia.persist();
 
         return materia;
-        }
+    }
 
     @Transactional
     public Materia updateMateria(MateriaDTO materiaDTO) {
@@ -50,17 +52,17 @@ public class MateriaService {
             materiaRepository.findByNome(materiaDTO.nome())
                     .ifPresent(m -> {
                         if (!m.id.equals(materiaDTO.id())) {
-                            throw new IllegalArgumentException("Matéria já está em uso");
+                            throw new IllegalArgumentException("Matéria com este nome já está em uso");
                         }
                     });
         }
 
         findedMateria.nome = materiaDTO.nome();
         findedMateria.identificador = materiaDTO.identificador();
-        materiaRepository.persist(findedMateria);
+        findedMateria.persist();
+
         return findedMateria;
     }
-
 
     @Transactional
     public void deleteMateria(String nome) {
@@ -71,10 +73,10 @@ public class MateriaService {
             throw new IllegalArgumentException("Matéria não encontrada");
         }
     }
+
+    @Transactional
+    public void deleteMateriaById(UUID id) {
+        Materia materia = findById(id);
+        materiaRepository.delete(materia);
     }
-
-
-
-
-
-
+}

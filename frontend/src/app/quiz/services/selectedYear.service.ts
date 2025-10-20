@@ -15,7 +15,7 @@ export class SelectedYearService {
   getYear(): number | null {
     return this.selectedYear;
   }
-  getArea(): string | null {
+   getArea(): string | null {
     return this.selectedArea;
   }
 }
