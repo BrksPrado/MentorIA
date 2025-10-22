@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "materia")
+@Table(name = "tb_materia")
 public class Materia extends PanacheEntityBase {
 
     @Id
