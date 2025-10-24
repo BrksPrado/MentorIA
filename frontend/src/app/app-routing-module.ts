@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'enem',
     loadChildren: () => import('./quiz/quiz-module').then(m => m.QuizModule)
+  },
+  {
+    path: 'generativa',
+    loadChildren: () => import('./generativa/generativa-module').then(m => m.GenerativaModule)
   }
 ];
 

@@ -4,11 +4,7 @@
   <div class="container">
     <app-header></app-header>
 
-    <app-loading
-      *ngIf="isLoading"
-      [overlay]="true"
-      message="Carregando simulados"
-      size="large">
+    <app-loading *ngIf="isLoading" [overlay]="true" message="Carregando simulados" size="large">
     </app-loading>
 
     <div *ngIf="!isLoading">
@@ -89,10 +85,7 @@
           </div>
 
 
-          <div
-            *ngFor="let exam of exams"
-            class="quiz-card"
-            (click)="selectYear(exam.year)"
+          <div *ngFor="let exam of exams" class="quiz-card" (click)="selectYear(exam.year)"
             [class.selected]="selectedYear === exam.year">
             <span class="quiz-card-icon"></span>
             <h2>{{ exam.title }}</h2>

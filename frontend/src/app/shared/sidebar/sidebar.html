@@ -17,11 +17,7 @@
 
     <mat-nav-list class="menu">
       <ul>
-        <li
-          class="menu-item-wrapper mod1"
-          [class.submenu-open]="isSubmenuOpen('mod1')"
-          data-tooltip="Simulados"
-        >
+        <li class="menu-item-wrapper mod1" [class.submenu-open]="isSubmenuOpen('mod1')" data-tooltip="Simulados">
           <div class="menu-item" (click)="toggleSubmenu('mod1')">
             <span class="material-icons menu-icon">dashboard</span>
             <span class="menu-label" *ngIf="!isCollapsed">Simulados</span>
@@ -31,7 +27,7 @@
             <li class="submenu-item" (click)="navigateToSimulado()">
               <span class="material-icons md-18">play_circle</span> Simulados Enem
             </li>
-            <li class="submenu-item" (click)="navigateToSimulado()">
+            <li class="submenu-item" (click)="navigateToGenerative()">
               <span class="material-icons md-18">play_circle</span> Questões Generativas
             </li>
             <li class="submenu-item">
@@ -43,11 +39,7 @@
           </ul>
         </li>
 
-        <li
-          class="menu-item-wrapper mod2"
-          [class.submenu-open]="isSubmenuOpen('mod2')"
-          data-tooltip="Aulas"
-        >
+        <li class="menu-item-wrapper mod2" [class.submenu-open]="isSubmenuOpen('mod2')" data-tooltip="Aulas">
           <div class="menu-item" (click)="toggleSubmenu('mod2')">
             <span class="material-icons menu-icon">school</span>
             <span class="menu-label" *ngIf="!isCollapsed">Aulas</span>
@@ -64,11 +56,7 @@
           </ul>
         </li>
 
-        <li
-          class="menu-item-wrapper mod3"
-          [class.submenu-open]="isSubmenuOpen('mod3')"
-          data-tooltip="Eventos"
-        >
+        <li class="menu-item-wrapper mod3" [class.submenu-open]="isSubmenuOpen('mod3')" data-tooltip="Eventos">
           <div class="menu-item" (click)="toggleSubmenu('mod3')">
             <span class="material-icons menu-icon">event</span>
             <span class="menu-label" *ngIf="!isCollapsed">Eventos</span>
@@ -83,11 +71,7 @@
           </ul>
         </li>
 
-        <li
-          class="menu-item-wrapper mod4"
-          [class.submenu-open]="isSubmenuOpen('mod4')"
-          data-tooltip="Configurações"
-        >
+        <li class="menu-item-wrapper mod4" [class.submenu-open]="isSubmenuOpen('mod4')" data-tooltip="Configurações">
           <div class="menu-item" (click)="toggleSubmenu('mod4')">
             <span class="material-icons menu-icon">settings</span>
             <span class="menu-label" *ngIf="!isCollapsed">Configurações</span>

@@ -1,0 +1,123 @@
+/* :root{
+  --bg: #0f1724;
+  --primary: #163a7a;
+  --primary-2: #0c4c9a;
+  --muted: #a6b3d9;
+  --card: #132433;
+  --accent: #2ea6ff;
+} */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.sidebar-layout {
+  display: flex;
+  * {
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  .sidebar-layout {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  }
+
+  .container {
+    flex: 1;
+    max-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .header {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  }
+
+  .header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.5px;
+  }
+
+  .header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    margin: 0;
+  }
+}
+
+.formularioGenerativaDiv{
+    width: 100%;
+    padding: 50px;
+    display: flex;  /* Adiciona display flex */
+    flex-direction: column;  /* Organiza os elementos em coluna */
+    align-items: center;  /* Centraliza os elementos horizontalmente */
+
+    .inputDiv {
+        font-size: 20px;
+        font-weight: 600;
+        width: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 55px; /* Margem entre os inputDiv */
+        margin: 15px 0; /* Adiciona margem superior e inferior */
+        label {
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+        input{
+            width: 40%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid;
+            font-weight: bold;
+        }
+        select{
+            width: 40%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid;
+            font-weight: bold;
+        }
+    }
+    .gerarQuestoesBtn{
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        background-color: var(--accent);
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+
+}
+
+
