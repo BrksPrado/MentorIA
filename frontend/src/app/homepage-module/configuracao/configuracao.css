@@ -1,0 +1,540 @@
+.configuracao-root {
+  display: flex;
+  min-height: 100vh;
+}
+
+.configuracao-root .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.configuracao-root .content {
+  flex: 1;
+  padding: 1rem;
+  background: #f8f9fa;
+  overflow: hidden;
+}
+
+.configuracao-container {
+  max-width: 600px;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.configuracao-header {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.configuracao-header h1 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.configuracao-header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+
+.profile-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.profile-icon .material-icons {
+  font-size: 2rem;
+  color: #666;
+}
+
+.buttons-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.change-photo-btn, .edit-btn, .change-password-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  width: 28%;
+  justify-content: flex-start;
+}
+
+.change-photo-btn {
+  background: #f5f5f5;
+}
+
+.change-photo-btn:hover {
+  background: #e0e0e0;
+  border-color: #ccc;
+}
+
+.edit-btn {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.edit-btn:hover {
+  background: #0056b3;
+}
+
+.change-password-btn {
+  background: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+
+.change-password-btn:hover {
+  background: #545b62;
+}
+
+.user-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  padding: 0.6rem;
+  border: 2px solid #e9ecef;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Campos de input para edição */
+.info-input {
+  padding: 0.6rem;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+  background: white;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.info-input:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.name-inputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.name-input {
+  flex: 1;
+}
+
+/* Botões de ação para edição */
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.save-btn, .cancel-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  justify-content: center;
+  flex: 1;
+  max-width: 100px;
+  height: 40px;
+}
+
+.save-btn {
+  background: #28a745;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #218838;
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #545b62;
+}
+
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  margin-bottom: 1rem;
+}
+
+.loading-spinner .material-icons {
+  font-size: 3rem;
+  color: #007bff;
+  animation: spin 1s linear infinite;
+}
+
+.loading-state p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  color: #721c24;
+  max-width: 400px;
+}
+
+.error-message .material-icons {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.error-message p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.retry-btn {
+  padding: 0.75rem 1.5rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: #c82333;
+}
+
+/* Password Dialog Styles */
+.password-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.password-dialog {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 450px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  color: #666;
+  transition: background 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #f8f9fa;
+}
+
+.close-btn .material-icons {
+  font-size: 1.5rem;
+}
+
+.dialog-content {
+  padding: 1.5rem;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.875rem;
+}
+
+.field-input {
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.field-error {
+  color: #dc3545;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+/* Botões do dialog de alteração de senha */
+.dialog-cancel-btn, .dialog-confirm-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  width: 120px;
+}
+
+.dialog-cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.dialog-cancel-btn:hover {
+  background: #545b62;
+}
+
+.dialog-confirm-btn {
+  background: #28a745;
+  color: white;
+}
+
+.dialog-confirm-btn:hover:not(:disabled) {
+  background: #218838;
+}
+
+.dialog-confirm-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Botões de edição do perfil */
+.cancel-btn, .confirm-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  width: 100%;
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #545b62;
+}
+
+.confirm-btn {
+  background: #28a745;
+  color: white;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background: #218838;
+}
+
+.confirm-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Estilos para notificações (Snackbar) */
+.success-snackbar {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}
+
+.info-snackbar {
+  background-color: #17a2b8 !important;
+  color: white !important;
+}
+
+.info-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .configuracao-root .content {
+    padding: 1rem;
+  }
+  
+  .configuracao-container {
+    padding-left: 1rem;
+    max-width: 100%;
+  }
+  
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .edit-btn, .change-password-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .password-dialog {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .dialog-header, .dialog-content, .dialog-actions {
+    padding: 1rem;
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+  }
+
+  .dialog-cancel-btn, .dialog-confirm-btn {
+    width: 100%;
+  }
+}

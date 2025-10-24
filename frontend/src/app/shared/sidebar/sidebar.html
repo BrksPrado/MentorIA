@@ -94,7 +94,9 @@
             <span class="chev material-icons" *ngIf="!isCollapsed">expand_more</span>
           </div>
           <ul class="submenu" [class.open]="isSubmenuOpen('mod4')">
-            <li class="submenu-item"><span class="material-icons md-18">repeat</span> XPTO</li>
+            <li class="submenu-item" (click)="navigateToProfile()">
+              <span class="material-icons md-18">person</span> Perfil
+            </li>
           </ul>
         </li>
 

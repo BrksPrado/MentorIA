@@ -1,0 +1,167 @@
+<div class="configuracao-root">
+  <app-sidebar></app-sidebar>
+
+  <main class="main">
+    <app-header></app-header>
+
+    <section class="content">
+      <div class="configuracao-container">
+        <div class="configuracao-header">
+          <h1>Configurações do Perfil</h1>
+          <p>Gerencie suas informações pessoais</p>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="loading-spinner">
+            <span class="material-icons">refresh</span>
+          </div>
+          <p>Carregando dados do usuário...</p>
+        </div>
+
+        <!-- User Profile Content -->
+        <div class="profile-section" *ngIf="!isLoading">
+          <div class="profile-icon">
+            <span class="material-icons">person</span>
+          </div>
+          
+          <div class="buttons-section">
+            <button class="change-photo-btn">
+              <span class="material-icons">camera_alt</span>
+              Alterar Foto
+            </button>
+            <button class="edit-btn" (click)="toggleEditMode()" *ngIf="!isEditing">
+              <span class="material-icons">edit</span>
+              Editar Perfil
+            </button>
+            <button class="change-password-btn" (click)="openChangePasswordDialog()">
+              <span class="material-icons">lock</span>
+              Alterar Senha
+            </button>
+            
+            <!-- Botões de ação quando em modo de edição -->
+            <div class="edit-actions" *ngIf="isEditing">
+              <button class="save-btn" (click)="saveProfile()">
+                <span class="material-icons">save</span>
+              </button>
+              <button class="cancel-btn" (click)="cancelEdit()">
+                <span class="material-icons">cancel</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-info-section" *ngIf="!isLoading">
+          <div class="info-group">
+            <label class="info-label">Nome de Usuário</label>
+            <div class="info-value" *ngIf="!isEditing">{{ userData?.username || 'Carregando...' }}</div>
+            <input type="text" class="info-input" *ngIf="isEditing" 
+                   [(ngModel)]="editedUserData.username" 
+                   placeholder="Nome de usuário">
+          </div>
+
+          <div class="info-group">
+            <label class="info-label">Email</label>
+            <div class="info-value" *ngIf="!isEditing">{{ userData?.email || 'Carregando...' }}</div>
+            <input type="email" class="info-input" *ngIf="isEditing" 
+                   [(ngModel)]="editedUserData.email" 
+                   placeholder="Email">
+          </div>
+
+          <div class="info-group" *ngIf="userData?.firstName">
+            <label class="info-label">Nome Completo</label>
+            <div class="info-value" *ngIf="!isEditing">{{ userData.firstName }} {{ userData.lastName }}</div>
+            <div class="name-inputs" *ngIf="isEditing">
+              <input type="text" class="info-input name-input" 
+                     [(ngModel)]="editedUserData.firstName" 
+                     placeholder="Nome">
+              <input type="text" class="info-input name-input" 
+                     [(ngModel)]="editedUserData.lastName" 
+                     placeholder="Sobrenome">
+            </div>
+          </div>
+
+          <div class="info-group" *ngIf="userData?.createdAt">
+            <label class="info-label">Membro desde</label>
+            <div class="info-value">{{ userData.createdAt | date:'dd/MM/yyyy' }}</div>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-state" *ngIf="error && !isLoading">
+          <div class="error-message">
+            <span class="material-icons">error</span>
+            <p>{{ error }}</p>
+            <button class="retry-btn" (click)="loadUserProfile()">
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Password Change Dialog -->
+  <div class="password-dialog-overlay" *ngIf="showPasswordDialog" (click)="closePasswordDialog()">
+    <div class="password-dialog" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <h2>Alterar Senha</h2>
+        <button class="close-btn" (click)="closePasswordDialog()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      
+      <div class="dialog-content">
+        <form [formGroup]="passwordForm" class="password-form">
+          <div class="form-field">
+            <label class="field-label">Senha Atual</label>
+            <input type="password" 
+                   class="field-input"
+                   formControlName="currentPassword"
+                   placeholder="Digite sua senha atual">
+            <div class="field-error" *ngIf="passwordForm.get('currentPassword')?.hasError('required') && passwordForm.get('currentPassword')?.touched">
+              Senha atual é obrigatória
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Nova Senha</label>
+            <input type="password" 
+                   class="field-input"
+                   formControlName="newPassword"
+                   placeholder="Digite sua nova senha">
+            <div class="field-error" *ngIf="passwordForm.get('newPassword')?.hasError('required') && passwordForm.get('newPassword')?.touched">
+              Nova senha é obrigatória
+            </div>
+            <div class="field-error" *ngIf="passwordForm.get('newPassword')?.hasError('minlength') && passwordForm.get('newPassword')?.touched">
+              A senha deve ter pelo menos 6 caracteres
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Confirmar Nova Senha</label>
+            <input type="password" 
+                   class="field-input"
+                   formControlName="confirmPassword"
+                   placeholder="Confirme sua nova senha">
+            <div class="field-error" *ngIf="passwordForm.get('confirmPassword')?.hasError('required') && passwordForm.get('confirmPassword')?.touched">
+              Confirmação de senha é obrigatória
+            </div>
+            <div class="field-error" *ngIf="passwordForm.get('confirmPassword')?.hasError('passwordMismatch') && passwordForm.get('confirmPassword')?.touched">
+              As senhas não coincidem
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="dialog-actions">
+        <button class="dialog-cancel-btn" (click)="closePasswordDialog()">Cancelar</button>
+        <button class="dialog-confirm-btn" 
+                (click)="changePassword()"
+                [disabled]="!passwordForm.valid">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

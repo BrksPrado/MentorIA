@@ -13,6 +13,25 @@ interface AuthResponse {
   expiresIn: number;
 }
 
+interface UserData {
+  userId: string;
+  username: string;
+  email: string;
+}
+
+interface UserProfile {
+  userId: string;
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  birthDate?: string;
+  profileImage?: string;
+  createdAt?: string;
+  lastLogin?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -117,5 +136,23 @@ export class AuthService {
     } catch (e) {
       return null;
     }
+  }
+
+  getUserData(): UserData | null {
+    const tokenData = this.decodeToken();
+    if (!tokenData) return null;
+
+    return {
+      userId: tokenData.sub || tokenData.userId,
+      username: tokenData.username || tokenData.name,
+      email: tokenData.email
+    };
+  }
+
+  getUserProfile(): Observable<UserProfile> {
+    const token = this.getToken();
+    const headers = { 'Authorization': `Bearer ${token}` };
+    
+    return this.http.get<UserProfile>(`${this.apiUrl}/profile`, { headers });
   }
 }

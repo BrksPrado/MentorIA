@@ -54,4 +54,8 @@ export class Sidebar {
   navigateToSimulado(): void {
     this.router.navigate(['/enem']);
   }
+
+  navigateToProfile(): void {
+    this.router.navigate(['/home/configuracao']);
+  }
 }

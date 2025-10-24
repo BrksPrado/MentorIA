@@ -79,6 +79,20 @@
   box-shadow: 0 4px 12px rgba(22, 58, 122, 0.2);
 }
 
+.profile-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
+.profile-btn:hover {
+  background: rgba(22, 58, 122, 0.1);
+  box-shadow: 0 4px 12px rgba(22, 58, 122, 0.1);
+}
+
 .profile .profile-icon {
   font-size: 44px;
   color: #163a7a;
