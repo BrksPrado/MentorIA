@@ -5,9 +5,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.mentoria.domain.Materia;
 import org.mentoria.domain.Usuario;
 import org.mentoria.service.UserService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Path("/users")
@@ -23,6 +25,13 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Usuario getUser(@PathParam("userId") UUID userId) {
         return userService.findByUserId(userId);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsers() {
+        List<Usuario> users = userService.findAll();
+        return Response.ok(users).build();
     }
 
     @PUT

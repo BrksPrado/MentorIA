@@ -20,6 +20,9 @@ public class UserService {
         return userRepository.findByUserId(userId);
     }
 
+    public java.util.List<Usuario> findAll() {
+        return Usuario.listAll();
+    }
 
     @Transactional
     public Usuario createUser(RegisterRequestDTO registerDTO) {
