@@ -7,14 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HomepageModuleRoutingModule } from './homepage-module-routing-module';
-import { HomepageComponent } from './homepage-component/homepage-component';
+import { ConfiguracaoRoutingModule } from './configuracao-routing-module';
+import { Configuracao } from './configuracao-component/configuracao-component';
 import { SharedModule } from '../shared/shared-module';
-
 
 @NgModule({
   declarations: [
-    HomepageComponent
+    Configuracao
   ],
   imports: [
     CommonModule,
@@ -26,8 +25,8 @@ import { SharedModule } from '../shared/shared-module';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    HomepageModuleRoutingModule,
-    SharedModule
+    SharedModule,
+    ConfiguracaoRoutingModule // ✅ módulo de rota vai aqui
   ]
 })
-export class HomepageModuleModule { }
+export class ConfiguracaoModule { }

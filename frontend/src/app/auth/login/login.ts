@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserService } from '../../configuracao/configuracao-component/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -18,6 +19,7 @@ export class Login implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private userService: UserService, // <- Injeta o UserService
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar
@@ -46,6 +48,9 @@ export class Login implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login bem-sucedido!', response);
+
+          // Armazena o UUID do usuário logado
+          this.userService.setLoggedUserId(response.userId);
 
           this.snackBar.open('Login bem-sucedido!', 'X', {
             duration: 2000,

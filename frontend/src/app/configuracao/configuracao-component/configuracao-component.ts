@@ -1,24 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService, User } from './user.service'; // <-- importe o serviço correto
 
 @Component({
   selector: 'app-configuracao',
   standalone: false,
-  templateUrl: './configuracao.html',
-  styleUrl: './configuracao.css'
+  templateUrl: './configuracao-component.html',
+  styleUrls: ['./configuracao-component.css'] // corrigido de styleUrl
 })
 export class Configuracao implements OnInit {
   isLoading = false;
   error: string | null = null;
-  userData: any = null;
   userImagePath = 'assets/img/usuario.webp';
   isEditing = false;
-  editedUserData: any = null;
   showPasswordDialog = false;
   passwordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  // Inicialização correta
+  userData: User = {} as User;
+  editedUserData: User = {} as User;
+
+  constructor(
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private userService: UserService
+  ) {
     this.passwordForm = this.fb.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
@@ -32,59 +39,53 @@ export class Configuracao implements OnInit {
 
   loadUserProfile() {
     this.isLoading = true;
-    this.error = null;
-    // TODO: Implement actual user data loading logic
-    setTimeout(() => {
-      this.isLoading = false;
-      this.userData = {
-        username: 'usuario_teste',
-        email: 'teste@exemplo.com',
-        userId: '12345',
-        firstName: 'João',
-        lastName: 'Silva',
-        phone: '(11) 99999-9999',
-        createdAt: new Date()
-      };
-    }, 1000);
+    this.userService.getLoggedUser().subscribe({
+      next: (user) => {
+        this.isLoading = false;
+        this.userData = user;
+        this.editedUserData = { ...user }; // faz uma cópia para edição
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.error = 'Erro ao carregar dados do usuário.';
+        this.showErrorMessage(this.error);
+      }
+    });
   }
 
   toggleEditMode() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
-      // Criar uma cópia dos dados para edição
       this.editedUserData = { ...this.userData };
     } else {
-      // Cancelar edição e restaurar dados originais
-      this.editedUserData = null;
+      this.editedUserData = { ...this.userData }; // restaurar dados originais
     }
   }
 
   saveProfile() {
-    if (this.editedUserData) {
-      // Atualizar os dados originais com as alterações
-      this.userData = { ...this.editedUserData };
-      
-      // TODO: Implementar chamada para API para salvar no backend
-      console.log('Salvando perfil:', this.userData);
-      
-      // Sair do modo de edição
-      this.isEditing = false;
-      this.editedUserData = null;
-      
-      // Mostrar notificação de sucesso
-      this.showSuccessMessage('Perfil atualizado com sucesso!');
+    if (this.editedUserData && this.userData) {
+      this.userService.updateUser(this.userData.userId, this.editedUserData).subscribe({
+        next: (user) => {
+          this.userData = user;
+          this.editedUserData = { ...user }; // atualiza a cópia
+          this.showSuccessMessage('Perfil atualizado com sucesso!');
+          this.isEditing = false;
+        },
+        error: () => {
+          this.showErrorMessage('Erro ao atualizar perfil.');
+        }
+      });
     }
   }
 
   cancelEdit() {
     this.isEditing = false;
-    this.editedUserData = null;
+    this.editedUserData = { ...this.userData }; // volta para os dados originais
   }
 
   passwordMatchValidator(form: FormGroup) {
     const newPassword = form.get('newPassword');
     const confirmPassword = form.get('confirmPassword');
-    
     if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
@@ -102,24 +103,20 @@ export class Configuracao implements OnInit {
     this.passwordForm.reset();
   }
 
+
   changePassword() {
     if (this.passwordForm.valid) {
-      const passwordData = this.passwordForm.value;
-      // TODO: Implementar chamada para API para alterar senha
-      console.log('Alterando senha:', passwordData);
-      
-      // Simular sucesso e mostrar notificação
+      console.log('Alterando senha:', this.passwordForm.value);
       this.showSuccessMessage('Senha alterada com sucesso!');
       this.closePasswordDialog();
     }
   }
 
-  // Métodos para exibir notificações
   showSuccessMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
       duration: 4000,
-      horizontalPosition: 'end',    // Canto direito
-      verticalPosition: 'bottom',  // Parte inferior
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
       panelClass: ['success-snackbar']
     });
   }
@@ -127,8 +124,8 @@ export class Configuracao implements OnInit {
   showErrorMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
       duration: 5000,
-      horizontalPosition: 'end',    // Canto direito
-      verticalPosition: 'bottom',  // Parte inferior
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
       panelClass: ['error-snackbar']
     });
   }
@@ -136,8 +133,8 @@ export class Configuracao implements OnInit {
   showInfoMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
       duration: 3000,
-      horizontalPosition: 'end',    // Canto direito
-      verticalPosition: 'bottom',  // Parte inferior
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
       panelClass: ['info-snackbar']
     });
   }
