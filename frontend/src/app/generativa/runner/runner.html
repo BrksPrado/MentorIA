@@ -1,0 +1,100 @@
+<div class="quiz-container">
+    <app-loading *ngIf="isLoading" [overlay]="true" message="Carregando Questoes generativas" size="large">
+    </app-loading>
+
+    <ng-container *ngIf="quizQuestions.length > 0; else noQuestions">
+        <div class="quiz-header">
+            <h1>Simulado Generativo</h1>
+            <p>Questão {{ currentQuestionIndex + 1 }} de {{ quizQuestions.length }}</p>
+            <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="(getAnsweredCount() / quizQuestions.length) * 100"></div>
+            </div>
+            <p class="answered-count">
+                Respondidas: {{ getAnsweredCount() }} / {{ quizQuestions.length }}
+                <span *ngIf="getAnsweredCount() > 0"> | Acertos: {{ getCorrectCount() }}</span>
+            </p>
+        </div>
+
+        <div class="question-card">
+            <ng-container *ngIf="quizQuestions[currentQuestionIndex] as question">
+                <!-- Feedback de Acerto/Erro -->
+                <div *ngIf="isAnswered(question.index)" class="feedback-banner"
+                    [class.feedback-correct]="isCorrectAnswer(question.index)"
+                    [class.feedback-incorrect]="!isCorrectAnswer(question.index)">
+                    <span *ngIf="isCorrectAnswer(question.index)">
+                        ✓ Correto! Você acertou esta questão.
+                    </span>
+                    <span *ngIf="!isCorrectAnswer(question.index)">
+                        ✗ Incorreto. A resposta correta é: <strong>{{ question.correctAlternative }}</strong>
+                    </span>
+                </div>
+
+                <div class="question-context" [innerHTML]="question.context"></div>
+
+                <p class="alternatives-intro">{{ question.alternativesIntroduction }}</p>
+
+                <div class="alternatives-list">
+                    <div *ngFor="let alt of question.alternatives" class="alternative"
+                        [ngClass]="getAlternativeClass(question.index, alt.letter)"
+                        [class.disabled]="isAnswered(question.index)"
+                        (click)="!isAnswered(question.index) && selectAnswer(question.index, alt.letter)">
+                        <input type="radio" [name]="'alternative-' + question.index"
+                            [id]="'alt-' + question.index + '-' + alt.letter"
+                            [checked]="isSelected(question.index, alt.letter)" [disabled]="isAnswered(question.index)"
+                            (change)="selectAnswer(question.index, alt.letter)" />
+                        <label [for]="'alt-' + question.index + '-' + alt.letter">
+                            <strong>{{ alt.letter }}</strong>
+
+                            <span *ngIf="alt.text">{{ alt.text }}</span>
+
+                            <!-- Exibe imagem se existir -->
+                            <img *ngIf="alt.file" [src]="alt.file" [alt]="'Alternativa ' + alt.letter"
+                                class="alternative-image" />
+
+                            <span *ngIf="
+                  isAnswered(question.index) && isCorrectAlternative(question.index, alt.letter)
+                " class="badge correct-badge">Correta</span>
+                        </label>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="quiz-navigation">
+            <button (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0" class="btn-secondary">
+                ← Anterior
+            </button>
+
+            <button (click)="goBackToList()" class="btn-home">Voltar à Lista</button>
+
+            <button (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1"
+                class="btn-primary">
+                Próxima →
+            </button>
+        </div>
+
+        <div *ngIf="getAnsweredCount() === quizQuestions.length" class="final-summary">
+            <h2>🎉 Quiz Completo!</h2>
+            <p class="final-score">
+                Você acertou <strong>{{ getCorrectCount() }}</strong> de
+                <strong>{{ quizQuestions.length }}</strong> questões
+            </p>
+            <p class="final-percentage">
+                Aproveitamento:
+                <strong>{{ ((getCorrectCount() / quizQuestions.length) * 100).toFixed(1) }}%</strong>
+            </p>
+        </div>
+    </ng-container>
+
+    <ng-template #noQuestions>
+        <p class="loading-message">Nenhuma questão encontrada para este ano.</p>
+    </ng-template>
+</div>
+
+<div *ngIf="isLoading">
+    <p class="loading-message">A carregar simulado...</p>
+</div>
+
+<div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+</div>

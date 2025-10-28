@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'custom-theme.scss';
+
+html, body { height: 100%; background: #ffffff; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; color: #072033 }
+
+:root{
+  --bg: #0f1724;
+  --primary: #163a7a;
+  --primary-2: #0c4c9a;
+  --muted: #a6b3d9;
+  --card: #132433;
+  --accent: #2ea6ff;
+  --negative: #ff4d4d;
+}
+
+.disable-pointer-events {
+    pointer-events: none !important;
+    user-select: none !important;
+  }
+
+
+  /* Fundo branco global — a homepage controla blocos (cards) em azul */
+  html, body, app-root, .app-container, .main-content {
+    background: #ffffff;
+    color: #072033;
+    min-height: 100%;
+  }

@@ -1,0 +1,77 @@
+<div class="login-page">
+  <app-loading
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Criando sua conta"
+    size="large">
+  </app-loading>
+
+  <main class="main-content">
+    <div class="login-card">
+      <div class="logo-container disable-pointer-events">
+        <img class="logo" src="assets/img/logo.png" alt="Logo" width="220px" />
+      </div>
+      <h2 class="disable-pointer-events">Seja bem-vindo!</h2>
+
+      <form [formGroup]="cadastroForm"  class="login-form">
+
+        <div class="form-fields">
+          <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>E-mail</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              placeholder="seuemail@exemplo.com"
+              [disabled]="isLoading"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Username</mat-label>
+            <input
+              matInput
+              formControlName="username"
+              placeholder="Seu username"
+              [disabled]="isLoading"
+            />
+            <mat-error *ngIf="cadastroForm.get('username')?.hasError('minlength')">
+              Username deve ter pelo menos 3 caracteres
+            </mat-error>
+            <mat-error *ngIf="cadastroForm.get('username')?.hasError('pattern')">
+              Apenas letras, números e underscore
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Senha</mat-label>
+            <input
+              matInput
+              formControlName="password"
+              type="password"
+              placeholder="Sua senha"
+              [disabled]="isLoading"
+            />
+            <mat-error *ngIf="cadastroForm.get('password')?.hasError('minlength')">
+              Senha deve ter pelo menos 6 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="actions-container">
+          <button
+            mat-flat-button
+            [disabled]="!cadastroForm.valid || isLoading"
+            (click)="onSubmit()"
+            color="secondary"
+            class="siginup-button">
+            {{ isLoading ? 'Cadastrando...' : 'Cadastrar-se' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="login-container">
+        <span>Já é estudante? <a routerLink="/auth/login">Faça o Login</a></span>
+      </div>
+    </div>
+  </main>
+</div>
