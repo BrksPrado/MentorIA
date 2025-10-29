@@ -18,12 +18,12 @@ const routes: Routes = [
     path: ':year',
     component: QuizRunner
   },
-  { // Nova rota para o histórico
+  {
     path: 'historico',
-    component: Historico, // Rota direta para o componente
-    canActivate: [AuthGuard] // Protege a rota do histórico
+    component: Historico,
+    canActivate: [AuthGuard]
   },
-  { path: '**', redirectTo: '/auth/login' } // Rota fallback
+  { path: '**', redirectTo: '/auth/login' }
 ];
 
 @NgModule({

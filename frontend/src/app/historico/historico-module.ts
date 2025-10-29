@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgClass} from '@angular/common';
 
 import { HistoricoRoutingModule } from './historico-routing-module';
 import { Historico } from './historico/historico';
@@ -8,6 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -19,9 +20,11 @@ import {RouterModule} from '@angular/router';
     HistoricoRoutingModule,
     SharedModule,
     RouterModule,
-    MatButtonModule,      // Para mat-flat-button e mat-stroked-button
-    MatIconModule,        // Para material-icons
-    MatSnackBarModule
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    NgClass,
+    FormsModule
   ]
 })
 export class HistoricoModule { }

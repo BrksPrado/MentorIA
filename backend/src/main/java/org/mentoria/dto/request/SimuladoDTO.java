@@ -21,5 +21,11 @@ public record SimuladoDTO(
         LocalDateTime dataRealizacao,
 
         @JsonProperty("observacoes")
-        String observacoes
+        String observacoes,
+
+        @JsonProperty("acertos")
+        Integer acertos,
+
+        @JsonProperty("totalQuestoes")
+        Integer totalQuestoes
 ) {}

@@ -7,10 +7,6 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
 
-// Paletas personalizadas a partir das cores fornecidas (Coolors)
-// primary: #114b5f, secondary: #1a936f, tertiary: #88d498, neutral: #c6dabf, neutral-variant: #f3e9d2
-// Em Material 3, as paletas são mapas de tons (0–100).
-// Aqui definimos um conjunto mínimo de tons por paleta.
 
 $brand-primary: (
   0: #000000,

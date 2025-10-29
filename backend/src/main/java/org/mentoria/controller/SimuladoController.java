@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.mentoria.domain.Simulado;
 import org.mentoria.dto.request.SimuladoDTO;
+import org.mentoria.dto.request.SimuladoUpdateDTO;
 import org.mentoria.service.SimuladoService;
 
 import java.util.List;
@@ -73,12 +74,11 @@ public class SimuladoController {
         }
     }
 
-    // PUT /simulados/{id} - Atualiza um simulado (Verificar permissão)
     @PUT
-    @Path("/{id}")
-    public Response updateSimulado(@PathParam("id") UUID id, SimuladoDTO simuladoDTO) {
+    @Path("/{id}/descricao")
+    public Response updateDescricaoSimulado(@PathParam("id") UUID id, SimuladoUpdateDTO updateDTO) { // <-- Mude para SimuladoUpdateDTO
         try {
-            Simulado simulado = simuladoService.updateSimulado(id, simuladoDTO);
+            Simulado simulado = simuladoService.updateObservacoes(id, updateDTO.getObservacoes());
             return Response.ok(simulado).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
