@@ -22,7 +22,8 @@ public class MateriaService {
     }
 
     public Materia findById(UUID id) {
-        return materiaRepository.findById(id);
+        return materiaRepository.findByIdOptional(id)
+                .orElseThrow(() -> new RuntimeException("Matéria não encontrada com ID: " + id));
     }
 
     public Optional<Materia> findByNome(String nome) {

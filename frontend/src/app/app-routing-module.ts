@@ -24,6 +24,10 @@ const routes: Routes = [
   {
     path: 'generativa',
     loadChildren: () => import('./generativa/generativa-module').then(m => m.GenerativaModule)
+  },
+  {
+    path: 'historico',
+    loadChildren: () => import('./historico/historico-module').then(m => m.HistoricoModule)
   }
 ];
 

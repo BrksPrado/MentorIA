@@ -11,6 +11,7 @@ import io.smallrye.jwt.build.Jwt;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @ApplicationScoped
 public class AuthService {
@@ -22,13 +23,12 @@ public class AuthService {
         Usuario usuario = userService.createUser(registerRequestDTO);
         String token = generateToken(usuario);
         return new AuthResponseDTO(
-                usuario.id,
+                usuario.id,  // ← Converte UUID para String
                 usuario.username,
                 usuario.email,
                 token,
                 "Bearer",
                 3600L);
-
     }
 
     public AuthResponseDTO login(LoginRequestDTO loginDTO) {
@@ -42,10 +42,10 @@ public class AuthService {
             throw new IllegalArgumentException("Senha incorreta");
         }
 
-        String token = generateToken(user.orElse(null));
+        String token = generateToken(user.get());
 
         return new AuthResponseDTO(
-                user.get().id,
+                user.get().id,  // ← Converte UUID para String
                 user.get().username,
                 user.get().email,
                 token,
@@ -53,12 +53,21 @@ public class AuthService {
                 3600L);
     }
 
+    /**
+     * Gera o JWT com informações úteis
+     */
     private String generateToken(Usuario usuario) {
-        return Jwt.issuer("mentoria")
-                .upn(usuario.email)
-                .groups(Set.of("usuario")) // ou "admin"
+        String token = Jwt.issuer("mentoria")
+                .subject(usuario.id.toString())  // ← 'sub' contém o UUID do usuário
+                .upn(usuario.email)              // ← 'upn' (User Principal Name)
+                .claim("userId", usuario.id.toString())     // ← ID do usuário
+                .claim("username", usuario.username)         // ← Nome de usuário
+                .claim("email", usuario.email)               // ← Email
+                .groups(Set.of("usuario"))                   // ← Grupo (para autorização)
                 .expiresIn(Duration.ofHours(2))
                 .sign();
-    }
 
+        System.out.println("Token gerado para usuário: " + usuario.username);
+        return token;
+    }
 }

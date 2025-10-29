@@ -19,7 +19,7 @@ import { Header } from './header/header';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule
-],
+  ],
   exports: [
     Loading,
     Sidebar,
