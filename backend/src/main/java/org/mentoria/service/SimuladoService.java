@@ -91,12 +91,13 @@ public class SimuladoService {
         }
 
         Simulado simulado = new Simulado();
-        simulado.usuario = usuario; // Associa o usuário
-        simulado.materia = materia; // Associa a matéria (pode ser null)
+        simulado.usuario = usuario;
+        simulado.materia = materia;
         simulado.pontuacao = simuladoDTO.pontuacao();
-        // Define a data/hora atual se não for fornecida
         simulado.dataHora = (simuladoDTO.dataRealizacao() != null) ? simuladoDTO.dataRealizacao() : LocalDateTime.now();
         simulado.observacoes = simuladoDTO.observacoes();
+        simulado.acertos = simuladoDTO.acertos();
+        simulado.totalQuestoes = simuladoDTO.totalQuestoes();
 
         simuladoRepository.persist(simulado);
 
@@ -146,5 +147,21 @@ public class SimuladoService {
         userRepository.findByIdOptional(userId)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
         return simuladoRepository.findByUsuarioId(userId);
+    }
+
+    @Transactional
+    public Simulado updateObservacoes(UUID id, String observacoes) {
+        if (observacoes == null) {
+            throw new IllegalArgumentException("Observações não podem ser nulas.");
+        }
+
+        Simulado simulado = Simulado.findById(id);
+        if (simulado == null) {
+            throw new NotFoundException("Simulado com ID " + id + " não encontrado.");
+        }
+
+        simulado.setObservacoes(observacoes);
+
+        return simulado;
     }
 }

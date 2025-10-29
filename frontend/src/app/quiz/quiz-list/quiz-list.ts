@@ -42,7 +42,6 @@ export class QuizList implements OnInit {
 
   selectYear(year: number): void {
     this.selectedYear = year;
-    // Scroll suave para o carrossel
     setTimeout(() => {
       const carouselSection = document.querySelector('.carousel-section');
       if (carouselSection) {

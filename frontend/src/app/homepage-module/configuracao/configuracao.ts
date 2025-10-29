@@ -33,7 +33,6 @@ export class Configuracao implements OnInit {
   loadUserProfile() {
     this.isLoading = true;
     this.error = null;
-    // TODO: Implement actual user data loading logic
     setTimeout(() => {
       this.isLoading = false;
       this.userData = {
@@ -51,27 +50,22 @@ export class Configuracao implements OnInit {
   toggleEditMode() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
-      // Criar uma cópia dos dados para edição
       this.editedUserData = { ...this.userData };
     } else {
-      // Cancelar edição e restaurar dados originais
       this.editedUserData = null;
     }
   }
 
   saveProfile() {
     if (this.editedUserData) {
-      // Atualizar os dados originais com as alterações
       this.userData = { ...this.editedUserData };
-      
-      // TODO: Implementar chamada para API para salvar no backend
+
       console.log('Salvando perfil:', this.userData);
-      
+
       // Sair do modo de edição
       this.isEditing = false;
       this.editedUserData = null;
-      
-      // Mostrar notificação de sucesso
+
       this.showSuccessMessage('Perfil atualizado com sucesso!');
     }
   }
@@ -84,7 +78,7 @@ export class Configuracao implements OnInit {
   passwordMatchValidator(form: FormGroup) {
     const newPassword = form.get('newPassword');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
@@ -105,21 +99,18 @@ export class Configuracao implements OnInit {
   changePassword() {
     if (this.passwordForm.valid) {
       const passwordData = this.passwordForm.value;
-      // TODO: Implementar chamada para API para alterar senha
       console.log('Alterando senha:', passwordData);
-      
-      // Simular sucesso e mostrar notificação
+
       this.showSuccessMessage('Senha alterada com sucesso!');
       this.closePasswordDialog();
     }
   }
 
-  // Métodos para exibir notificações
   showSuccessMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
       duration: 4000,
-      horizontalPosition: 'end',    // Canto direito
-      verticalPosition: 'bottom',  // Parte inferior
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
       panelClass: ['success-snackbar']
     });
   }
@@ -127,8 +118,8 @@ export class Configuracao implements OnInit {
   showErrorMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
       duration: 5000,
-      horizontalPosition: 'end',    // Canto direito
-      verticalPosition: 'bottom',  // Parte inferior
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
       panelClass: ['error-snackbar']
     });
   }
@@ -136,8 +127,8 @@ export class Configuracao implements OnInit {
   showInfoMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
       duration: 3000,
-      horizontalPosition: 'end',    // Canto direito
-      verticalPosition: 'bottom',  // Parte inferior
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
       panelClass: ['info-snackbar']
     });
   }

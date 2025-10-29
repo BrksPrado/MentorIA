@@ -106,7 +106,7 @@
 }
 
 .col-pontuacao {
-  flex: 0 0 100px; /* Largura fixa para pontuação */
+  flex: 0 0 150px; /* Largura fixa para pontuação */
   text-align: right;
   font-weight: 600;
 }
@@ -116,6 +116,88 @@
 .score-medium { color: #ffc107; } /* Amarelo */
 .score-low { color: #dc3545; } /* Vermelho */
 
+/* Adicione/Modifique em historico.css */
+
+/* 1. Modifique o .col-obs para remover o 'justify-content' */
+.col-obs {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */ /* <-- REMOVA ISSO */
+}
+
+/* 2. Estilo para o span de texto (flex: 1) */
+.col-obs span {
+  flex: 1;
+  word-break: break-word;
+  padding-right: 8px;
+  border-radius: 4px; /* Adiciona borda sutil */
+}
+
+/* 3. REMOVA os estilos do botão de edição antigo */
+/*
+.edit-button {
+   ... (REMOVA TODO ESTE BLOCO)
+}
+.col-obs span:hover .edit-button {
+   ... (REMOVA TODO ESTE BLOCO)
+}
+.edit-button .material-icons {
+   ... (REMOVA TODO ESTE BLOCO)
+}
+*/
+
+/* 4. ADICIONE estilo para o cabeçalho da coluna */
+.col-obs-header {
+  display: flex;
+  justify-content: space-between; /* Mantém o botão à direita no header */
+  align-items: center;
+}
+
+/* 5. ADICIONE estilo para o novo botão de edição no header */
+.edit-button-header {
+  width: auto;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+.edit-button-header .material-icons {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+.edit-button-header.done-button {
+  min-width: 90px; /* Largura para "Concluído" */
+}
+
+
+/* 6. ADICIONE estilo para o texto quando estiver no modo de edição */
+.editable-text {
+  cursor: pointer;
+  padding: 4px 6px; /* Dá uma aparência de "clicável" */
+  margin: -4px -6px; /* Compensa o padding */
+  transition: background-color 0.2s ease;
+}
+
+.editable-text:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Feedback visual no hover */
+}
+
+
+/* Estilos do .edit-container e .edit-input (devem estar ok da vez anterior) */
+.edit-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.edit-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {

@@ -229,7 +229,9 @@ export class QuizRunner implements OnInit {
       userId: this.userId,
       pontuacao: parseFloat(score.toFixed(1)),
       dataRealizacao: new Date().toISOString(),
-      observacoes: observacao
+      observacoes: observacao,
+      acertos: correctCount,
+      totalQuestoes: totalQuestions
     };
 
     console.log("📊 Dados do simulado:", simuladoData);
@@ -261,6 +263,7 @@ export class QuizRunner implements OnInit {
       }
     });
   }
+
 
   isCorrectAlternative(questionIndex: number, letter: string): boolean {
     const question = this.quizQuestions.find(q => q.index === questionIndex);

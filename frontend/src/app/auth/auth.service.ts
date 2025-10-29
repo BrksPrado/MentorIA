@@ -40,7 +40,6 @@ export class AuthService {
   private tokenKey = 'authToken';
   private tokenExpirationKey = 'tokenExpiration';
 
-  // Subject para notificar mudanças no estado de autenticação
   private authStatusSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   public authStatus$ = this.authStatusSubject.asObservable();
 

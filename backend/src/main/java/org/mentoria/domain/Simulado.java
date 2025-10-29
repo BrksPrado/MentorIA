@@ -23,13 +23,24 @@ public class Simulado extends PanacheEntityBase {
     public Materia materia;
 
     @Column(unique = false, nullable = true)
-    public Double pontuacao; // Armazenará a porcentagem (0.0 a 100.0)
+    public Double pontuacao;
 
     @Column(unique = false, nullable = true)
     public LocalDateTime dataHora;
 
     @Column(unique = false, nullable = true)
     public String observacoes;
-    
+
+    @Column(unique = false, nullable = true)
+    public Integer acertos;  // ← NOVO
+
+    @Column(unique = false, nullable = true)
+    public Integer totalQuestoes;  // ← NOVO
+
     public Simulado() {}
+
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
 }

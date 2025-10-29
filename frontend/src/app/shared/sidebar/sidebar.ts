@@ -26,10 +26,8 @@ export class Sidebar {
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
 
-    // Salva o estado no localStorage
     localStorage.setItem('sidebarCollapsed', this.isCollapsed.toString());
 
-    // Fecha todos os submenus ao recolher
     if (this.isCollapsed) {
       this.activeSubmenu = null;
     }
@@ -57,7 +55,7 @@ export class Sidebar {
 
   navigateToHistorico(): void {
     this.router.navigate(['/historico']);
-    this.activeSubmenu = null; // Fecha submenus ao navegar
+    this.activeSubmenu = null;
   }
 
   navigateToProfile(): void {
