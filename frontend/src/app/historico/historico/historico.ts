@@ -11,7 +11,7 @@ import { SimuladoDTO, SimuladoService } from '../services/simulado.service';
   styleUrls: ['./historico.css']
 })
 export class Historico implements OnInit {
-  historico: SimuladoDTO[] = [];
+  historico: any[] = []; // Tipo any para aceitar dataHora do backend
   isLoading: boolean = false;
   errorMessage: string | null = null;
   userId: string | null = null;
@@ -56,12 +56,16 @@ export class Historico implements OnInit {
     this.simuladoService.getHistoricoUsuario(this.userId).subscribe({
       next: (data) => {
         console.log('Histórico carregado com sucesso:', data);
+
         // Ordena do mais recente para o mais antigo
         this.historico = data.sort((a, b) => {
-          const dateA = new Date(b.dataRealizacao || 0).getTime();
-          const dateB = new Date(a.dataRealizacao || 0).getTime();
-          return dateA - dateB;
+          // O backend retorna dataHora (não dataRealizacao)
+          const dateA = new Date(a.dataHora || 0).getTime();
+          const dateB = new Date(b.dataHora || 0).getTime();
+          return dateB - dateA; // Mais recentes primeiro
         });
+
+        console.log('Histórico ordenado:', this.historico);
         this.isLoading = false;
 
         if (this.historico.length === 0) {
@@ -79,7 +83,6 @@ export class Historico implements OnInit {
       }
     });
   }
-
   formatDate(dateString: string | undefined): string {
     if (!dateString) return '-';
     try {
@@ -87,9 +90,7 @@ export class Historico implements OnInit {
       return date.toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+        year: 'numeric'
       });
     } catch (e) {
       console.error('Erro ao formatar data:', e);

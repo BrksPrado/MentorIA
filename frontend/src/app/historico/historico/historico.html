@@ -31,7 +31,7 @@
           <div class="col-pontuacao">Pontuação</div>
         </div>
         <div *ngFor="let item of historico" class="historico-item">
-          <div class="col-data">{{ formatDate(item.dataRealizacao) }}</div>
+          <div class="col-data">{{ formatDate(item.dataHora) }}</div>
           <div class="col-obs">{{ item.observacoes || 'Simulado' }}</div>
           <div class="col-pontuacao"
                [ngClass]="{
@@ -40,6 +40,7 @@
                  'score-low': item.pontuacao < 50
                }">
             {{ (item.pontuacao || 0).toFixed(1) }}%
+            {{ item.acertos !== null && item.totalQuestoes !== null ? ' (' + item.acertos + '/' + item.totalQuestoes + ')' : '' }}
           </div>
         </div>
       </div>

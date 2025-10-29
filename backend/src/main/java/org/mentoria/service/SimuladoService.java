@@ -57,7 +57,6 @@ public class SimuladoService {
     }
 
     public List<Simulado> findByUsuarioId(UUID usuarioId) {
-        // Verifica se o usuário existe
         userRepository.findByIdOptional(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
         return simuladoRepository.findByUsuarioId(usuarioId);

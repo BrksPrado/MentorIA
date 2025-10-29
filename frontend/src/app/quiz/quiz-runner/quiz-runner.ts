@@ -38,14 +38,14 @@ export class QuizRunner implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // const userData = this.authService.getUserData();
-    // if (!userData || !userData.userId) {
-    //   console.error("Usuário não logado!");
-    //   this.snackBar.open('Você precisa estar logado para realizar simulados.', 'Fechar', { duration: 5000 });
-    //   this.router.navigate(['/auth/login']); // Redireciona para login
-    //   return; // Interrompe a inicialização
-    // }
-    // this.userId = userData.userId;
+    const userData = this.authService.getUserData();
+    if (!userData || !userData.userId) {
+      console.error("Usuário não logado!");
+      this.snackBar.open('Você precisa estar logado para realizar simulados.', 'Fechar', { duration: 5000 });
+      this.router.navigate(['/auth/login']); // Redireciona para login
+      return; // Interrompe a inicialização
+    }
+    this.userId = userData.userId;
 
     // ... (resto do código de carregamento das questões) ...
     const yearParam = this.route.snapshot.paramMap.get('year');
@@ -102,7 +102,6 @@ export class QuizRunner implements OnInit {
     this.quizQuestions = []; // Limpa questões em caso de erro
   }
 
-  // ... (parseMarkdownToHtml, selectAnswer, isSelected, isAnswered, etc.) ...
 
   nextQuestion(): void {
     if (this.currentQuestionIndex < this.quizQuestions.length - 1) {
@@ -118,13 +117,6 @@ export class QuizRunner implements OnInit {
     // Não precisa verificar se terminou aqui
   }
 
-  checkIfFinished(): void {
-    if (!this.quizFinished && this.getAnsweredCount() === this.quizQuestions.length) {
-      console.log("Quiz finalizado!");
-      this.quizFinished = true;
-      this.saveResult(); // Chama a função para salvar
-    }
-  }
 
   getAnsweredCount(): number {
     return Object.keys(this.userAnswers).length;
@@ -132,43 +124,7 @@ export class QuizRunner implements OnInit {
 
   userAnswers: { [key: number]: string } = {};
 
-  // Função para salvar o resultado no backend
-  saveResult(): void {
-    if (!this.userId) {
-      console.error("ID do usuário não encontrado para salvar o simulado.");
-      this.snackBar.open('Erro ao identificar usuário para salvar o resultado.', 'Fechar', { duration: 5000, panelClass: ['error-snackbar'] });
-      return;
-    }
-    if (this.isSaving) return; // Evita múltiplas chamadas
 
-    this.isSaving = true;
-    const score = (this.getCorrectCount() / this.quizQuestions.length) * 100;
-    const observacao = `ENEM ${this.year} - ${this.area ? this.getAreaLabel(this.area) : 'Completo'}`;
-
-    const simuladoData: SimuladoDTO = {
-      userId: this.userId,
-      pontuacao: parseFloat(score.toFixed(1)), // Salva com uma casa decimal
-      dataRealizacao: new Date().toISOString(), // Data/Hora atual em ISO string
-      observacoes: observacao,
-      // materiaId: null // Deixe null por enquanto, a menos que tenha a lógica para mapear 'area' para um UUID de Matéria
-    };
-
-    console.log("Enviando dados do simulado:", simuladoData);
-
-    this.simuladoService.saveSimulado(simuladoData).subscribe({
-      next: (savedSimulado) => {
-        console.log("Simulado salvo com sucesso:", savedSimulado);
-        this.snackBar.open(`Resultado salvo! Pontuação: ${simuladoData.pontuacao.toFixed(1)}%`, 'OK', { duration: 4000, panelClass: ['success-snackbar'] });
-        this.isSaving = false;
-      },
-      error: (err) => {
-        console.error("Erro ao salvar simulado:", err);
-        this.snackBar.open(`Erro ao salvar resultado: ${err.message || 'Verifique sua conexão.'}`, 'Fechar', { duration: 5000, panelClass: ['error-snackbar'] });
-        this.isSaving = false;
-        // Poderia adicionar lógica para tentar salvar novamente
-      }
-    });
-  }
 
   getCorrectCount(): number {
     let count = 0;
@@ -220,6 +176,92 @@ export class QuizRunner implements OnInit {
     return '';
   }
 
+  selectAnswer(questionIndex: number, letter: string): void {
+    this.userAnswers[questionIndex] = letter;
+    console.log(`Resposta registrada: Q${questionIndex} = ${letter}`);
+
+    const answered = this.getAnsweredCount();
+    const total = this.quizQuestions.length;
+    console.log(`Progresso: ${answered}/${total} questões respondidas`);
+
+    // Chama a verificação para saber se terminou
+    this.checkIfFinished();
+  }
+
+  checkIfFinished(): void {
+    const answered = this.getAnsweredCount();
+    const total = this.quizQuestions.length;
+
+    console.log(`checkIfFinished(): answered=${answered}, total=${total}, quizFinished=${this.quizFinished}`);
+
+    if (!this.quizFinished && answered === total) {
+      console.log("✅ QUIZ FINALIZADO! Salvando resultado...");
+      this.quizFinished = true;
+      this.saveResult();
+    }
+  }
+
+  saveResult(): void {
+    console.log("📤 saveResult() iniciado");
+
+    if (!this.userId) {
+      console.error("❌ ID do usuário não encontrado!");
+      this.snackBar.open('Erro ao identificar usuário para salvar o resultado.', 'Fechar', {
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
+
+    if (this.isSaving) {
+      console.warn("⚠️ Já está salvando, ignorando nova chamada");
+      return;
+    }
+
+    this.isSaving = true;
+
+    const correctCount = this.getCorrectCount();
+    const totalQuestions = this.quizQuestions.length;
+    const score = (correctCount / totalQuestions) * 100;
+    const observacao = `ENEM ${this.year} - ${this.area ? this.getAreaLabel(this.area) : 'Completo'}`;
+
+    const simuladoData: SimuladoDTO = {
+      userId: this.userId,
+      pontuacao: parseFloat(score.toFixed(1)),
+      dataRealizacao: new Date().toISOString(),
+      observacoes: observacao
+    };
+
+    console.log("📊 Dados do simulado:", simuladoData);
+    console.log(`Resultado: ${correctCount}/${totalQuestions} corretas = ${score.toFixed(1)}%`);
+
+    this.simuladoService.saveSimulado(simuladoData).subscribe({
+      next: (savedSimulado) => {
+        console.log("✅ Simulado salvo com sucesso:", savedSimulado);
+        this.snackBar.open(
+          `Resultado salvo! Pontuação: ${simuladoData.pontuacao.toFixed(1)}%`,
+          'OK',
+          { duration: 4000, panelClass: ['success-snackbar'] }
+        );
+        this.isSaving = false;
+
+        // Aguarda um pouco antes de navegar para o histórico
+        setTimeout(() => {
+          this.router.navigate(['/historico']);
+        }, 2000);
+      },
+      error: (err) => {
+        console.error("❌ Erro ao salvar simulado:", err);
+        this.snackBar.open(
+          `Erro ao salvar resultado: ${err.message || 'Verifique sua conexão.'}`,
+          'Fechar',
+          { duration: 5000, panelClass: ['error-snackbar'] }
+        );
+        this.isSaving = false;
+      }
+    });
+  }
+
   isCorrectAlternative(questionIndex: number, letter: string): boolean {
     const question = this.quizQuestions.find(q => q.index === questionIndex);
     return question ? question.correctAlternative === letter : false;
@@ -227,10 +269,6 @@ export class QuizRunner implements OnInit {
 
   isSelected(questionIndex: number, letter: string): boolean {
     return this.userAnswers[questionIndex] === letter;
-  }
-
-  selectAnswer(questionIndex: number, letter: string): void {
-    this.userAnswers[questionIndex] = letter;
   }
 
   parseMarkdownToHtml(markdown: string): SafeHtml {
@@ -261,4 +299,6 @@ export class QuizRunner implements OnInit {
     // Opcional: Limpar userAnswers, currentQuestionIndex etc., se desejar resetar ao voltar
     this.router.navigate(['/enem']); // Navega para a lista de quizzes do ENEM
   }
+
+
 }

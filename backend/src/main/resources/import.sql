@@ -1,0 +1,2 @@
+insert into tb_simulado (pontuacao, dataHora, id, materia_id, usuario_id, observacoes) values
+(99.9,  2025-10-29 15:20:29.588000,  0x68F9556386F34076B5F6EDC6AF42E235, null, 0xB760B8B405814D05AAC6D3DF00F39EF5, ENEM 2009 - Ciências da Natureza);

@@ -45,7 +45,6 @@
             class="alternative"
             [ngClass]="getAlternativeClass(question.index, alt.letter)"
             [class.disabled]="isAnswered(question.index)"
-            (click)="!isAnswered(question.index) && selectAnswer(question.index, alt.letter)"
           >
             <input
               type="radio"
@@ -70,10 +69,10 @@
 
               <span
                 *ngIf="
-                  isAnswered(question.index) && isCorrectAlternative(question.index, alt.letter)
-                "
+          isAnswered(question.index) && isCorrectAlternative(question.index, alt.letter)
+        "
                 class="badge correct-badge"
-                >Correta</span
+              >Correta</span
               >
             </label>
           </div>

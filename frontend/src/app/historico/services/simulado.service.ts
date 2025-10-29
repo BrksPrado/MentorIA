@@ -42,6 +42,8 @@ export class SimuladoService {
     });
   }
 
+
+
   // Salva um novo simulado
   saveSimulado(simuladoData: SimuladoDTO): Observable<Simulado> {
     return this.http.post<Simulado>(this.apiUrl, simuladoData, { headers: this.getAuthHeaders() })
