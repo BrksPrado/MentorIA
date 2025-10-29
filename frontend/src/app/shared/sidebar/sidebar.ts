@@ -55,6 +55,11 @@ export class Sidebar {
     this.router.navigate(['/enem']);
   }
 
+  navigateToHistorico(): void {
+    this.router.navigate(['/historico']);
+    this.activeSubmenu = null; // Fecha submenus ao navegar
+  }
+
   navigateToProfile(): void {
     this.router.navigate(['/home/configuracao']);
   }

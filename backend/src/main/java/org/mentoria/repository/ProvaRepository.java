@@ -5,14 +5,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.mentoria.domain.Prova;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
 public class ProvaRepository implements PanacheRepository<Prova> {
 
-    public Prova findById(UUID id) {
-        return (Prova) Prova.findByIdOptional(id)
-                .orElseThrow(() -> new RuntimeException("Prova não encontrada"));
+    public Optional<Prova> findByIdOptional(UUID id) {
+        return Prova.findByIdOptional(id);
     }
 
     public List<Prova> findByMateriaId(UUID materiaId) {
@@ -20,10 +20,10 @@ public class ProvaRepository implements PanacheRepository<Prova> {
     }
 
     public List<Prova> findByDataBetween(LocalDateTime dataInicio, LocalDateTime dataFim) {
-        return find("data BETWEEN ?1 AND ?2", dataInicio, dataFim).list();
+        return find("dataHora BETWEEN ?1 AND ?2", dataInicio, dataFim).list();
     }
 
     public List<Prova> findUpcomingProvas(LocalDateTime dataAtual) {
-        return find("data >= ?1 ORDER BY data ASC", dataAtual).list();
+        return find("dataHora >= ?1 ORDER BY dataHora ASC", dataAtual).list();
     }
 }

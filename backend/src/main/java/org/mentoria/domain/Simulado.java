@@ -14,17 +14,22 @@ public class Simulado extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    public Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "materia_id", nullable = true)
+    public Materia materia;
+
     @Column(unique = false, nullable = true)
-    public Double pontuacao;
+    public Double pontuacao; // Armazenará a porcentagem (0.0 a 100.0)
 
     @Column(unique = false, nullable = true)
     public LocalDateTime dataHora;
 
     @Column(unique = false, nullable = true)
     public String observacoes;
-
-    @ManyToOne
-    public Materia materia;
-
-
+    
+    public Simulado() {}
 }

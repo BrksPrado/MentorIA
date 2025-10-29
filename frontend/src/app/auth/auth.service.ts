@@ -39,7 +39,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
   private tokenKey = 'authToken';
   private tokenExpirationKey = 'tokenExpiration';
-  
+
   // Subject para notificar mudanças no estado de autenticação
   private authStatusSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   public authStatus$ = this.authStatusSubject.asObservable();
@@ -75,9 +75,9 @@ export class AuthService {
   }
 
   private setToken(token: string, expiresIn: number): void {
-    
+
     localStorage.setItem(this.tokenKey, token);
-    
+
     const expirationDate = new Date().getTime() + (expiresIn * 1000);
     localStorage.setItem(this.tokenExpirationKey, expirationDate.toString());
   }
@@ -109,7 +109,7 @@ export class AuthService {
 
   private isTokenExpired(): boolean {
     const expirationDate = localStorage.getItem(this.tokenExpirationKey);
-    
+
     if (!expirationDate) {
       return true;
     }
@@ -152,7 +152,7 @@ export class AuthService {
   getUserProfile(): Observable<UserProfile> {
     const token = this.getToken();
     const headers = { 'Authorization': `Bearer ${token}` };
-    
+
     return this.http.get<UserProfile>(`${this.apiUrl}/profile`, { headers });
   }
 }
