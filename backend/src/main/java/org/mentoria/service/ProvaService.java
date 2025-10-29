@@ -27,11 +27,14 @@ public class ProvaService {
     }
 
     public Prova findById(UUID id) {
-        return provaRepository.findById(id);
+        return provaRepository.findByIdOptional(id)
+                .orElseThrow(() -> new RuntimeException("Prova não encontrada com ID: " + id));
     }
 
     public List<Prova> findByMateriaId(UUID materiaId) {
-        materiaRepository.findById(materiaId);
+        // Valida se a matéria existe
+        materiaRepository.findByIdOptional(materiaId)
+                .orElseThrow(() -> new RuntimeException("Matéria não encontrada com ID: " + materiaId));
         return provaRepository.findByMateriaId(materiaId);
     }
 
@@ -52,7 +55,8 @@ public class ProvaService {
             throw new IllegalArgumentException("Data é obrigatória");
         }
 
-        Materia materia = materiaRepository.findById(provaDTO.materiaId());
+        Materia materia = materiaRepository.findByIdOptional(provaDTO.materiaId())
+                .orElseThrow(() -> new RuntimeException("Matéria não encontrada com ID: " + provaDTO.materiaId()));
 
         Prova prova = new Prova();
         prova.dataHora = provaDTO.data();
@@ -71,7 +75,8 @@ public class ProvaService {
         prova.descricao = provaDTO.descricao();
 
         if (!prova.materia.id.equals(provaDTO.materiaId())) {
-            Materia novaMateria = materiaRepository.findById(provaDTO.materiaId());
+            Materia novaMateria = materiaRepository.findByIdOptional(provaDTO.materiaId())
+                    .orElseThrow(() -> new RuntimeException("Matéria não encontrada com ID: " + provaDTO.materiaId()));
             prova.materia = novaMateria;
         }
 

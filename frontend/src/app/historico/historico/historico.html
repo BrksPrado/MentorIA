@@ -1,0 +1,98 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="container">
+    <app-header></app-header>
+
+    <app-loading
+      *ngIf="isLoading"
+      [overlay]="true"
+      message="Carregando histórico"
+      size="large">
+    </app-loading>
+
+    <div class="historico-content" *ngIf="!isLoading">
+      <div class="header">
+        <h1>📊 Histórico de Simulados</h1>
+        <p>Veja seus resultados anteriores</p>
+      </div>
+
+      <div *ngIf="errorMessage && historico.length === 0" class="empty-state">
+        <span class="material-icons empty-icon">history</span>
+        <p>{{ errorMessage }}</p>
+        <button mat-flat-button color="primary" routerLink="/enem">Fazer um Simulado ENEM</button>
+        <button mat-stroked-button color="accent" routerLink="/generativa" style="margin-top: 10px;">Gerar Questões</button>
+      </div>
+
+      <div *ngIf="historico.length > 0" class="historico-list">
+        <div class="historico-header">
+          <div class="col-data">Data</div>
+
+          <div class="col-obs col-obs-header">
+            <span>Descrição</span>
+
+            <button *ngIf="!isEditMode"
+                    mat-icon-button
+                    (click)="toggleEditMode(true)"
+                    class="edit-button-header"
+                    aria-label="Ativar modo de edição">
+              <span class="material-icons">edit</span>
+            </button>
+
+            <button *ngIf="isEditMode"
+                    mat-stroked-button
+                    color="primary"
+                    (click)="toggleEditMode(false)"
+                    class="edit-button-header done-button"
+                    aria-label="Sair do modo de edição">
+              Concluído
+            </button>
+          </div>
+          <div class="col-pontuacao">Pontuação</div>
+        </div>
+
+        <div *ngFor="let item of historico" class="historico-item">
+          <div class="col-data">{{ formatDate(item.dataHora) }}</div>
+
+          <div class="col-obs">
+
+      <span *ngIf="editingId !== item.id"
+            (click)="isEditMode ? startEdit(item) : null"
+            [class.editable-text]="isEditMode">
+        {{ item.observacoes || 'Simulado' }}
+      </span>
+
+            <div *ngIf="isEditMode && editingId === item.id" class="edit-container">
+              <input
+                [(ngModel)]="editText"
+                (keyup.enter)="saveEdit(item.id)"
+                (keyup.escape)="cancelEdit()"
+                placeholder="Digite a descrição"
+                class="edit-input"> <button mat-icon-button color="primary" (click)="saveEdit(item.id)" aria-label="Salvar">
+              <span class="material-icons">check</span>
+            </button>
+              <button mat-icon-button (click)="cancelEdit()" aria-label="Cancelar">
+                <span class="material-icons">close</span>
+              </button>
+            </div>
+
+          </div>
+          <div class="col-pontuacao"
+               [ngClass]="{
+                 'score-high': item.pontuacao >= 70,
+                 'score-medium': item.pontuacao >= 50 && item.pontuacao < 70,
+                 'score-low': item.pontuacao < 50
+               }">
+
+            {{ (item.pontuacao || 0).toFixed(1) }}%
+
+            <span *ngIf="item.acertos !== null && item.totalQuestoes !== null" class="acertos-detalhe">
+              ({{ item.acertos }} / {{ item.totalQuestoes }})
+            </span>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

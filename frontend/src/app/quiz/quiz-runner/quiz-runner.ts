@@ -4,6 +4,9 @@ import { Question, QuestionResponse } from '../models/quiz.models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuizService } from '../services/quiz.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {AuthService} from '../../auth/auth.service';
+import {SimuladoDTO, SimuladoService} from '../../historico/services/simulado.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-quiz-runner',
@@ -20,65 +23,257 @@ export class QuizRunner implements OnInit {
   isLoading: boolean = true;
   errorMessage: string | null = null;
 
-  // Armazena as respostas do usuário
-  userAnswers: { [key: number]: string } = {};
-
-  // Expõe Object para o template
-  Object = Object;
+  quizFinished: boolean = false; // Flag para indicar fim do quiz
+  userId: string | null = null; // Para guardar o ID do usuário
+  isSaving: boolean = false; // Para feedback visual ao salvar
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private quizService: QuizService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService, // Injete AuthService
+    private simuladoService: SimuladoService, // Injete SimuladoService
+    private snackBar: MatSnackBar // Injete MatSnackBar
   ) { }
 
   ngOnInit(): void {
+    const userData = this.authService.getUserData();
+    if (!userData || !userData.userId) {
+      console.error("Usuário não logado!");
+      this.snackBar.open('Você precisa estar logado para realizar simulados.', 'Fechar', { duration: 5000 });
+      this.router.navigate(['/auth/login']); // Redireciona para login
+      return; // Interrompe a inicialização
+    }
+    this.userId = userData.userId;
+
+    // ... (resto do código de carregamento das questões) ...
     const yearParam = this.route.snapshot.paramMap.get('year');
     const areaParam = this.route.snapshot.paramMap.get('area');
 
     if (yearParam) {
       this.year = +yearParam;
+      this.isLoading = true; // Garante que isLoading está true
+      this.errorMessage = null; // Limpa erros anteriores
+      this.quizFinished = false; // Reseta o estado de finalizado
 
-      // Se tem área, busca apenas dessa área
       if (areaParam) {
         this.area = areaParam;
-
-        this.quizService.getQuestionsByArea(this.year, this.area).subscribe({
-          next: (response: QuestionResponse) => {
-            console.log('SUCESSO: Questões por área!', response);
-            if (response && response.questions && Array.isArray(response.questions)) {
-              this.quizQuestions = response.questions;
-            }
-            this.isLoading = false;
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error('ERRO: Falha ao buscar questões por área!', err);
-            this.errorMessage = `Erro ${err.status}: Não foi possível carregar as questões.`;
-            this.isLoading = false;
-          }
-        });
+        this.loadQuestionsByArea(this.year, this.area);
       } else {
-        // Se não tem área, busca prova completa
-        this.quizService.getFullExam(this.year).subscribe({
-          next: (response: Question[]) => {
-            console.log('SUCESSO: Prova completa!', response);
-            if (response && Array.isArray(response)) {
-              this.quizQuestions = response;
-            }
-            this.isLoading = false;
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error('ERRO: Falha ao buscar o simulado!', err);
-            this.errorMessage = `Erro ${err.status}: Não foi possível carregar o simulado.`;
-            this.isLoading = false;
-          }
-        });
+        this.area = null; // Garante que area é null para prova completa
+        this.loadFullExam(this.year);
       }
+    } else {
+      this.errorMessage = "Ano do exame não especificado na URL.";
+      this.isLoading = false;
     }
   }
 
-  // Converte markdown para HTML (especialmente imagens)
+  // Funções separadas para carregar questões
+  loadQuestionsByArea(year: number, area: string): void {
+    this.quizService.getQuestionsByArea(year, area).subscribe({
+      next: (response: QuestionResponse) => this.handleQuestionsResponse(response.questions),
+      error: (err: HttpErrorResponse) => this.handleErrorResponse(err, 'área')
+    });
+  }
+
+  loadFullExam(year: number): void {
+    this.quizService.getFullExam(year).subscribe({
+      next: (response: Question[]) => this.handleQuestionsResponse(response),
+      error: (err: HttpErrorResponse) => this.handleErrorResponse(err, 'simulado completo')
+    });
+  }
+
+  handleQuestionsResponse(questions: Question[]): void {
+    if (questions && Array.isArray(questions) && questions.length > 0) {
+      this.quizQuestions = questions;
+    } else {
+      this.quizQuestions = []; // Garante que a lista está vazia
+      this.errorMessage = `Nenhuma questão encontrada para ${this.area ? `a área ${this.area} de ` : ''}${this.year}.`;
+    }
+    this.isLoading = false;
+  }
+
+  handleErrorResponse(err: HttpErrorResponse, type: string): void {
+    console.error(`ERRO: Falha ao buscar ${type}!`, err);
+    this.errorMessage = `Erro ${err.status}: Não foi possível carregar as questões. Tente novamente.`;
+    this.isLoading = false;
+    this.quizQuestions = []; // Limpa questões em caso de erro
+  }
+
+
+  nextQuestion(): void {
+    if (this.currentQuestionIndex < this.quizQuestions.length - 1) {
+      this.currentQuestionIndex++;
+    }
+    this.checkIfFinished(); // Verifica se chegou ao fim após avançar
+  }
+
+  previousQuestion(): void {
+    if (this.currentQuestionIndex > 0) {
+      this.currentQuestionIndex--;
+    }
+    // Não precisa verificar se terminou aqui
+  }
+
+
+  getAnsweredCount(): number {
+    return Object.keys(this.userAnswers).length;
+  }
+
+  userAnswers: { [key: number]: string } = {};
+
+
+
+  getCorrectCount(): number {
+    let count = 0;
+    this.quizQuestions.forEach(question => {
+      if (this.userAnswers[question.index] === question.correctAlternative) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  // Helper para obter um nome mais amigável da área
+  getAreaLabel(areaValue: string): string {
+    switch (areaValue) {
+      case 'linguagens': return 'Linguagens';
+      case 'matematica': return 'Matemática';
+      case 'ciencias-natureza': return 'Ciências da Natureza';
+      case 'ciencias-humanas': return 'Ciências Humanas';
+      default: return areaValue;
+    }
+  }
+  isAnswered(questionIndex: number): boolean {
+    return this.userAnswers[questionIndex] !== undefined;
+  }
+
+  isCorrectAnswer(questionIndex: number): boolean {
+    const question = this.quizQuestions.find(q => q.index === questionIndex);
+    if (!question) return false;
+    return this.userAnswers[questionIndex] === question.correctAlternative;
+  }
+
+  getAlternativeClass(questionIndex: number, letter: string): string {
+    const isAnswered = this.isAnswered(questionIndex);
+    const isSelected = this.isSelected(questionIndex, letter);
+    const isCorrect = this.isCorrectAlternative(questionIndex, letter);
+
+    if (!isAnswered) {
+      return isSelected ? 'selected' : '';
+    }
+
+
+    // Questão já foi respondida - mostrar feedback
+    if (isCorrect) {
+      return 'correct'; // Verde
+    } else if (isSelected && !isCorrect) {
+      return 'incorrect'; // Vermelho
+    }
+
+    return '';
+  }
+
+  selectAnswer(questionIndex: number, letter: string): void {
+    this.userAnswers[questionIndex] = letter;
+    console.log(`Resposta registrada: Q${questionIndex} = ${letter}`);
+
+    const answered = this.getAnsweredCount();
+    const total = this.quizQuestions.length;
+    console.log(`Progresso: ${answered}/${total} questões respondidas`);
+
+    // Chama a verificação para saber se terminou
+    this.checkIfFinished();
+  }
+
+  checkIfFinished(): void {
+    const answered = this.getAnsweredCount();
+    const total = this.quizQuestions.length;
+
+    console.log(`checkIfFinished(): answered=${answered}, total=${total}, quizFinished=${this.quizFinished}`);
+
+    if (!this.quizFinished && answered === total) {
+      console.log("✅ QUIZ FINALIZADO! Salvando resultado...");
+      this.quizFinished = true;
+      this.saveResult();
+    }
+  }
+
+  saveResult(): void {
+    console.log("📤 saveResult() iniciado");
+
+    if (!this.userId) {
+      console.error("❌ ID do usuário não encontrado!");
+      this.snackBar.open('Erro ao identificar usuário para salvar o resultado.', 'Fechar', {
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
+
+    if (this.isSaving) {
+      console.warn("⚠️ Já está salvando, ignorando nova chamada");
+      return;
+    }
+
+    this.isSaving = true;
+
+    const correctCount = this.getCorrectCount();
+    const totalQuestions = this.quizQuestions.length;
+    const score = (correctCount / totalQuestions) * 100;
+    const observacao = `ENEM ${this.year} - ${this.area ? this.getAreaLabel(this.area) : 'Completo'}`;
+
+    const simuladoData: SimuladoDTO = {
+      userId: this.userId,
+      pontuacao: parseFloat(score.toFixed(1)),
+      dataRealizacao: new Date().toISOString(),
+      observacoes: observacao,
+      acertos: correctCount,
+      totalQuestoes: totalQuestions
+    };
+
+    console.log("📊 Dados do simulado:", simuladoData);
+    console.log(`Resultado: ${correctCount}/${totalQuestions} corretas = ${score.toFixed(1)}%`);
+
+    this.simuladoService.saveSimulado(simuladoData).subscribe({
+      next: (savedSimulado) => {
+        console.log("✅ Simulado salvo com sucesso:", savedSimulado);
+        this.snackBar.open(
+          `Resultado salvo! Pontuação: ${simuladoData.pontuacao.toFixed(1)}%`,
+          'OK',
+          { duration: 4000, panelClass: ['success-snackbar'] }
+        );
+        this.isSaving = false;
+
+        // Aguarda um pouco antes de navegar para o histórico
+        setTimeout(() => {
+          this.router.navigate(['/historico']);
+        }, 2000);
+      },
+      error: (err) => {
+        console.error("❌ Erro ao salvar simulado:", err);
+        this.snackBar.open(
+          `Erro ao salvar resultado: ${err.message || 'Verifique sua conexão.'}`,
+          'Fechar',
+          { duration: 5000, panelClass: ['error-snackbar'] }
+        );
+        this.isSaving = false;
+      }
+    });
+  }
+
+
+  isCorrectAlternative(questionIndex: number, letter: string): boolean {
+    const question = this.quizQuestions.find(q => q.index === questionIndex);
+    return question ? question.correctAlternative === letter : false;
+  }
+
+  isSelected(questionIndex: number, letter: string): boolean {
+    return this.userAnswers[questionIndex] === letter;
+  }
+
   parseMarkdownToHtml(markdown: string): SafeHtml {
     if (!markdown) return '';
 
@@ -102,84 +297,11 @@ export class QuizRunner implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
-  // Salva a resposta do usuário
-  selectAnswer(questionIndex: number, letter: string): void {
-    this.userAnswers[questionIndex] = letter;
-  }
-
-  // Verifica se uma alternativa foi selecionada
-  isSelected(questionIndex: number, letter: string): boolean {
-    return this.userAnswers[questionIndex] === letter;
-  }
-
-  // Verifica se a questão já foi respondida
-  isAnswered(questionIndex: number): boolean {
-    return this.userAnswers[questionIndex] !== undefined;
-  }
-
-  // Verifica se a alternativa é a correta
-  isCorrectAlternative(questionIndex: number, letter: string): boolean {
-    const question = this.quizQuestions.find(q => q.index === questionIndex);
-    return question ? question.correctAlternative === letter : false;
-  }
-
-  // Verifica se o usuário acertou a questão
-  isCorrectAnswer(questionIndex: number): boolean {
-    const question = this.quizQuestions.find(q => q.index === questionIndex);
-    if (!question) return false;
-    return this.userAnswers[questionIndex] === question.correctAlternative;
-  }
-
-  nextQuestion(): void {
-    if (this.currentQuestionIndex < this.quizQuestions.length - 1) {
-      this.currentQuestionIndex++;
-    }
-  }
-
-  previousQuestion(): void {
-    if (this.currentQuestionIndex > 0) {
-      this.currentQuestionIndex--;
-    }
-  }
-
-  // Retorna ao início
+  // Modificar goBackToList para limpar estado se necessário
   goBackToList(): void {
-    this.router.navigate(['/enem']);
+    // Opcional: Limpar userAnswers, currentQuestionIndex etc., se desejar resetar ao voltar
+    this.router.navigate(['/enem']); // Navega para a lista de quizzes do ENEM
   }
 
-  // Calcula quantas questões foram respondidas
-  getAnsweredCount(): number {
-    return Object.keys(this.userAnswers).length;
-  }
 
-  // Calcula quantas questões foram acertadas
-  getCorrectCount(): number {
-    let count = 0;
-    this.quizQuestions.forEach(question => {
-      if (this.userAnswers[question.index] === question.correctAlternative) {
-        count++;
-      }
-    });
-    return count;
-  }
-
-  // Retorna a classe CSS para uma alternativa
-  getAlternativeClass(questionIndex: number, letter: string): string {
-    const isAnswered = this.isAnswered(questionIndex);
-    const isSelected = this.isSelected(questionIndex, letter);
-    const isCorrect = this.isCorrectAlternative(questionIndex, letter);
-
-    if (!isAnswered) {
-      return isSelected ? 'selected' : '';
-    }
-
-    // Questão já foi respondida - mostrar feedback
-    if (isCorrect) {
-      return 'correct'; // Verde
-    } else if (isSelected && !isCorrect) {
-      return 'incorrect'; // Vermelho
-    }
-
-    return '';
-  }
 }

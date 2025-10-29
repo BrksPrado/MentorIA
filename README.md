@@ -30,7 +30,8 @@ Nosso objetivo é criar uma **plataforma web inteligente** para auxiliar estudan
 - [Node.js](https://nodejs.org/) e [Angular CLI](https://angular.io/cli) instalados  
 - [Java 21](https://www.oracle.com/java/technologies/downloads/) configurado  
 - [Maven](https://maven.apache.org/)  
-- [MySQL](https://www.mysql.com/) rodando localmente ou em container Docker  
+- [MySQL](https://www.mysql.com/) rodando localmente ou em container Docker
+- [Ollama](https://ollama.com/download/windows) rodando localmente ou em container Docker  
 
 ### Passos
 

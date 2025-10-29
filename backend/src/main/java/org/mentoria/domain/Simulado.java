@@ -14,6 +14,14 @@ public class Simulado extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    public Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "materia_id", nullable = true)
+    public Materia materia;
+
     @Column(unique = false, nullable = true)
     public Double pontuacao;
 
@@ -23,8 +31,16 @@ public class Simulado extends PanacheEntityBase {
     @Column(unique = false, nullable = true)
     public String observacoes;
 
-    @ManyToOne
-    public Materia materia;
+    @Column(unique = false, nullable = true)
+    public Integer acertos;  // ← NOVO
+
+    @Column(unique = false, nullable = true)
+    public Integer totalQuestoes;  // ← NOVO
+
+    public Simulado() {}
 
 
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
 }

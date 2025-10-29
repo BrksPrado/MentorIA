@@ -3,6 +3,7 @@ import { Exam } from '../models/quiz.models';
 import { Router } from '@angular/router';
 import { QuizService } from '../services/quiz.service';
 import { SelectedYearService } from '../services/selectedYear.service';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-quiz-list',
@@ -18,6 +19,7 @@ export class QuizList implements OnInit {
   selectedArea: string | null = null;
 
   constructor(
+    private authService: AuthService,
     private quizService: QuizService,
     private selectYearService: SelectedYearService,
     private router: Router
@@ -40,7 +42,6 @@ export class QuizList implements OnInit {
 
   selectYear(year: number): void {
     this.selectedYear = year;
-    // Scroll suave para o carrossel
     setTimeout(() => {
       const carouselSection = document.querySelector('.carousel-section');
       if (carouselSection) {

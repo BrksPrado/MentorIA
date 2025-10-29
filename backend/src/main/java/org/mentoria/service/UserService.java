@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.mentoria.domain.Usuario;
 import org.mentoria.dto.request.RegisterRequestDTO;
+import org.mentoria.exceptions.UserNotFoundException;
 import org.mentoria.repository.UserRepository;
 
 import java.util.Optional;
@@ -17,9 +18,9 @@ public class UserService {
     UserRepository userRepository;
 
     public Usuario findByUserId(UUID userId) {
-        return userRepository.findByUserId(userId);
+        return userRepository.findByIdOptional(userId)
+                .orElseThrow(() -> new UserNotFoundException());
     }
-
 
     @Transactional
     public Usuario createUser(RegisterRequestDTO registerDTO) {
@@ -40,7 +41,6 @@ public class UserService {
         userRepository.persist(usuario);
         return usuario;
     }
-
 
     @Transactional
     public Usuario updateUser(UUID userId, Usuario usuario) {
@@ -75,7 +75,6 @@ public class UserService {
     public void deleteUser(UUID userId) {
         userRepository.delete(findByUserId(userId));
     }
-
 
     public Optional<Usuario> findByUsernameOrEmail(String identifier) {
         return userRepository.findByUsernameOrEmail(identifier);

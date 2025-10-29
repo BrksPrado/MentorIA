@@ -10,9 +10,9 @@ import java.util.UUID;
 @ApplicationScoped
 public class MateriaRepository implements PanacheRepository<Materia> {
 
-    public Materia findById(UUID id) {
-        return (Materia) Materia.findByIdOptional(id)
-                .orElseThrow(() -> new RuntimeException("Matéria não encontrada"));
+    // Retorna Optional<Materia>
+    public Optional<Materia> findByIdOptional(UUID id) {
+        return Materia.findByIdOptional(id);
     }
 
     public Optional<Materia> findByNome(String nome) {
