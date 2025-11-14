@@ -6,6 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.mentoria.domain.Usuario;
+import org.mentoria.service.SimuladoService;
 import org.mentoria.service.UserService;
 
 import java.util.UUID;
@@ -17,6 +18,8 @@ public class UserController {
 
     @Inject
     UserService userService;
+    @Inject
+    SimuladoService simuladoService;
 
     @GET
     @Path("/{userId}")
@@ -36,6 +39,7 @@ public class UserController {
     @DELETE
     @Path("/{userId}")
     public Response deleteUser(@PathParam("userId") UUID userId) {
+        simuladoService.deleteSimuladosByUserId(userId);
         userService.deleteUser(userId);
         return Response.noContent().build();
     }
