@@ -59,7 +59,7 @@ export class Sidebar {
   }
 
   navigateToProfile(): void {
-    this.router.navigate(['/home/configuracao']);
+    this.router.navigate(['/configuracao']);
   }
 
   navigateToGenerative(): void {

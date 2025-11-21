@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomepageComponent } from './homepage-component/homepage-component';
+import { Configuracao } from './configuracao-component/configuracao-component';
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent }
+  { path: '', component: Configuracao } // '' significa que é a rota base do módulo
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomepageModuleRoutingModule { }
+export class ConfiguracaoRoutingModule { }

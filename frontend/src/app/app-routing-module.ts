@@ -4,10 +4,13 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
+    path: 'configuracao',
+    loadChildren: () => import('./configuracao/configuracao-module').then(m => m.ConfiguracaoModule)
+  },
+  {
      path: 'auth',
      loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule)
-  }
-  ,
+  },
   {
     path: '',
     loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule)
@@ -15,7 +18,6 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./homepage-module/homepage-module-module').then(m => m.HomepageModuleModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'enem',
