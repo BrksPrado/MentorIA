@@ -164,4 +164,12 @@ public class SimuladoService {
 
         return simulado;
     }
+
+    @Transactional
+    public void deleteSimuladosByUserId(UUID userId) {
+        List<Simulado> simulados = findSimuladosByUserId(userId);
+        for (Simulado simulado : simulados) {
+            simuladoRepository.delete(simulado);
+        }
+    }
 }
