@@ -59,6 +59,10 @@ export class AuthService {
       tap((response: AuthResponse) => {
         if (response && response.token) {
           this.setToken(response.token, response.expiresIn);
+          // Salvar o userId no localStorage
+          if (response.userId) {
+            localStorage.setItem('loggedUserId', response.userId);
+          }
           this.authStatusSubject.next(true);
         }
       }),
@@ -84,6 +88,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.tokenExpirationKey);
+    localStorage.removeItem('loggedUserId'); // Remover também o userId
     this.authStatusSubject.next(false);
     this.router.navigate(['/auth/login']);
   }

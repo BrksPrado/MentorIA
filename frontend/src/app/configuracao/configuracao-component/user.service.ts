@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 // Interface que representa o usuário no frontend
 export interface User {
@@ -53,7 +53,7 @@ export class UserService {
   getLoggedUser(): Observable<User> {
     const userId = this.getLoggedUserId();
     if (!userId) {
-      throw new Error('Usuário logado não encontrado.');
+      return throwError(() => new Error('Usuário logado não encontrado. Por favor, faça login novamente.'));
     }
     return this.getUserById(userId);
   }

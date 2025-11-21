@@ -48,9 +48,13 @@ export class Login implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login bem-sucedido!', response);
+          console.log('UserId recebido do backend:', response.userId);
+          console.log('Tipo do userId:', typeof response.userId);
 
           // Armazena o UUID do usuário logado
           this.userService.setLoggedUserId(response.userId);
+          
+          console.log('UserId armazenado no localStorage:', localStorage.getItem('loggedUserId'));
 
           this.snackBar.open('Login bem-sucedido!', 'X', {
             duration: 2000,
