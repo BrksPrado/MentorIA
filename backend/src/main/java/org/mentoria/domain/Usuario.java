@@ -22,4 +22,12 @@ public class Usuario extends PanacheEntityBase {
     @Column(nullable = false)
     public String password;
 
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -24,7 +24,7 @@
           <div class="profile-icon">
             <span class="material-icons">person</span>
           </div>
-          
+
           <div class="buttons-section">
             <button class="change-photo-btn">
               <span class="material-icons">camera_alt</span>
@@ -38,7 +38,7 @@
               <span class="material-icons">lock</span>
               Alterar Senha
             </button>
-            
+
             <!-- Botões de ação quando em modo de edição -->
             <div class="edit-actions" *ngIf="isEditing">
               <button class="save-btn" (click)="saveProfile()">
@@ -54,34 +54,34 @@
         <div class="user-info-section" *ngIf="!isLoading">
           <div class="info-group">
             <label class="info-label">Nome de Usuário</label>
-            <div class="info-value" *ngIf="!isEditing">{{ userData?.username || 'Carregando...' }}</div>
-            <input type="text" class="info-input" *ngIf="isEditing" 
-                   [(ngModel)]="editedUserData.username" 
+            <div class="info-value" *ngIf="!isEditing">{{ userData.username || 'Carregando...' }}</div>
+            <input type="text" class="info-input" *ngIf="isEditing"
+                   [(ngModel)]="editedUserData.username"
                    placeholder="Nome de usuário">
           </div>
 
           <div class="info-group">
             <label class="info-label">Email</label>
-            <div class="info-value" *ngIf="!isEditing">{{ userData?.email || 'Carregando...' }}</div>
-            <input type="email" class="info-input" *ngIf="isEditing" 
-                   [(ngModel)]="editedUserData.email" 
+            <div class="info-value" *ngIf="!isEditing">{{ userData.email || 'Carregando...' }}</div>
+            <input type="email" class="info-input" *ngIf="isEditing"
+                   [(ngModel)]="editedUserData.email"
                    placeholder="Email">
           </div>
 
-          <div class="info-group" *ngIf="userData?.firstName">
+          <div class="info-group" *ngIf="userData.firstName">
             <label class="info-label">Nome Completo</label>
             <div class="info-value" *ngIf="!isEditing">{{ userData.firstName }} {{ userData.lastName }}</div>
             <div class="name-inputs" *ngIf="isEditing">
-              <input type="text" class="info-input name-input" 
-                     [(ngModel)]="editedUserData.firstName" 
+              <input type="text" class="info-input name-input"
+                     [(ngModel)]="editedUserData.firstName"
                      placeholder="Nome">
-              <input type="text" class="info-input name-input" 
-                     [(ngModel)]="editedUserData.lastName" 
+              <input type="text" class="info-input name-input"
+                     [(ngModel)]="editedUserData.lastName"
                      placeholder="Sobrenome">
             </div>
           </div>
 
-          <div class="info-group" *ngIf="userData?.createdAt">
+          <div class="info-group" *ngIf="userData.createdAt">
             <label class="info-label">Membro desde</label>
             <div class="info-value">{{ userData.createdAt | date:'dd/MM/yyyy' }}</div>
           </div>
@@ -110,12 +110,12 @@
           <span class="material-icons">close</span>
         </button>
       </div>
-      
+
       <div class="dialog-content">
         <form [formGroup]="passwordForm" class="password-form">
           <div class="form-field">
             <label class="field-label">Senha Atual</label>
-            <input type="password" 
+            <input type="password"
                    class="field-input"
                    formControlName="currentPassword"
                    placeholder="Digite sua senha atual">
@@ -126,7 +126,7 @@
 
           <div class="form-field">
             <label class="field-label">Nova Senha</label>
-            <input type="password" 
+            <input type="password"
                    class="field-input"
                    formControlName="newPassword"
                    placeholder="Digite sua nova senha">
@@ -140,7 +140,7 @@
 
           <div class="form-field">
             <label class="field-label">Confirmar Nova Senha</label>
-            <input type="password" 
+            <input type="password"
                    class="field-input"
                    formControlName="confirmPassword"
                    placeholder="Confirme sua nova senha">
@@ -155,11 +155,16 @@
       </div>
 
       <div class="dialog-actions">
-        <button class="dialog-cancel-btn" (click)="closePasswordDialog()">Cancelar</button>
-        <button class="dialog-confirm-btn" 
+        <button class="dialog-cancel-btn"
+                (click)="closePasswordDialog()"
+                [disabled]="isChangingPassword">
+          Cancelar
+        </button>
+        <button class="dialog-confirm-btn"
                 (click)="changePassword()"
-                [disabled]="!passwordForm.valid">
-          Confirmar
+                [disabled]="!passwordForm.valid || isChangingPassword">
+          <span *ngIf="!isChangingPassword">Confirmar</span>
+          <span *ngIf="isChangingPassword">Alterando...</span>
         </button>
       </div>
     </div>

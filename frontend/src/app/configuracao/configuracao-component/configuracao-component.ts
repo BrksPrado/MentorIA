@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService, User } from './user.service';
-import { AuthService } from '../../auth/auth.service'; // Importar AuthService
+import { UserService, User, ChangePasswordRequest } from './user.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-configuracao',
@@ -17,8 +17,8 @@ export class Configuracao implements OnInit {
   isEditing = false;
   showPasswordDialog = false;
   passwordForm: FormGroup;
+  isChangingPassword = false;
 
-  // Inicialização correta
   userData: User = {} as User;
   editedUserData: User = {} as User;
 
@@ -26,7 +26,7 @@ export class Configuracao implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private userService: UserService,
-    private authService: AuthService // Injetar AuthService
+    private authService: AuthService
   ) {
     this.passwordForm = this.fb.group({
       currentPassword: ['', Validators.required],
@@ -43,48 +43,29 @@ export class Configuracao implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    // Debug: verificar userId no localStorage
-    let loggedUserId = localStorage.getItem('loggedUserId');
+    const loggedUserId = this.userService.getLoggedUserId();
+    console.log('=== CARREGANDO PERFIL ===');
+    console.log('UserId:', loggedUserId);
 
-    // Se não houver userId no localStorage, tentar extrair do token
     if (!loggedUserId) {
-      console.log('userId não encontrado no localStorage, tentando extrair do token...');
-      const userData = this.authService.getUserData();
-      if (userData && userData.userId) {
-        loggedUserId = userData.userId;
-        // Salvar para uso futuro
-        localStorage.setItem('loggedUserId', loggedUserId);
-        console.log('userId extraído do token e salvo:', loggedUserId);
-      }
+      this.error = 'Usuário não encontrado. Faça login novamente.';
+      this.isLoading = false;
+      this.showErrorMessage(this.error);
+      return;
     }
-
-    console.log('=== DEBUG LOAD USER PROFILE ===');
-    console.log('UserId no localStorage:', loggedUserId);
-    console.log('Tipo do userId no localStorage:', typeof loggedUserId);
 
     this.userService.getLoggedUser().subscribe({
       next: (user) => {
-        this.isLoading = false;
-        console.log('=== DADOS RECEBIDOS DO BACKEND ===');
-        console.log('Objeto user completo:', JSON.stringify(user, null, 2));
-        console.log('user.userId:', user.userId);
-        console.log('Tipo do user.userId:', typeof user.userId);
-
+        console.log('✅ Usuário carregado:', user);
         this.userData = user;
         this.editedUserData = { ...user };
-
-        console.log('=== APÓS ATRIBUIÇÃO ===');
-        console.log('this.userData:', JSON.stringify(this.userData, null, 2));
-        console.log('this.userData.userId:', this.userData.userId);
+        this.isLoading = false;
       },
       error: (err) => {
+        console.error('❌ Erro ao carregar usuário:', err);
+        this.error = 'Erro ao carregar dados do usuário.';
         this.isLoading = false;
-        console.error('Erro completo ao carregar perfil do usuário:', err);
-        console.error('Status do erro:', err.status);
-        console.error('Mensagem do erro:', err.error);
-        const errorMessage = err.message || 'Erro ao carregar dados do usuário.';
-        this.error = errorMessage;
-        this.showErrorMessage(errorMessage);
+        this.showErrorMessage(this.error);
       }
     });
   }
@@ -94,103 +75,58 @@ export class Configuracao implements OnInit {
     if (this.isEditing) {
       this.editedUserData = { ...this.userData };
     } else {
-      this.editedUserData = { ...this.userData }; // restaurar dados originais
+      this.editedUserData = { ...this.userData };
     }
   }
 
   saveProfile() {
-    console.log('=== INÍCIO DO MÉTODO SAVEPROFILE ===');
-    console.log('1. Verificando editedUserData:', this.editedUserData);
-    console.log('2. Verificando userData:', this.userData);
-    console.log('3. userData completo:', JSON.stringify(this.userData, null, 2));
-    console.log('4. Todas as propriedades de userData:', Object.keys(this.userData));
-    console.log('5. this.userData.userId:', this.userData.userId);
-    console.log('6. Tipo de this.userData.userId:', typeof this.userData.userId);
-    console.log('7. this.userData["userId"]:', this.userData['userId']);
+    console.log('=== SALVANDO PERFIL ===');
 
-    if (!this.editedUserData || !this.userData) {
-      console.error('ERRO: editedUserData ou userData é null/undefined');
-      this.showErrorMessage('Dados de usuário não encontrados.');
-      return;
-    }
-
-    // Tentar obter o userId de várias formas possíveis
-    let userId = this.userData.userId;
+    let userId = this.userData.userId || this.userData.id;
 
     if (!userId) {
-      console.warn('userId não encontrado em userData.userId, tentando alternativas...');
-
-      // Tentar pegar do localStorage
-      userId = localStorage.getItem('loggedUserId') || '';
-      console.log('8. userId do localStorage:', userId);
-
-      // Se ainda não tiver, tentar extrair do token
-      if (!userId) {
-        console.warn('userId não encontrado no localStorage, tentando extrair do token...');
-        const tokenData = this.authService.getUserData();
-        console.log('9. Dados extraídos do token:', tokenData);
-        if (tokenData && tokenData.userId) {
-          userId = tokenData.userId;
-          console.log('10. userId extraído do token:', userId);
-          // Atualizar o userData com o userId correto
-          this.userData.userId = userId;
-          localStorage.setItem('loggedUserId', userId);
-        }
-      } else {
-        // Atualizar userData com o userId do localStorage
-        this.userData.userId = userId;
-      }
+      userId = this.userService.getLoggedUserId() || '';
     }
 
-    console.log('11. userId FINAL a ser usado:', userId);
-    console.log('12. Tipo do userId FINAL:', typeof userId);
+    console.log('UserId para salvar:', userId);
 
     if (!userId) {
-      console.error('ERRO: Não foi possível obter o userId de nenhuma fonte');
-      this.showErrorMessage('ID do usuário não encontrado. Por favor, faça login novamente.');
+      this.showErrorMessage('ID do usuário não encontrado.');
       return;
     }
-
-    console.log('=== Iniciando atualização do perfil ===');
-    console.log('UserId a ser usado:', userId);
-    console.log('Dados a serem enviados:', this.editedUserData);
 
     this.isLoading = true;
-    this.userService.updateUser(userId, this.editedUserData).subscribe({
+
+    // Preservar o userId ao enviar
+    const dataToSend = {
+      ...this.editedUserData,
+      userId: userId // Garante que userId é enviado
+    };
+
+    this.userService.updateUser(userId, dataToSend).subscribe({
       next: (user) => {
-        this.isLoading = false;
-        console.log('Perfil atualizado com sucesso!', user);
+        console.log('✅ Perfil atualizado:', user);
         this.userData = user;
-        this.editedUserData = { ...user }; // atualiza a cópia
-        this.showSuccessMessage('Perfil atualizado com sucesso!');
+        this.editedUserData = { ...user };
+
+        // Preservar userId no localStorage
+        this.userService.setLoggedUserId(userId!);
+
+        this.isLoading = false;
         this.isEditing = false;
+        this.showSuccessMessage('Perfil atualizado com sucesso!');
       },
       error: (err) => {
+        console.error('❌ Erro ao salvar:', err);
         this.isLoading = false;
-        console.error('=== Erro ao atualizar perfil ===');
-        console.error('Erro completo:', err);
-        console.error('Status:', err.status);
-        console.error('Status Text:', err.statusText);
-        console.error('Erro retornado:', err.error);
-        console.error('URL da requisição:', err.url);
-
-        let errorMessage = 'Erro ao atualizar perfil. Verifique os dados e tente novamente.';
-        if (err.status === 404) {
-          errorMessage = 'Usuário não encontrado. Por favor, faça login novamente.';
-        } else if (err.status === 400) {
-          errorMessage = 'Dados inválidos. Verifique as informações e tente novamente.';
-        } else if (err.error && err.error.message) {
-          errorMessage = err.error.message;
-        }
-
-        this.showErrorMessage(errorMessage);
+        this.showErrorMessage(`Erro ao salvar perfil: ${err.message}`);
       }
     });
   }
 
   cancelEdit() {
     this.isEditing = false;
-    this.editedUserData = { ...this.userData }; // volta para os dados originais
+    this.editedUserData = { ...this.userData };
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -213,13 +149,62 @@ export class Configuracao implements OnInit {
     this.passwordForm.reset();
   }
 
-
+  // No configuracao-component.ts - método changePassword atualizado
   changePassword() {
     if (this.passwordForm.valid) {
-      console.log('Alterando senha:', this.passwordForm.value);
-      this.showSuccessMessage('Senha alterada com sucesso!');
-    this.closePasswordDialog();
+      this.isChangingPassword = true;
+
+      const userId = this.userService.getLoggedUserId();
+      if (!userId) {
+        this.showErrorMessage('Usuário não identificado. Faça login novamente.');
+        this.isChangingPassword = false;
+        return;
+      }
+
+      const passwordData: ChangePasswordRequest = this.passwordForm.value;
+
+      this.userService.changePassword(userId, passwordData).subscribe({
+        next: (response) => {
+          console.log('✅ Senha alterada com sucesso:', response);
+          this.isChangingPassword = false;
+          this.showSuccessMessage('Senha alterada com sucesso!');
+          this.closePasswordDialog();
+          this.passwordForm.reset();
+        },
+        error: (err) => {
+          console.error('❌ Erro ao alterar senha:', err);
+          this.isChangingPassword = false;
+
+          // Mensagens de erro específicas
+          let errorMessage = 'Erro ao alterar senha.';
+
+          if (err.status === 404) {
+            errorMessage = 'Funcionalidade de alteração de senha não disponível no momento.';
+          } else if (err.status === 400) {
+            errorMessage = 'Senha atual incorreta ou nova senha inválida.';
+          } else if (err.status === 401) {
+            errorMessage = 'Não autorizado. Verifique suas credenciais.';
+          } else if (err.message) {
+            errorMessage = err.message;
+          }
+
+          this.showErrorMessage(errorMessage);
+        }
+      });
+    } else {
+      // Marcar todos os campos como touched para mostrar erros de validação
+      this.markFormGroupTouched(this.passwordForm);
     }
+  }
+
+  // Método auxiliar para marcar todos os campos como touched
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control) {
+        control.markAsTouched();
+      }
+    });
   }
 
   showSuccessMessage(message: string) {

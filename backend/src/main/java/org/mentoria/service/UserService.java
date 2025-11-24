@@ -72,6 +72,14 @@ public class UserService {
     }
 
     @Transactional
+    public Usuario updatePassword(UUID userId, String newPassword) {
+        Usuario usuario = findByUserId(userId);
+        usuario.password = newPassword;
+        userRepository.persist(usuario);
+        return usuario;
+    }
+
+    @Transactional
     public void deleteUser(UUID userId) {
         userRepository.delete(findByUserId(userId));
     }
