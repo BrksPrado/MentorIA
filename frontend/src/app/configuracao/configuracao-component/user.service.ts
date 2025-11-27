@@ -59,6 +59,28 @@ export class UserService {
     return this.http.put<User>(`${this.apiUrl}/${userId}`, data);
   }
 
+  deleteUser(userId: string): Observable<any> {
+    if (!userId) {
+      return throwError(() => new Error('UserId não fornecido'));
+    }
+
+    return this.http.delete(`${this.apiUrl}/${userId}`).pipe(
+      tap(response => {
+        console.log('✅ Usuário deletado com sucesso:', response);
+      }),
+      catchError(error => {
+        console.error('❌ Erro ao deletar usuário:', error);
+        let errorMessage = 'Erro ao deletar usuário';
+
+        if (error.status === 404) {
+          errorMessage = 'Usuário não encontrado';
+        }
+
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
   // Alterar senha do usuário
   changePassword(userId: string, passwordData: ChangePasswordRequest): Observable<any> {
     if (!userId) {

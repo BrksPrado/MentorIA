@@ -26,10 +26,6 @@
           </div>
 
           <div class="buttons-section">
-            <button class="change-photo-btn">
-              <span class="material-icons">camera_alt</span>
-              Alterar Foto
-            </button>
             <button class="edit-btn" (click)="toggleEditMode()" *ngIf="!isEditing">
               <span class="material-icons">edit</span>
               Editar Perfil
@@ -37,6 +33,10 @@
             <button class="change-password-btn" (click)="openChangePasswordDialog()">
               <span class="material-icons">lock</span>
               Alterar Senha
+            </button>
+            <button class="delete-account-btn" (click)="deleteAccount()">
+              <span class="material-icons">delete</span>
+              Excluir conta
             </button>
 
             <!-- Botões de ação quando em modo de edição -->

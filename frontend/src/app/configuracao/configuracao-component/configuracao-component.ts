@@ -124,6 +124,31 @@ export class Configuracao implements OnInit {
     });
   }
 
+  deleteAccount(): void {
+    let userId = this.userData.userId || this.userData.id;
+
+    if (!userId) {
+      userId = this.userService.getLoggedUserId() || '';
+    }
+
+    if (!userId) {
+      this.showErrorMessage('ID do usuário não encontrado.');
+      return;
+    }
+
+    this.userService.deleteUser(userId).subscribe({
+      next: (response) => {
+        console.log('✅ Conta deletada:', response);
+        this.showSuccessMessage('Conta deletada com sucesso!');
+        this.authService.logout();
+      },
+      error: (err) => {
+        console.error('❌ Erro ao deletar conta:', err);
+        this.showErrorMessage('Erro ao deletar conta.');
+      }
+    });
+  }
+
   cancelEdit() {
     this.isEditing = false;
     this.editedUserData = { ...this.userData };
@@ -148,8 +173,8 @@ export class Configuracao implements OnInit {
     this.showPasswordDialog = false;
     this.passwordForm.reset();
   }
-
   // No configuracao-component.ts - método changePassword atualizado
+
   changePassword() {
     if (this.passwordForm.valid) {
       this.isChangingPassword = true;
@@ -198,14 +223,6 @@ export class Configuracao implements OnInit {
   }
 
   // Método auxiliar para marcar todos os campos como touched
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      if (control) {
-        control.markAsTouched();
-      }
-    });
-  }
 
   showSuccessMessage(message: string) {
     this.snackBar.open(message, 'Fechar', {
@@ -222,6 +239,14 @@ export class Configuracao implements OnInit {
       horizontalPosition: 'end',
       verticalPosition: 'bottom',
       panelClass: ['error-snackbar']
+    });
+  }
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control) {
+        control.markAsTouched();
+      }
     });
   }
 

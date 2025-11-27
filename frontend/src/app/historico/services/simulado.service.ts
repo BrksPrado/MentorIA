@@ -65,6 +65,14 @@ export class SimuladoService {
       );
   }
 
+  deleteSimulado(simuladoId: string): Observable<void> {
+    const url = `${this.apiUrl}/${simuladoId}`;
+    return this.http.delete<void>(url, { headers: this.getAuthHeaders() })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: any): Observable<never> {
     console.error('Erro na API SimuladoService:', error);
     let errorMessage = 'Ocorreu um erro desconhecido.';

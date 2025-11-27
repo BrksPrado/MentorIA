@@ -102,8 +102,4 @@ public class SimuladoController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao deletar simulado.").build();
         }
     }
-
-    // Endpoints de média podem precisar ser reavaliados ou adaptados para userId
-    // GET /simulados/media
-    // GET /simulados/materia/{materiaId}/media
 }

@@ -68,11 +68,15 @@
                 (keyup.enter)="saveEdit(item.id)"
                 (keyup.escape)="cancelEdit()"
                 placeholder="Digite a descrição"
-                class="edit-input"> <button mat-icon-button color="primary" (click)="saveEdit(item.id)" aria-label="Salvar">
+                class="edit-input">
+              <button mat-icon-button color="primary" (click)="saveEdit(item.id)" aria-label="Salvar">
               <span class="material-icons">check</span>
             </button>
               <button mat-icon-button (click)="cancelEdit()" aria-label="Cancelar">
                 <span class="material-icons">close</span>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteItem(item.id)" aria-label="Excluir">
+                <span class="material-icons">delete</span>
               </button>
             </div>
 

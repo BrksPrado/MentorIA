@@ -71,7 +71,7 @@
   flex: 1;
 }
 
-.change-photo-btn, .edit-btn, .change-password-btn {
+.delete-account-btn, .edit-btn, .change-password-btn {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -85,13 +85,14 @@
   justify-content: flex-start;
 }
 
-.change-photo-btn {
-  background: #f5f5f5;
+.delete-account-btn {
+  background: #da3807;
+  color: white;
 }
 
-.change-photo-btn:hover {
-  background: #e0e0e0;
-  border-color: #ccc;
+.delete-account-btn:hover {
+  background: #ff0000;
+  border-color: #da0707;
 }
 
 .edit-btn {
@@ -504,18 +505,18 @@
   .configuracao-root .content {
     padding: 1rem;
   }
-  
+
   .configuracao-container {
     padding-left: 1rem;
     max-width: 100%;
   }
-  
-  
+
+
   .action-buttons {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .edit-btn, .change-password-btn {
     width: 100%;
     justify-content: center;

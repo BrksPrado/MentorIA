@@ -96,6 +96,17 @@ export class Historico implements OnInit {
     });
   }
 
+  deleteItem(simuladoId: string): void {
+    this.simuladoService.deleteSimulado(simuladoId).subscribe({
+      next: () => {
+        this.historico = this.historico.filter(h => h.id !== simuladoId);
+        this.snackBar.open('Simulado deletado com sucesso!', 'OK', { duration: 3000 });
+      },
+      error: (err) => {
+        this.snackBar.open(`Erro ao deletar: ${err.message}`, 'Fechar', { duration: 5000 });
+      }
+    });
+  }
   formatDate(dateString: string): string {
     if (!dateString) return 'Data inválida';
     const date = new Date(dateString);
