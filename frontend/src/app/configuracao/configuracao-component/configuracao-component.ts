@@ -136,6 +136,11 @@ export class Configuracao implements OnInit {
       return;
     }
 
+    const confirmed = confirm('Tem certeza de que deseja deletar sua conta? Esta ação não pode ser desfeita.');
+    if (!confirmed) {
+      return;
+    }
+
     this.userService.deleteUser(userId).subscribe({
       next: (response) => {
         console.log('✅ Conta deletada:', response);
@@ -241,6 +246,7 @@ export class Configuracao implements OnInit {
       panelClass: ['error-snackbar']
     });
   }
+
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(key => {
       const control = formGroup.get(key);
