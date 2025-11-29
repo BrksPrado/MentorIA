@@ -1,0 +1,104 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="container">
+    <app-header></app-header>
+
+    @if (isLoading) {
+      <app-loading [overlay]="true" message="Carregando formulário" size="large">
+      </app-loading>
+    }
+
+    @if (!isLoading) {
+      <div>
+        <div class="header">
+          <h1>{{ isEditMode ? 'Editar Evento' : 'Novo Evento' }}</h1>
+          <p>{{ isEditMode ? 'Atualize as informações do evento' : 'Preencha as informações do novo evento' }}</p>
+        </div>
+
+        <div class="form-section">
+          <form [formGroup]="eventoForm" (ngSubmit)="onSubmit()" class="evento-form">
+            <div class="form-group">
+              <label class="form-label">Título do Evento *</label>
+              <input
+                type="text"
+                formControlName="titulo"
+                class="form-input"
+                placeholder="Digite o título do evento"
+                required>
+              <div class="form-error" *ngIf="eventoForm.get('titulo')?.invalid && eventoForm.get('titulo')?.touched">
+                Título é obrigatório
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Descrição</label>
+              <textarea
+                formControlName="descricao"
+                class="form-textarea"
+                placeholder="Digite uma descrição opcional"
+                rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Data e Hora *</label>
+                <input
+                  type="datetime-local"
+                  formControlName="dataEvento"
+                  class="form-input"
+                  required>
+                <div class="form-error" *ngIf="eventoForm.get('dataEvento')?.invalid && eventoForm.get('dataEvento')?.touched">
+                  Data do evento é obrigatória
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Tipo *</label>
+                <select formControlName="tipo" class="form-select" required>
+                  <option value="" disabled>Selecione o tipo</option>
+                  <option *ngFor="let tipo of tiposEvento" [value]="tipo.value">
+                    {{ tipo.label }}
+                  </option>
+                </select>
+                <div class="form-error" *ngIf="eventoForm.get('tipo')?.invalid && eventoForm.get('tipo')?.touched">
+                  Tipo é obrigatório
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Cor do Evento</label>
+              <div class="color-options">
+                <div
+                  *ngFor="let cor of cores"
+                  class="color-option"
+                  [class.selected]="eventoForm.get('cor')?.value === cor.value"
+                  (click)="eventoForm.get('cor')?.setValue(cor.value)">
+                  <div class="color-circle" [style.background-color]="cor.value"></div>
+                  <span class="color-label">{{ cor.label }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="submit-btn"
+                [disabled]="eventoForm.invalid || isSubmitting">
+                <span *ngIf="isSubmitting" class="loading-spinner"></span>
+                {{ isEditMode ? 'Atualizar Evento' : 'Criar Evento' }}
+              </button>
+              <button
+                type="button"
+                class="cancel-btn"
+                (click)="onCancel()">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+  </div>
+</div>

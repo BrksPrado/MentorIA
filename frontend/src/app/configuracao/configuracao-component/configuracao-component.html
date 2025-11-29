@@ -1,0 +1,207 @@
+<div class="configuracao-root">
+  <app-sidebar></app-sidebar>
+
+  <main class="main">
+    <app-header></app-header>
+
+    <section class="content">
+      <div class="configuracao-container">
+        <div class="configuracao-header">
+          <h1>Configurações do Perfil</h1>
+          <p>Gerencie suas informações pessoais</p>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoading) {
+          <div class="loading-state">
+            <div class="loading-spinner">
+              <span class="material-icons">refresh</span>
+            </div>
+            <p>Carregando dados do usuário...</p>
+          </div>
+        }
+
+        <!-- User Profile Content -->
+        @if (!isLoading) {
+          <div class="profile-section">
+            <div class="profile-icon">
+              <span class="material-icons">person</span>
+            </div>
+            <div class="buttons-section">
+              @if (!isEditing) {
+                <button class="edit-btn" (click)="toggleEditMode()">
+                  <span class="material-icons">edit</span>
+                  Editar Perfil
+                </button>
+              }
+              <button class="change-password-btn" (click)="openChangePasswordDialog()">
+                <span class="material-icons">lock</span>
+                Alterar Senha
+              </button>
+              <button class="delete-account-btn" (click)="deleteAccount()">
+                <span class="material-icons">delete</span>
+                Excluir conta
+              </button>
+              <!-- Botões de ação quando em modo de edição -->
+              @if (isEditing) {
+                <div class="edit-actions">
+                  <button class="save-btn" (click)="saveProfile()">
+                    <span class="material-icons">save</span>
+                  </button>
+                  <button class="cancel-btn" (click)="cancelEdit()">
+                    <span class="material-icons">cancel</span>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (!isLoading) {
+          <div class="user-info-section">
+            <div class="info-group">
+              <label class="info-label">Nome de Usuário</label>
+              @if (!isEditing) {
+                <div class="info-value">{{ userData.username || 'Carregando...' }}</div>
+              }
+              @if (isEditing) {
+                <input type="text" class="info-input"
+                  [(ngModel)]="editedUserData.username"
+                  placeholder="Nome de usuário">
+              }
+            </div>
+            <div class="info-group">
+              <label class="info-label">Email</label>
+              @if (!isEditing) {
+                <div class="info-value">{{ userData.email || 'Carregando...' }}</div>
+              }
+              @if (isEditing) {
+                <input type="email" class="info-input"
+                  [(ngModel)]="editedUserData.email"
+                  placeholder="Email">
+              }
+            </div>
+            @if (userData.firstName) {
+              <div class="info-group">
+                <label class="info-label">Nome Completo</label>
+                @if (!isEditing) {
+                  <div class="info-value">{{ userData.firstName }} {{ userData.lastName }}</div>
+                }
+                @if (isEditing) {
+                  <div class="name-inputs">
+                    <input type="text" class="info-input name-input"
+                      [(ngModel)]="editedUserData.firstName"
+                      placeholder="Nome">
+                    <input type="text" class="info-input name-input"
+                      [(ngModel)]="editedUserData.lastName"
+                      placeholder="Sobrenome">
+                  </div>
+                }
+              </div>
+            }
+            @if (userData.createdAt) {
+              <div class="info-group">
+                <label class="info-label">Membro desde</label>
+                <div class="info-value">{{ userData.createdAt | date:'dd/MM/yyyy' }}</div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Error State -->
+        @if (error && !isLoading) {
+          <div class="error-state">
+            <div class="error-message">
+              <span class="material-icons">error</span>
+              <p>{{ error }}</p>
+              <button class="retry-btn" (click)="loadUserProfile()">
+                Tentar Novamente
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  </main>
+
+  <!-- Password Change Dialog -->
+  @if (showPasswordDialog) {
+    <div class="password-dialog-overlay" (click)="closePasswordDialog()">
+      <div class="password-dialog" (click)="$event.stopPropagation()">
+        <div class="dialog-header">
+          <h2>Alterar Senha</h2>
+          <button class="close-btn" (click)="closePasswordDialog()">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+        <div class="dialog-content">
+          <form [formGroup]="passwordForm" class="password-form">
+            <div class="form-field">
+              <label class="field-label">Senha Atual</label>
+              <input type="password"
+                class="field-input"
+                formControlName="currentPassword"
+                placeholder="Digite sua senha atual">
+              @if (passwordForm.get('currentPassword')?.hasError('required') && passwordForm.get('currentPassword')?.touched) {
+                <div class="field-error">
+                  Senha atual é obrigatória
+                </div>
+              }
+            </div>
+            <div class="form-field">
+              <label class="field-label">Nova Senha</label>
+              <input type="password"
+                class="field-input"
+                formControlName="newPassword"
+                placeholder="Digite sua nova senha">
+              @if (passwordForm.get('newPassword')?.hasError('required') && passwordForm.get('newPassword')?.touched) {
+                <div class="field-error">
+                  Nova senha é obrigatória
+                </div>
+              }
+              @if (passwordForm.get('newPassword')?.hasError('minlength') && passwordForm.get('newPassword')?.touched) {
+                <div class="field-error">
+                  A senha deve ter pelo menos 6 caracteres
+                </div>
+              }
+            </div>
+            <div class="form-field">
+              <label class="field-label">Confirmar Nova Senha</label>
+              <input type="password"
+                class="field-input"
+                formControlName="confirmPassword"
+                placeholder="Confirme sua nova senha">
+              @if (passwordForm.get('confirmPassword')?.hasError('required') && passwordForm.get('confirmPassword')?.touched) {
+                <div class="field-error">
+                  Confirmação de senha é obrigatória
+                </div>
+              }
+              @if (passwordForm.get('confirmPassword')?.hasError('passwordMismatch') && passwordForm.get('confirmPassword')?.touched) {
+                <div class="field-error">
+                  As senhas não coincidem
+                </div>
+              }
+            </div>
+          </form>
+        </div>
+        <div class="dialog-actions">
+          <button class="dialog-cancel-btn"
+            (click)="closePasswordDialog()"
+            [disabled]="isChangingPassword">
+            Cancelar
+          </button>
+          <button class="dialog-confirm-btn"
+            (click)="changePassword()"
+            [disabled]="!passwordForm.valid || isChangingPassword">
+            @if (!isChangingPassword) {
+              <span>Confirmar</span>
+            }
+            @if (isChangingPassword) {
+              <span>Alterando...</span>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

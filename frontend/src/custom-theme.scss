@@ -1,0 +1,107 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+
+$brand-primary: (
+  0: #000000,
+  20: #0c3643,
+  30: #0e3f51,
+  40: #114b5f, // base
+  60: #2c6a80,
+  80: #6fa0b1,
+  90: #b7d0db,
+  95: #deebf0,
+  99: #fffbff,
+  100: #ffffff,
+);
+
+$palette-secondary: (
+  0: #000000,
+  20: #116950,
+  30: #157d5f,
+  40: #1a936f, // base
+  60: #3db48f,
+  80: #7dd9be,
+  90: #b8ecda,
+  95: #dcf7ec,
+  99: #fffbff,
+  100: #ffffff,
+);
+
+$brand-tertiary: (
+  0: #000000,
+  20: #4b7e56,
+  30: #6aa972,
+  40: #7fbe86,
+  60: #88d498, // base
+  80: #b6e8c2,
+  90: #d8f5df,
+  95: #ebfbef,
+  99: #fffbff,
+  100: #ffffff,
+);
+
+$brand-neutral: (
+  0: #000000,
+  20: #4c5846,
+  30: #5f6d57,
+  40: #74846b,
+  60: #a0b199,
+  80: #c6dabf, // base
+  90: #dee9d9,
+  95: #eef4ea,
+  99: #fffbff,
+  100: #ffffff,
+);
+
+$brand-neutral-variant: (
+  0: #000000,
+  20: #6a614e,
+  30: #827662,
+  40: #9a8d78,
+  60: #c5bba2,
+  80: #e2d7bc,
+  90: #f0e6cf,
+  95: #f7f0e0,
+  99: #fffbff,
+  100: #ffffff,
+);
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: $brand-primary,
+      secondary: $palette-secondary,
+      tertiary: $brand-tertiary,
+      neutral: $brand-neutral,
+      neutral-variant: $brand-neutral-variant,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+
+  .mat-elevation-z4 {
+    @include mat.elevation(4);
+  }
+}
+
+body {
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}

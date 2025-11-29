@@ -1,0 +1,69 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="container">
+    <app-header></app-header>
+
+    @if (isLoading) {
+      <app-loading [overlay]="true" message="Carregando eventos" size="large">
+      </app-loading>
+    }
+
+    @if (!isLoading) {
+      <div>
+        <div class="header">
+          <h1>📅 Eventos / Datas de Vestibulares</h1>
+          <p>Gerencie seus eventos e datas importantes</p>
+        </div>
+
+        <div class="eventos-section">
+          <div class="section-header">
+            <h2>Seus Eventos</h2>
+            <button class="novo-evento-btn" (click)="onNovoEvento()">
+              <span class="material-icons">add</span>
+              Novo Evento
+            </button>
+          </div>
+
+          @if (eventos.length === 0) {
+            <div class="empty-state">
+              <span class="empty-icon">📅</span>
+              <h3>Nenhum evento encontrado</h3>
+              <p>Crie seu primeiro evento para começar a organizar suas datas importantes.</p>
+              <button class="criar-primeiro-btn" (click)="onNovoEvento()">
+                Criar Primeiro Evento
+              </button>
+            </div>
+          }
+
+          <div class="eventos-grid">
+            @for (evento of eventos; track evento.id) {
+              <div class="evento-card" [style.border-left-color]="evento.cor">
+                <div class="evento-header">
+                  <h3 class="evento-titulo">{{ evento.titulo }}</h3>
+                  <div class="evento-actions">
+                    <button class="action-btn edit-btn" (click)="onEditar(evento)" title="Editar">
+                      <span class="material-icons">edit</span>
+                    </button>
+                    <button class="action-btn delete-btn" (click)="onDeletar(evento)" title="Deletar">
+                      <span class="material-icons">delete</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="evento-info">
+                  <div class="evento-data">
+                    <span class="material-icons">calendar_today</span>
+                    {{ evento.dataEvento | date:'dd/MM/yyyy HH:mm' }}
+                  </div>
+                  <div class="evento-tipo" [class]="'tipo-' + evento.tipo.toLowerCase()">
+                    {{ getTipoLabel(evento.tipo) }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

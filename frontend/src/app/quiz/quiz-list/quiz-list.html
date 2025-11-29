@@ -1,0 +1,89 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="container">
+    <app-header></app-header>
+
+    @if (isLoading) {
+      <app-loading [overlay]="true" message="Carregando simulados" size="large">
+      </app-loading>
+    }
+
+    @if (!isLoading) {
+      <div>
+        <div class="header">
+          <h1>🎓 Simulados ENEM</h1>
+          <p>Selecione um ano e escolha seu desafio</p>
+        </div>
+        @if (selectedYear !== null) {
+          <div class="carousel-section">
+            <div class="carousel-header">
+              <h2 class="carousel-title">📚 ENEM {{ selectedYear }} - Escolha sua prova</h2>
+              <button class="close-carousel-btn" (click)="clearSelection()">
+                <span class="material-icons">close</span>
+                Fechar
+              </button>
+            </div>
+            <div class="carousel-container">
+              <div class="carousel-wrapper">
+                <div class="carousel-card" (click)="startFullQuiz()">
+                  <span class="carousel-card-icon">📝</span>
+                  <h3>Prova Completa</h3>
+                  <p>Todas as áreas do conhecimento</p>
+                  <button class="carousel-card-btn">Iniciar Simulado</button>
+                </div>
+                <div class="carousel-card" (click)="startAreaQuiz('linguagens')">
+                  <span class="carousel-card-icon">📖</span>
+                  <h3>Linguagens</h3>
+                  <p>Português, Literatura e Língua Estrangeira</p>
+                  <button class="carousel-card-btn">Iniciar Simulado</button>
+                </div>
+                <div class="carousel-card" (click)="startAreaQuiz('matematica')">
+                  <span class="carousel-card-icon">🔢</span>
+                  <h3>Matemática</h3>
+                  <p>Matemática e suas Tecnologias</p>
+                  <button class="carousel-card-btn">Iniciar Simulado</button>
+                </div>
+                <div class="carousel-card" (click)="startAreaQuiz('ciencias-natureza')">
+                  <span class="carousel-card-icon">🧪</span>
+                  <h3>Ciências da Natureza</h3>
+                  <p>Física, Química e Biologia</p>
+                  <button class="carousel-card-btn">Iniciar Simulado</button>
+                </div>
+                <div class="carousel-card" (click)="startAreaQuiz('ciencias-humanas')">
+                  <span class="carousel-card-icon">🌍</span>
+                  <h3>Ciências Humanas</h3>
+                  <p>História, Geografia, Filosofia e Sociologia</p>
+                  <button class="carousel-card-btn">Iniciar Simulado</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        <div class="quiz-list-section">
+          <h2 class="section-title">Anos Disponíveis</h2>
+          <div class="quiz-list">
+            @if (exams.length === 0) {
+              <p class="empty-state">
+                Nenhum simulado encontrado.
+              </p>
+            }
+            <div class="quiz-card coming-soon">
+              <span class="quiz-card-icon">🚀</span>
+              <h2>Em breve...</h2>
+              <p>Novos simulados chegando</p>
+            </div>
+            @for (exam of exams; track exam) {
+              <div class="quiz-card" (click)="selectYear(exam.year)"
+                [class.selected]="selectedYear === exam.year">
+                <span class="quiz-card-icon"></span>
+                <h2>{{ exam.title }}</h2>
+                <p>Clique para escolher o conteúdo</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

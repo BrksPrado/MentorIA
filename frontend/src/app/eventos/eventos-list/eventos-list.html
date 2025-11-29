@@ -1,0 +1,71 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="container">
+    <app-header></app-header>
+
+    @if (isLoading) {
+      <app-loading [overlay]="true" message="Carregando eventos" size="large">
+      </app-loading>
+    }
+
+    @if (!isLoading) {
+      <div class="content">
+        <div class="header">
+          <h1>📅 Seus Eventos</h1>
+          <p>Gerencie seus eventos e datas importantes</p>
+          <button class="add-btn" (click)="navigateToNew()">
+            <span class="add-icon">➕</span>
+            Novo Evento
+          </button>
+        </div>
+
+        @if (eventos.length === 0) {
+          <div class="empty-state">
+            <div class="empty-icon">📅</div>
+            <h3>Nenhum evento encontrado</h3>
+            <p>Você ainda não possui eventos cadastrados.</p>
+            <button class="create-first-btn" (click)="navigateToNew()">
+              Criar Primeiro Evento
+            </button>
+          </div>
+        }
+
+        @if (eventos.length > 0) {
+          <div class="events-grid">
+            @for (evento of eventos; track evento.id) {
+              <div class="event-card" [style.border-left-color]="evento.cor">
+                <div class="event-header">
+                  <h3 class="event-title">{{ evento.titulo }}</h3>
+                  <div class="event-actions">
+                    <button class="edit-btn" (click)="editEvento(evento.id)" title="Editar">
+                      ✏️
+                    </button>
+                    <button class="delete-btn" (click)="deleteEvento(evento.id)" title="Excluir">
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+
+                @if (evento.descricao) {
+                  <p class="event-description">{{ evento.descricao }}</p>
+                }
+
+                <div class="event-details">
+                  <div class="detail-item">
+                    <span class="detail-icon">📅</span>
+                    <span class="detail-text">{{ formatDate(evento.dataEvento) }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-icon">🏷️</span>
+                    <span class="detail-text">{{ getTipoLabel(evento.tipo) }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

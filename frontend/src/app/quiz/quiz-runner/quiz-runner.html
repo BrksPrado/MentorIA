@@ -1,0 +1,135 @@
+<div class="quiz-container">
+  @if (isLoading) {
+    <app-loading [overlay]="true" message="Carregando ENEM {{ year }}" size="large">
+    </app-loading>
+  }
+
+  @if (quizQuestions.length > 0) {
+    <div class="quiz-header">
+      <h1>Simulado ENEM {{ year }}</h1>
+      <p>Questão {{ currentQuestionIndex + 1 }} de {{ quizQuestions.length }}</p>
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width.%]="(getAnsweredCount() / quizQuestions.length) * 100"
+        ></div>
+      </div>
+      <p class="answered-count">
+        Respondidas: {{ getAnsweredCount() }} / {{ quizQuestions.length }}
+        @if (getAnsweredCount() > 0) {
+          <span> | Acertos: {{ getCorrectCount() }}</span>
+        }
+      </p>
+    </div>
+    <div class="question-card">
+      @if (quizQuestions[currentQuestionIndex]; as question) {
+        <!-- Feedback de Acerto/Erro -->
+        @if (isAnswered(question.index)) {
+          <div
+            class="feedback-banner"
+            [class.feedback-correct]="isCorrectAnswer(question.index)"
+            [class.feedback-incorrect]="!isCorrectAnswer(question.index)"
+            >
+            @if (isCorrectAnswer(question.index)) {
+              <span>
+                ✓ Correto! Você acertou esta questão.
+              </span>
+            }
+            @if (!isCorrectAnswer(question.index)) {
+              <span>
+                ✗ Incorreto. A resposta correta é: <strong>{{ question.correctAlternative }}</strong>
+              </span>
+            }
+          </div>
+        }
+        <div class="question-context" [innerHTML]="parseMarkdownToHtml(question.context)"></div>
+        <p class="alternatives-intro">{{ question.alternativesIntroduction }}</p>
+        <div class="alternatives-list">
+          @for (alt of question.alternatives; track alt) {
+            <div
+              class="alternative"
+              [ngClass]="getAlternativeClass(question.index, alt.letter)"
+              [class.disabled]="isAnswered(question.index)"
+              >
+              <input
+                type="radio"
+                [name]="'alternative-' + question.index"
+                [id]="'alt-' + question.index + '-' + alt.letter"
+                [checked]="isSelected(question.index, alt.letter)"
+                [disabled]="isAnswered(question.index)"
+                (change)="selectAnswer(question.index, alt.letter)"
+                />
+              <label [for]="'alt-' + question.index + '-' + alt.letter">
+                <strong>{{ alt.letter }}</strong>
+                @if (alt.text) {
+                  <span>{{ alt.text }}</span>
+                }
+                <!-- Exibe imagem se existir -->
+                @if (alt.file) {
+                  <img
+                    [src]="alt.file"
+                    [alt]="'Alternativa ' + alt.letter"
+                    class="alternative-image"
+                    />
+                }
+                @if (
+                  isAnswered(question.index) && isCorrectAlternative(question.index, alt.letter)
+                  ) {
+                  <span
+                    class="badge correct-badge"
+                    >Correta</span
+                    >
+                  }
+                </label>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="quiz-navigation">
+        <button
+          (click)="previousQuestion()"
+          [disabled]="currentQuestionIndex === 0"
+          class="btn-secondary"
+          >
+          ← Anterior
+        </button>
+        <button (click)="goBackToList()" class="btn-home">Voltar à Lista</button>
+        <button
+          (click)="nextQuestion()"
+          [disabled]="currentQuestionIndex === quizQuestions.length - 1"
+          class="btn-primary"
+          >
+          Próxima →
+        </button>
+      </div>
+      @if (getAnsweredCount() === quizQuestions.length) {
+        <div class="final-summary">
+          <h2>🎉 Quiz Completo!</h2>
+          <p class="final-score">
+            Você acertou <strong>{{ getCorrectCount() }}</strong> de
+            <strong>{{ quizQuestions.length }}</strong> questões
+          </p>
+          <p class="final-percentage">
+            Aproveitamento:
+            <strong>{{ ((getCorrectCount() / quizQuestions.length) * 100).toFixed(1) }}%</strong>
+          </p>
+        </div>
+      }
+    } @else {
+      <p class="loading-message">Nenhuma questão encontrada para este ano.</p>
+    }
+
+  </div>
+
+  @if (isLoading) {
+    <div>
+      <p class="loading-message">A carregar simulado...</p>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }

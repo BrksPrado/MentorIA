@@ -1,0 +1,120 @@
+<mat-sidenav-container class="sidebar-container" [class.collapsed]="isCollapsed">
+  <mat-sidenav class="sidebar" mode="side" opened>
+    <!-- Toggle Button -->
+    <button class="toggle-btn" (click)="toggleSidebar()" title="Expandir/Recolher">
+      <span class="material-icons">{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</span>
+    </button>
+
+    <div class="sidebar-top" (click)="navigateToHome()">
+      <div class="brand">
+        <div class="brand-icon"></div>
+        @if (!isCollapsed) {
+          <div class="brand-text">
+            <h1>MentorIA</h1>
+            <small>Seu estudo com IA</small>
+          </div>
+        }
+      </div>
+    </div>
+
+    <mat-nav-list class="menu">
+      <ul>
+        <li class="menu-item-wrapper mod1" [class.submenu-open]="isSubmenuOpen('mod1')" data-tooltip="Simulados">
+          <div class="menu-item" (click)="toggleSubmenu('mod1')">
+            <span class="material-icons menu-icon">dashboard</span>
+            @if (!isCollapsed) {
+              <span class="menu-label">Simulados</span>
+            }
+            @if (!isCollapsed) {
+              <span class="chev material-icons">expand_more</span>
+            }
+          </div>
+          <ul class="submenu" [class.open]="isSubmenuOpen('mod1')">
+            <li class="submenu-item" (click)="navigateToSimulado()">
+              <span class="material-icons md-18">play_circle</span> Simulados Enem
+            </li>
+            <li class="submenu-item" (click)="navigateToGenerative()">
+              <span class="material-icons md-18">play_circle</span> Questões Generativas
+            </li>
+            <li class="submenu-item" (click)="navigateToHistorico()">
+              <span class="material-icons md-18">timeline</span> Histórico
+            </li>
+            <li class="submenu-item">
+              <span class="material-icons md-18">leaderboard</span> Ranking
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item-wrapper mod2" [class.submenu-open]="isSubmenuOpen('mod2')" data-tooltip="Aulas">
+          <div class="menu-item" (click)="toggleSubmenu('mod2')">
+            <span class="material-icons menu-icon">school</span>
+            @if (!isCollapsed) {
+              <span class="menu-label">Aulas</span>
+            }
+            @if (!isCollapsed) {
+              <span class="chev material-icons">expand_more</span>
+            }
+          </div>
+          <ul class="submenu" [class.open]="isSubmenuOpen('mod2')">
+            <li class="submenu-item">
+              <span class="material-icons md-18">video_library</span> Vídeos
+            </li>
+            <li class="submenu-item"><span class="material-icons md-18">article</span> Artigos</li>
+            <li class="submenu-item">
+              <span class="material-icons md-18">lightbulb</span> Dicas de estudo
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item-wrapper mod3" [class.submenu-open]="isSubmenuOpen('mod3')" data-tooltip="Eventos">
+          <div class="menu-item" (click)="toggleSubmenu('mod3')">
+            <span class="material-icons menu-icon">event</span>
+            @if (!isCollapsed) {
+              <span class="menu-label">Eventos</span>
+            }
+            @if (!isCollapsed) {
+              <span class="chev material-icons">expand_more</span>
+            }
+          </div>
+          <ul class="submenu" [class.open]="isSubmenuOpen('mod3')">
+            <li class="submenu-item" (click)="navigateToEventos()">
+              <span class="material-icons md-18">calendar_today</span> Data de Vestibulares
+            </li>
+            <li class="submenu-item"><span class="material-icons md-18">camera</span> Lives</li>
+            <li class="submenu-item"><span class="material-icons md-18">forum</span> Fórum</li>
+          </ul>
+        </li>
+
+        <li class="menu-item-wrapper mod4" [class.submenu-open]="isSubmenuOpen('mod4')" data-tooltip="Configurações">
+          <div class="menu-item" (click)="toggleSubmenu('mod4')">
+            <span class="material-icons menu-icon">settings</span>
+            @if (!isCollapsed) {
+              <span class="menu-label">Configurações</span>
+            }
+            @if (!isCollapsed) {
+              <span class="chev material-icons">expand_more</span>
+            }
+          </div>
+          <ul class="submenu" [class.open]="isSubmenuOpen('mod4')">
+            <li class="submenu-item" (click)="navigateToProfile()">
+              <span class="material-icons md-18">person</span> Perfil
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item-wrapper logout-item" data-tooltip="Sair">
+          <div class="menu-item" (click)="logout()">
+            <span class="material-icons menu-icon">logout</span>
+            @if (!isCollapsed) {
+              <span class="menu-label">Sair</span>
+            }
+          </div>
+        </li>
+      </ul>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

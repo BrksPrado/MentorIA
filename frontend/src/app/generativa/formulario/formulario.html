@@ -1,0 +1,54 @@
+<div class="sidebar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="container">
+    <app-header></app-header>
+
+    @if (isLoading) {
+      <app-loading [overlay]="true" message="Carregando pagina" size="large">
+      </app-loading>
+    }
+
+    @if (!isLoading) {
+      <div>
+        <div class="header">
+          <h1>🤖 Questões Generativas</h1>
+          <p>Preencha as informações como deseja</p>
+        </div>
+        <div class="formularioGenerativaDiv">
+          <div class="inputDiv">
+            <label class="labelGenerativa">Tema das questões:</label>
+            <select name="materias">
+              <option value="" disabled selected>Selecione a matéria</option>
+              <option value="portugues">Diversas</option>
+              <option value="portugues">Português</option>
+              <option value="matematica">Matemática</option>
+              <option value="ciencias">Ciências</option>
+              <option value="historia">História</option>
+              <option value="geografia">Geografia</option>
+              <option value="ingles">Inglês</option>
+            </select>
+          </div>
+          <div class="inputDiv">
+            <label class="labelGenerativa">Numero de questões:</label>
+            <input type="text" placeholder="Digite o numero de questões" class="inputGenerativa" />
+          </div>
+          <div class="inputDiv">
+            <label class="labelGenerativa">Vestibular Inspiração:</label>
+            <input list="vestibulares-list" type="text" placeholder="Digite o vestibular de inspiração"
+              class="inputGenerativa" />
+            <datalist id="vestibulares-list">
+              <option value="ENEM"></option>
+              <option value="Fuvest"></option>
+              <option value="Unicamp"></option>
+              <option value="Unesp"></option>
+              <option value="ITA"></option>
+              <option value="Unifesp"></option>
+            </datalist>
+          </div>
+          <button class="gerarQuestoesBtn" (click)="buscarQuestoes()">
+            Gerar Questões
+          </button>
+        </div>
+      </div>
+    }
